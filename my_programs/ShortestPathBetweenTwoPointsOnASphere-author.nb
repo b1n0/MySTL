@@ -1,0 +1,1257 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     56613,       1249]
+NotebookOptionsPosition[     51008,       1140]
+NotebookOutlinePosition[     53037,       1190]
+CellTagsIndexPosition[     52709,       1178]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Shortest Path between Two Points on a Sphere", "DemoTitle",
+ CellChangeTimes->{
+  3.517223575675679*^9},ExpressionUUID->"a2c43dd2-93ef-47fc-b8ab-\
+1b2b7ebffee8"],
+
+Cell["", "InitializationSection",ExpressionUUID->"d35d7cf0-e728-4262-b234-ac395d66a6ca"],
+
+Cell[CellGroupData[{
+
+Cell["", "ManipulateSection",ExpressionUUID->"f4237a4c-1764-40eb-acd7-104c5f63c15f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"r", " ", "=", " ", "1"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"p1", "=", 
+     RowBox[{"r", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Cos", "[", 
+          RowBox[{"theta1", " ", "Degree"}], "]"}], 
+         RowBox[{"Cos", "[", 
+          RowBox[{"phi1", " ", "Degree"}], "]"}]}], ",", 
+        RowBox[{
+         RowBox[{"Cos", "[", 
+          RowBox[{"theta1", " ", "Degree"}], "]"}], 
+         RowBox[{"Sin", "[", 
+          RowBox[{"phi1", " ", "Degree"}], "]"}]}], ",", 
+        RowBox[{"Sin", "[", 
+         RowBox[{"theta1", " ", "Degree"}], "]"}]}], "}"}]}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"p2", "=", 
+     RowBox[{"r", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Cos", "[", 
+          RowBox[{"theta2", " ", "Degree"}], "]"}], 
+         RowBox[{"Cos", "[", 
+          RowBox[{"phi2", " ", "Degree"}], "]"}]}], ",", 
+        RowBox[{
+         RowBox[{"Cos", "[", 
+          RowBox[{"theta2", " ", "Degree"}], "]"}], 
+         RowBox[{"Sin", "[", 
+          RowBox[{"phi2", " ", "Degree"}], "]"}]}], ",", 
+        RowBox[{"Sin", "[", 
+         RowBox[{"theta2", " ", "Degree"}], "]"}]}], "}"}]}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"p", "=", 
+     RowBox[{"p1", "+", 
+      RowBox[{"t", 
+       RowBox[{"(", 
+        RowBox[{"p2", "-", "p1"}], ")"}]}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"sol", "=", 
+     RowBox[{
+      RowBox[{"Flatten", "[", 
+       RowBox[{"Solve", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"k", "[", "t", "]"}], " ", 
+           RowBox[{"Norm", "[", 
+            RowBox[{"p1", "+", 
+             RowBox[{"t", 
+              RowBox[{"(", 
+               RowBox[{"p2", "-", "p1"}], ")"}]}]}], "]"}]}], "\[Equal]", 
+          "r"}], ",", 
+         RowBox[{"k", "[", "t", "]"}]}], "]"}], "]"}], "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"pts", "=", 
+     RowBox[{"DeleteCases", "[", 
+      RowBox[{
+       RowBox[{"Quiet", "@", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"k", "[", "t", "]"}], "*", "p"}], ")"}], "/.", "sol"}], 
+           "/.", 
+           RowBox[{"t", "\[Rule]", "t2"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"t2", ",", "0", ",", ".995", ",", ".005"}], "}"}]}], 
+         "]"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"Indeterminate", ",", "0", ",", "0"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Show", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Graphics3D", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Text", "[", 
+          RowBox[{"N", ",", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", 
+             RowBox[{"1.2", "r"}]}], "}"}]}], "]"}], ",", 
+         RowBox[{"Sphere", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "0"}], "}"}], ",", "r"}], "]"}], ",", 
+         
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Dashing", "[", 
+            RowBox[{"{", 
+             RowBox[{".005", ",", ".005"}], "}"}], "]"}], ",", "Red", ",", 
+           RowBox[{"Line", "[", "pts", "]"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Thickness", "[", ".005", "]"}], ",", 
+           RowBox[{"Point", "[", 
+            RowBox[{"{", 
+             RowBox[{"p1", ",", "p2"}], "}"}], "]"}], ",", 
+           RowBox[{"Line", "[", 
+            RowBox[{"r", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0", ",", 
+                 RowBox[{"-", "1.1"}]}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"0", ",", "0", ",", "1.1"}], "}"}]}], "}"}]}], 
+            "]"}]}], "}"}]}], "}"}], "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"ParametricPlot3D", "[", 
+       RowBox[{
+        RowBox[{"r", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Cos", "[", "u", "]"}], ",", 
+           RowBox[{"Sin", "[", "u", "]"}], ",", "0"}], "}"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"u", ",", "0", ",", 
+          RowBox[{"2", "Pi"}]}], "}"}]}], "]"}], ",", 
+      RowBox[{"ParametricPlot3D", "[", 
+       RowBox[{
+        RowBox[{"r", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Cos", "[", "t", "]"}], ",", "0", ",", 
+           RowBox[{"Sin", "[", "t", "]"}]}], "}"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"t", ",", "0", ",", 
+          RowBox[{"2", "Pi"}]}], "}"}]}], "]"}], ",", 
+      RowBox[{"Boxed", "\[Rule]", "False"}], ",", 
+      RowBox[{"ImageSize", "\[Rule]", "300"}], ",", 
+      RowBox[{"SphericalRegion", "\[Rule]", "True"}]}], "]"}]}], ",", 
+   "\[IndentingNewLine]", "\"\<All coordinates are in degrees.\\n\>\"", ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"theta1", ",", "40", ",", "\"\<latitude 1\>\""}], "}"}], ",", 
+     RowBox[{"-", "90"}], ",", "90", ",", ".1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}], ",", 
+     RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"phi1", ",", 
+       RowBox[{"-", "88"}], ",", "\"\<longitude 1\>\""}], "}"}], ",", 
+     RowBox[{"-", "180"}], ",", "180", ",", ".1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}], ",", 
+     RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}]}], "}"}], ",", 
+   "\[IndentingNewLine]", "Delimiter", ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"theta2", ",", "52", ",", "\"\<latitude 2\>\""}], "}"}], ",", 
+     RowBox[{"-", "89"}], ",", "89", ",", ".1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}], ",", 
+     RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"phi2", ",", "0", ",", "\"\<longitude 2\>\""}], "}"}], ",", 
+     RowBox[{"-", "180"}], ",", "180", ",", ".1", ",", 
+     RowBox[{"ImageSize", "\[Rule]", "Tiny"}], ",", 
+     RowBox[{"Appearance", "\[Rule]", "\"\<Labeled\>\""}]}], "}"}], ",", 
+   "\[IndentingNewLine]", "Delimiter", ",", "\[IndentingNewLine]", " ", 
+   RowBox[{"ControlPlacement", "\[Rule]", "Left"}], ",", 
+   RowBox[{"TrackedSymbols", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"theta1", ",", "phi1", ",", "theta2", ",", "phi2"}], "}"}]}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.517223218858404*^9, 3.517223419372973*^9}, {
+   3.517227672093625*^9, 3.517227819624875*^9}, 3.7228837202322164`*^9, 
+   3.722884024604245*^9, {3.722884188362818*^9, 3.7228842079861546`*^9}, {
+   3.7228842421689835`*^9, 3.7228842675491548`*^9}, {3.7228843010681257`*^9, 
+   3.7228843276936474`*^9}, {3.7228843634170275`*^9, 3.722884381650997*^9}, {
+   3.722950889668004*^9, 
+   3.722950895426268*^9}},ExpressionUUID->"e98aa0c7-4a70-4877-be76-\
+30f29fec037b"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`phi1$$ = -83.6, $CellContext`phi2$$ = \
+-6.399999999999977, $CellContext`theta1$$ = 
+    16.10000000000001, $CellContext`theta2$$ = -50.9, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold["All coordinates are in degrees.\n"], 
+      Manipulate`Dump`ThisIsNotAControl}, {{
+       Hold[$CellContext`theta1$$], 40, "latitude 1"}, -90, 90, 0.1}, {{
+       Hold[$CellContext`phi1$$], -88, "longitude 1"}, -180, 180, 0.1}, {{
+       Hold[$CellContext`theta2$$], 52, "latitude 2"}, -89, 89, 0.1}, {{
+       Hold[$CellContext`phi2$$], 0, "longitude 2"}, -180, 180, 0.1}}, 
+    Typeset`size$$ = {300., {148., 152.}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`theta1$2300$$ = 0, $CellContext`phi1$2301$$ = 
+    0, $CellContext`theta2$2302$$ = 0, $CellContext`phi2$2303$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`phi1$$ = -88, $CellContext`phi2$$ = 
+        0, $CellContext`theta1$$ = 40, $CellContext`theta2$$ = 52}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`theta1$$, $CellContext`theta1$2300$$, 0], 
+        Hold[$CellContext`phi1$$, $CellContext`phi1$2301$$, 0], 
+        Hold[$CellContext`theta2$$, $CellContext`theta2$2302$$, 0], 
+        Hold[$CellContext`phi2$$, $CellContext`phi2$2303$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`r = 
+        1; $CellContext`p1 = $CellContext`r {
+          Cos[$CellContext`theta1$$ Degree] Cos[$CellContext`phi1$$ Degree], 
+           Cos[$CellContext`theta1$$ Degree] Sin[$CellContext`phi1$$ Degree], 
+           
+           
+           Sin[$CellContext`theta1$$ 
+            Degree]}; $CellContext`p2 = $CellContext`r {
+          Cos[$CellContext`theta2$$ Degree] Cos[$CellContext`phi2$$ Degree], 
+           Cos[$CellContext`theta2$$ Degree] Sin[$CellContext`phi2$$ Degree], 
+           
+           
+           Sin[$CellContext`theta2$$ 
+            Degree]}; $CellContext`p = $CellContext`p1 + $CellContext`t \
+($CellContext`p2 - $CellContext`p1); $CellContext`sol = Part[
+          Flatten[
+           
+           Solve[$CellContext`k[$CellContext`t] 
+             Norm[$CellContext`p1 + $CellContext`t ($CellContext`p2 - \
+$CellContext`p1)] == $CellContext`r, 
+            $CellContext`k[$CellContext`t]]], 1]; $CellContext`pts = 
+        DeleteCases[
+          Quiet[
+           Table[
+            ReplaceAll[
+             
+             ReplaceAll[$CellContext`k[$CellContext`t] $CellContext`p, \
+$CellContext`sol], $CellContext`t -> $CellContext`t2], {$CellContext`t2, 0, 
+             0.995, 0.005}]], {Indeterminate, 0, 0}]; Show[
+         Graphics3D[{
+           Text[N, {0, 0, 1.2 $CellContext`r}], 
+           Sphere[{0, 0, 0}, $CellContext`r], {
+            Dashing[{0.005, 0.005}], Red, 
+            Line[$CellContext`pts]}, {
+            Thickness[0.005], 
+            Point[{$CellContext`p1, $CellContext`p2}], 
+            Line[$CellContext`r {{0, 0, -1.1}, {0, 0, 1.1}}]}}], 
+         ParametricPlot3D[$CellContext`r {
+            Cos[$CellContext`u], 
+            Sin[$CellContext`u], 0}, {$CellContext`u, 0, 2 Pi}], 
+         ParametricPlot3D[$CellContext`r {
+            Cos[$CellContext`t], 0, 
+            Sin[$CellContext`t]}, {$CellContext`t, 0, 2 Pi}], Boxed -> False, 
+         ImageSize -> 300, SphericalRegion -> True]), 
+      "Specifications" :> {
+       "All coordinates are in degrees.\n", {{$CellContext`theta1$$, 40, 
+          "latitude 1"}, -90, 90, 0.1, ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, {{$CellContext`phi1$$, -88, "longitude 1"}, -180, 180, 
+         0.1, ImageSize -> Tiny, Appearance -> "Labeled"}, 
+        Delimiter, {{$CellContext`theta2$$, 52, "latitude 2"}, -89, 89, 0.1, 
+         ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, {{$CellContext`phi2$$, 0, "longitude 2"}, -180, 180, 0.1,
+          ImageSize -> Tiny, Appearance -> "Labeled"}, Delimiter}, 
+      "Options" :> {
+       ControlPlacement -> Left, 
+        TrackedSymbols -> {$CellContext`theta1$$, $CellContext`phi1$$, \
+$CellContext`theta2$$, $CellContext`phi2$$}}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{532., {178., 182.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ GeneratedCell->False,
+ CellAutoOverwrite->False,
+ CellChangeTimes->{
+  3.7228807106333184`*^9, 3.7228837222622623`*^9, 3.72288403524619*^9, {
+   3.7228842089217634`*^9, 3.722884212481103*^9}, 3.7228842433440638`*^9, 
+   3.7228843327894983`*^9, 3.722950900009068*^9, 3.722951009889402*^9, {
+   3.722969331048757*^9, 3.7229693329670553`*^9}},
+ CellID->973817852,ExpressionUUID->"60e2f991-bb56-442d-88d3-d2a58431707a"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "ManipulateCaptionSection",ExpressionUUID->"f69080bb-c467-4d55-a4db-63573252bf71"],
+
+Cell["\<\
+The shortest path between two points on the surface of a sphere is an arc of \
+a great circle (great circle distance or orthodrome). On the Earth, meridians \
+and the equator are great circles. Between any two points on a sphere that \
+are not directly opposite each other, there is a unique great circle. The two \
+points separate the great circle into two arcs and the length of the shorter \
+arc is the shortest path between the two points. Points are given by their \
+latitude and longitude.\
+\>", "ManipulateCaption",
+ CellChangeTimes->{{3.517223637692576*^9, 
+  3.5172236392187567`*^9}},ExpressionUUID->"13ba7310-bbda-4828-a204-\
+2764a0343677"],
+
+Cell["\<\
+Le chemin le plus court entre deux points \[AGrave] la surface d'une sph\
+\[EGrave]re est un arc de grand cercle (distance \[AGrave] vol d'oiseau). Sur \
+Terre, les m\[EAcute]ridiens et l'\[EAcute]quateur sont des grands cercles. \
+Sur une sph\[EGrave]re, entre deux points quelconques qui ne sont pas \
+directement oppos\[EAcute]s, ne passe qu'un seul grand cercle. Ces deux \
+points divisent ce grand cercle en deux arcs et la longueur du plus petit de \
+ces arcs est la plus courte distance entre ces deux points. La position des \
+points est donn\[EAcute]e par leur latitude et leur longitude en \
+degr\[EAcute].\
+\>", "ManipulateCaption",
+ CellChangeTimes->{{3.517223641800064*^9, 3.517223755643135*^9}, {
+  3.517223791566078*^9, 3.517224021500657*^9}, {3.517224096359118*^9, 
+  3.517224217625898*^9}},
+ CellID->501016994,ExpressionUUID->"d24b746a-a944-4e9b-bcfc-169a3e4d75fc"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "ThumbnailSection",ExpressionUUID->"c9e8f4cc-559b-42e0-8a3c-b6df45f13b9a"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`phi1$$ = -88, $CellContext`phi2$$ = 
+    0, $CellContext`r$$ = 6370, $CellContext`theta1$$ = 
+    40, $CellContext`theta2$$ = 52, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold["All coordinates are in degrees.\n"], 
+      Manipulate`Dump`ThisIsNotAControl}, {{
+       Hold[$CellContext`theta1$$], 40, "latitude 1"}, -90, 90, 0.1}, {{
+       Hold[$CellContext`phi1$$], -88, "longitude 1"}, -180, 180, 0.1}, {{
+       Hold[$CellContext`theta2$$], 52, "latitude 2"}, -89, 89, 0.1}, {{
+       Hold[$CellContext`phi2$$], 0, "longitude 2"}, -180, 180, 0.1}, {{
+       Hold[$CellContext`r$$], 6370, "radius km"}, 1000, 10000, 1}}, 
+    Typeset`size$$ = {300., {155., 160.}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`theta1$1572$$ = 0, $CellContext`phi1$1573$$ = 
+    0, $CellContext`theta2$1574$$ = 0, $CellContext`phi2$1575$$ = 
+    0, $CellContext`r$1576$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`phi1$$ = -88, $CellContext`phi2$$ = 
+        0, $CellContext`r$$ = 6370, $CellContext`theta1$$ = 
+        40, $CellContext`theta2$$ = 52}, "ControllerVariables" :> {
+        Hold[$CellContext`theta1$$, $CellContext`theta1$1572$$, 0], 
+        Hold[$CellContext`phi1$$, $CellContext`phi1$1573$$, 0], 
+        Hold[$CellContext`theta2$$, $CellContext`theta2$1574$$, 0], 
+        Hold[$CellContext`phi2$$, $CellContext`phi2$1575$$, 0], 
+        Hold[$CellContext`r$$, $CellContext`r$1576$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`p1 = $CellContext`r$$ {
+          Cos[$CellContext`theta1$$ Degree] Cos[$CellContext`phi1$$ Degree], 
+           Cos[$CellContext`theta1$$ Degree] Sin[$CellContext`phi1$$ Degree], 
+           
+           
+           Sin[$CellContext`theta1$$ 
+            Degree]}; $CellContext`p2 = $CellContext`r$$ {
+          Cos[$CellContext`theta2$$ Degree] Cos[$CellContext`phi2$$ Degree], 
+           Cos[$CellContext`theta2$$ Degree] Sin[$CellContext`phi2$$ Degree], 
+           
+           
+           Sin[$CellContext`theta2$$ 
+            Degree]}; $CellContext`p = $CellContext`p1 + $CellContext`t \
+($CellContext`p2 - $CellContext`p1); $CellContext`sol = Part[
+          Flatten[
+           
+           Solve[$CellContext`k[$CellContext`t] 
+             Norm[$CellContext`p1 + $CellContext`t ($CellContext`p2 - \
+$CellContext`p1)] == $CellContext`r$$, 
+            $CellContext`k[$CellContext`t]]], 1]; $CellContext`pts = 
+        DeleteCases[
+          Quiet[
+           Table[
+            ReplaceAll[
+             
+             ReplaceAll[$CellContext`k[$CellContext`t] $CellContext`p, \
+$CellContext`sol], $CellContext`t -> $CellContext`t2], {$CellContext`t2, 0, 
+             0.995, 0.005}]], {Indeterminate, 0, 0}]; Show[
+         Graphics3D[{
+           Text[N, {0, 0, 1.2 $CellContext`r$$}], 
+           Sphere[{0, 0, 0}, $CellContext`r$$], {
+            Dashing[{0.005, 0.005}], Red, 
+            Line[$CellContext`pts]}, {
+            Thickness[0.005], 
+            Point[{$CellContext`p1, $CellContext`p2}], 
+            Line[$CellContext`r$$ {{0, 0, -1.1}, {0, 0, 1.1}}]}}], 
+         ParametricPlot3D[$CellContext`r$$ {
+            Cos[$CellContext`u], 
+            Sin[$CellContext`u], 0}, {$CellContext`u, 0, 2 Pi}], 
+         ParametricPlot3D[$CellContext`r$$ {
+            Cos[$CellContext`t], 0, 
+            Sin[$CellContext`t]}, {$CellContext`t, 0, 2 Pi}], Boxed -> False, 
+         PlotLabel -> Row[{"The shortest path between the two points is ", 
+            NumberForm[
+             N[$CellContext`r$$ 
+              ArcCos[$CellContext`r$$^2 (
+                 Dot[{Cos[$CellContext`theta1$$ Degree] 
+                    Cos[$CellContext`phi1$$ Degree], 
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Sin[$CellContext`phi1$$ Degree], 
+                    Sin[$CellContext`theta1$$ Degree]}, {
+                   Cos[$CellContext`theta2$$ Degree] 
+                    Cos[$CellContext`phi2$$ Degree], 
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Sin[$CellContext`phi2$$ Degree], 
+                    Sin[$CellContext`theta2$$ Degree]}]/(
+                 Norm[$CellContext`r$$ {
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Cos[$CellContext`phi1$$ Degree], 
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Sin[$CellContext`phi1$$ Degree], 
+                    Sin[$CellContext`theta1$$ Degree]}] 
+                 Norm[$CellContext`r$$ {
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Cos[$CellContext`phi2$$ Degree], 
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Sin[$CellContext`phi2$$ Degree], 
+                    Sin[$CellContext`theta2$$ Degree]}]))]], {5, 1}], 
+            " km."}], ImageSize -> 300, SphericalRegion -> True]), 
+      "Specifications" :> {
+       "All coordinates are in degrees.\n", {{$CellContext`theta1$$, 40, 
+          "latitude 1"}, -90, 90, 0.1, ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, {{$CellContext`phi1$$, -88, "longitude 1"}, -180, 180, 
+         0.1, ImageSize -> Tiny, Appearance -> "Labeled"}, 
+        Delimiter, {{$CellContext`theta2$$, 52, "latitude 2"}, -89, 89, 0.1, 
+         ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, {{$CellContext`phi2$$, 0, "longitude 2"}, -180, 180, 0.1,
+          ImageSize -> Tiny, Appearance -> "Labeled"}, 
+        Delimiter, {{$CellContext`r$$, 6370, "radius km"}, 1000, 10000, 1, 
+         ImageSize -> Tiny, Appearance -> "Labeled"}}, 
+      "Options" :> {
+       ControlPlacement -> Left, 
+        TrackedSymbols -> {$CellContext`r$$, $CellContext`theta1$$, \
+$CellContext`phi1$$, $CellContext`theta2$$, $CellContext`phi2$$}}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{532., {185., 189.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellID->188854439,ExpressionUUID->"94139698-a627-4676-a014-4e19bffd2325"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SnapshotsSection",ExpressionUUID->"8925bbfa-1cc4-4ebf-a52e-b7e856d5534a"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`phi1$$ = -54.8, $CellContext`phi2$$ = \
+-15.699999999999989`, $CellContext`r$$ = 6370, $CellContext`theta1$$ = 
+    0., $CellContext`theta2$$ = 61.900000000000006`, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold["All coordinates are in degrees.\n"], 
+      Manipulate`Dump`ThisIsNotAControl}, {{
+       Hold[$CellContext`theta1$$], -13.700000000000003`, "latitude 1"}, -90, 
+      90, 0.1}, {{
+       Hold[$CellContext`phi1$$], -54.8, "longitude 1"}, -180, 180, 0.1}, {{
+       Hold[$CellContext`theta2$$], 61.900000000000006`, "latitude 2"}, -89, 
+      89, 0.1}, {{
+       Hold[$CellContext`phi2$$], -15.699999999999989`, "longitude 2"}, -180, 
+      180, 0.1}, {{
+       Hold[$CellContext`r$$], 6370, "radius km"}, 1000, 10000, 1}}, 
+    Typeset`size$$ = {300., {155., 160.}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`theta1$1648$$ = 0, $CellContext`phi1$1649$$ = 
+    0, $CellContext`theta2$1650$$ = 0, $CellContext`phi2$1651$$ = 
+    0, $CellContext`r$1652$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`phi1$$ = -54.8, $CellContext`phi2$$ = \
+-15.699999999999989`, $CellContext`r$$ = 
+        6370, $CellContext`theta1$$ = -13.700000000000003`, \
+$CellContext`theta2$$ = 61.900000000000006`}, "ControllerVariables" :> {
+        Hold[$CellContext`theta1$$, $CellContext`theta1$1648$$, 0], 
+        Hold[$CellContext`phi1$$, $CellContext`phi1$1649$$, 0], 
+        Hold[$CellContext`theta2$$, $CellContext`theta2$1650$$, 0], 
+        Hold[$CellContext`phi2$$, $CellContext`phi2$1651$$, 0], 
+        Hold[$CellContext`r$$, $CellContext`r$1652$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`p1 = $CellContext`r$$ {
+          Cos[$CellContext`theta1$$ Degree] Cos[$CellContext`phi1$$ Degree], 
+           Cos[$CellContext`theta1$$ Degree] Sin[$CellContext`phi1$$ Degree], 
+           
+           
+           Sin[$CellContext`theta1$$ 
+            Degree]}; $CellContext`p2 = $CellContext`r$$ {
+          Cos[$CellContext`theta2$$ Degree] Cos[$CellContext`phi2$$ Degree], 
+           Cos[$CellContext`theta2$$ Degree] Sin[$CellContext`phi2$$ Degree], 
+           
+           
+           Sin[$CellContext`theta2$$ 
+            Degree]}; $CellContext`p = $CellContext`p1 + $CellContext`t \
+($CellContext`p2 - $CellContext`p1); $CellContext`sol = Part[
+          Flatten[
+           
+           Solve[$CellContext`k[$CellContext`t] 
+             Norm[$CellContext`p1 + $CellContext`t ($CellContext`p2 - \
+$CellContext`p1)] == $CellContext`r$$, 
+            $CellContext`k[$CellContext`t]]], 1]; $CellContext`pts = 
+        DeleteCases[
+          Quiet[
+           Table[
+            ReplaceAll[
+             
+             ReplaceAll[$CellContext`k[$CellContext`t] $CellContext`p, \
+$CellContext`sol], $CellContext`t -> $CellContext`t2], {$CellContext`t2, 0, 
+             0.995, 0.005}]], {Indeterminate, 0, 0}]; Show[
+         Graphics3D[{
+           Text[N, {0, 0, 1.2 $CellContext`r$$}], 
+           Sphere[{0, 0, 0}, $CellContext`r$$], {
+            Dashing[{0.005, 0.005}], Red, 
+            Line[$CellContext`pts]}, {
+            Thickness[0.005], 
+            Point[{$CellContext`p1, $CellContext`p2}], 
+            Line[$CellContext`r$$ {{0, 0, -1.1}, {0, 0, 1.1}}]}}], 
+         ParametricPlot3D[$CellContext`r$$ {
+            Cos[$CellContext`u], 
+            Sin[$CellContext`u], 0}, {$CellContext`u, 0, 2 Pi}], 
+         ParametricPlot3D[$CellContext`r$$ {
+            Cos[$CellContext`t], 0, 
+            Sin[$CellContext`t]}, {$CellContext`t, 0, 2 Pi}], Boxed -> False, 
+         PlotLabel -> Row[{"The shortest path between the two points is ", 
+            NumberForm[
+             
+             N[$CellContext`r$$ 
+              ArcCos[$CellContext`r$$^2 (
+                 Dot[{Cos[$CellContext`theta1$$ Degree] 
+                    Cos[$CellContext`phi1$$ Degree], 
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Sin[$CellContext`phi1$$ Degree], 
+                    Sin[$CellContext`theta1$$ Degree]}, {
+                   Cos[$CellContext`theta2$$ Degree] 
+                    Cos[$CellContext`phi2$$ Degree], 
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Sin[$CellContext`phi2$$ Degree], 
+                    Sin[$CellContext`theta2$$ Degree]}]/(
+                 Norm[$CellContext`r$$ {
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Cos[$CellContext`phi1$$ Degree], 
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Sin[$CellContext`phi1$$ Degree], 
+                    Sin[$CellContext`theta1$$ Degree]}] 
+                 Norm[$CellContext`r$$ {
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Cos[$CellContext`phi2$$ Degree], 
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Sin[$CellContext`phi2$$ Degree], 
+                    Sin[$CellContext`theta2$$ Degree]}]))]], {5, 1}], 
+            " km."}], ImageSize -> 300, SphericalRegion -> True]), 
+      "Specifications" :> {
+       "All coordinates are in degrees.\n", {{$CellContext`theta1$$, \
+-13.700000000000003`, "latitude 1"}, -90, 90, 0.1, ImageSize -> Tiny, 
+         Appearance -> 
+         "Labeled"}, {{$CellContext`phi1$$, -54.8, "longitude 1"}, -180, 180, 
+         0.1, ImageSize -> Tiny, Appearance -> "Labeled"}, 
+        Delimiter, {{$CellContext`theta2$$, 61.900000000000006`, 
+          "latitude 2"}, -89, 89, 0.1, ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, {{$CellContext`phi2$$, -15.699999999999989`, 
+          "longitude 2"}, -180, 180, 0.1, ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, 
+        Delimiter, {{$CellContext`r$$, 6370, "radius km"}, 1000, 10000, 1, 
+         ImageSize -> Tiny, Appearance -> "Labeled"}}, 
+      "Options" :> {
+       ControlPlacement -> Left, 
+        TrackedSymbols -> {$CellContext`r$$, $CellContext`theta1$$, \
+$CellContext`phi1$$, $CellContext`theta2$$, $CellContext`phi2$$}}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{549., {184., 190.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellID->421903215,ExpressionUUID->"c46f1aaf-e5cf-44c6-952b-6d56174a3048"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`phi1$$ = -113.5, $CellContext`phi2$$ = 
+    47., $CellContext`r$$ = 6370, $CellContext`theta1$$ = 
+    34.30000000000001, $CellContext`theta2$$ = 42.599999999999994`, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+      Hold["All coordinates are in degrees.\n"], 
+      Manipulate`Dump`ThisIsNotAControl}, {{
+       Hold[$CellContext`theta1$$], 39.099999999999994`, "latitude 1"}, -90, 
+      90, 0.1}, {{
+       Hold[$CellContext`phi1$$], -113.5, "longitude 1"}, -180, 180, 0.1}, {{
+       Hold[$CellContext`theta2$$], 42.599999999999994`, "latitude 2"}, -89, 
+      89, 0.1}, {{
+       Hold[$CellContext`phi2$$], 47., "longitude 2"}, -180, 180, 0.1}, {{
+       Hold[$CellContext`r$$], 6370, "radius km"}, 1000, 10000, 1}}, 
+    Typeset`size$$ = {300., {155., 160.}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`theta1$1724$$ = 0, $CellContext`phi1$1725$$ = 
+    0, $CellContext`theta2$1726$$ = 0, $CellContext`phi2$1727$$ = 
+    0, $CellContext`r$1728$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`phi1$$ = -113.5, $CellContext`phi2$$ = 
+        47., $CellContext`r$$ = 6370, $CellContext`theta1$$ = 
+        39.099999999999994`, $CellContext`theta2$$ = 42.599999999999994`}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`theta1$$, $CellContext`theta1$1724$$, 0], 
+        Hold[$CellContext`phi1$$, $CellContext`phi1$1725$$, 0], 
+        Hold[$CellContext`theta2$$, $CellContext`theta2$1726$$, 0], 
+        Hold[$CellContext`phi2$$, $CellContext`phi2$1727$$, 0], 
+        Hold[$CellContext`r$$, $CellContext`r$1728$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`p1 = $CellContext`r$$ {
+          Cos[$CellContext`theta1$$ Degree] Cos[$CellContext`phi1$$ Degree], 
+           Cos[$CellContext`theta1$$ Degree] Sin[$CellContext`phi1$$ Degree], 
+           
+           
+           Sin[$CellContext`theta1$$ 
+            Degree]}; $CellContext`p2 = $CellContext`r$$ {
+          Cos[$CellContext`theta2$$ Degree] Cos[$CellContext`phi2$$ Degree], 
+           Cos[$CellContext`theta2$$ Degree] Sin[$CellContext`phi2$$ Degree], 
+           
+           
+           Sin[$CellContext`theta2$$ 
+            Degree]}; $CellContext`p = $CellContext`p1 + $CellContext`t \
+($CellContext`p2 - $CellContext`p1); $CellContext`sol = Part[
+          Flatten[
+           
+           Solve[$CellContext`k[$CellContext`t] 
+             Norm[$CellContext`p1 + $CellContext`t ($CellContext`p2 - \
+$CellContext`p1)] == $CellContext`r$$, 
+            $CellContext`k[$CellContext`t]]], 1]; $CellContext`pts = 
+        DeleteCases[
+          Quiet[
+           Table[
+            ReplaceAll[
+             
+             ReplaceAll[$CellContext`k[$CellContext`t] $CellContext`p, \
+$CellContext`sol], $CellContext`t -> $CellContext`t2], {$CellContext`t2, 0, 
+             0.995, 0.005}]], {Indeterminate, 0, 0}]; Show[
+         Graphics3D[{
+           Text[N, {0, 0, 1.2 $CellContext`r$$}], 
+           Sphere[{0, 0, 0}, $CellContext`r$$], {
+            Dashing[{0.005, 0.005}], Red, 
+            Line[$CellContext`pts]}, {
+            Thickness[0.005], 
+            Point[{$CellContext`p1, $CellContext`p2}], 
+            Line[$CellContext`r$$ {{0, 0, -1.1}, {0, 0, 1.1}}]}}], 
+         ParametricPlot3D[$CellContext`r$$ {
+            Cos[$CellContext`u], 
+            Sin[$CellContext`u], 0}, {$CellContext`u, 0, 2 Pi}], 
+         ParametricPlot3D[$CellContext`r$$ {
+            Cos[$CellContext`t], 0, 
+            Sin[$CellContext`t]}, {$CellContext`t, 0, 2 Pi}], Boxed -> False, 
+         PlotLabel -> Row[{"The shortest path between the two points is ", 
+            NumberForm[
+             
+             N[$CellContext`r$$ 
+              ArcCos[$CellContext`r$$^2 (
+                 Dot[{Cos[$CellContext`theta1$$ Degree] 
+                    Cos[$CellContext`phi1$$ Degree], 
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Sin[$CellContext`phi1$$ Degree], 
+                    Sin[$CellContext`theta1$$ Degree]}, {
+                   Cos[$CellContext`theta2$$ Degree] 
+                    Cos[$CellContext`phi2$$ Degree], 
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Sin[$CellContext`phi2$$ Degree], 
+                    Sin[$CellContext`theta2$$ Degree]}]/(
+                 Norm[$CellContext`r$$ {
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Cos[$CellContext`phi1$$ Degree], 
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Sin[$CellContext`phi1$$ Degree], 
+                    Sin[$CellContext`theta1$$ Degree]}] 
+                 Norm[$CellContext`r$$ {
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Cos[$CellContext`phi2$$ Degree], 
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Sin[$CellContext`phi2$$ Degree], 
+                    Sin[$CellContext`theta2$$ Degree]}]))]], {5, 1}], 
+            " km."}], ImageSize -> 300, SphericalRegion -> True]), 
+      "Specifications" :> {
+       "All coordinates are in degrees.\n", {{$CellContext`theta1$$, 
+          39.099999999999994`, "latitude 1"}, -90, 90, 0.1, ImageSize -> Tiny,
+          Appearance -> 
+         "Labeled"}, {{$CellContext`phi1$$, -113.5, "longitude 1"}, -180, 180,
+          0.1, ImageSize -> Tiny, Appearance -> "Labeled"}, 
+        Delimiter, {{$CellContext`theta2$$, 42.599999999999994`, 
+          "latitude 2"}, -89, 89, 0.1, ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, {{$CellContext`phi2$$, 47., "longitude 2"}, -180, 180, 
+         0.1, ImageSize -> Tiny, Appearance -> "Labeled"}, 
+        Delimiter, {{$CellContext`r$$, 6370, "radius km"}, 1000, 10000, 1, 
+         ImageSize -> Tiny, Appearance -> "Labeled"}}, 
+      "Options" :> {
+       ControlPlacement -> Left, 
+        TrackedSymbols -> {$CellContext`r$$, $CellContext`theta1$$, \
+$CellContext`phi1$$, $CellContext`theta2$$, $CellContext`phi2$$}}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{549., {184., 190.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellID->31658825,ExpressionUUID->"7d6e4469-fd70-4d2c-a13e-9704a1e701f5"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`phi1$$ = -88, $CellContext`phi2$$ = 
+    0., $CellContext`r$$ = 6370, $CellContext`theta1$$ = 
+    40, $CellContext`theta2$$ = 0., Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold["All coordinates are in degrees.\n"], 
+      Manipulate`Dump`ThisIsNotAControl}, {{
+       Hold[$CellContext`theta1$$], 40, "latitude 1"}, -90, 90, 0.1}, {{
+       Hold[$CellContext`phi1$$], -88, "longitude 1"}, -180, 180, 0.1}, {{
+       Hold[$CellContext`theta2$$], 0., "latitude 2"}, -89, 89, 0.1}, {{
+       Hold[$CellContext`phi2$$], 0., "longitude 2"}, -180, 180, 0.1}, {{
+       Hold[$CellContext`r$$], 6370, "radius km"}, 1000, 10000, 1}}, 
+    Typeset`size$$ = {300., {155., 160.}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`theta1$1800$$ = 0, $CellContext`phi1$1801$$ = 
+    0, $CellContext`theta2$1802$$ = 0, $CellContext`phi2$1803$$ = 
+    0, $CellContext`r$1804$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`phi1$$ = -88, $CellContext`phi2$$ = 
+        0., $CellContext`r$$ = 6370, $CellContext`theta1$$ = 
+        40, $CellContext`theta2$$ = 0.}, "ControllerVariables" :> {
+        Hold[$CellContext`theta1$$, $CellContext`theta1$1800$$, 0], 
+        Hold[$CellContext`phi1$$, $CellContext`phi1$1801$$, 0], 
+        Hold[$CellContext`theta2$$, $CellContext`theta2$1802$$, 0], 
+        Hold[$CellContext`phi2$$, $CellContext`phi2$1803$$, 0], 
+        Hold[$CellContext`r$$, $CellContext`r$1804$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`p1 = $CellContext`r$$ {
+          Cos[$CellContext`theta1$$ Degree] Cos[$CellContext`phi1$$ Degree], 
+           Cos[$CellContext`theta1$$ Degree] Sin[$CellContext`phi1$$ Degree], 
+           
+           
+           Sin[$CellContext`theta1$$ 
+            Degree]}; $CellContext`p2 = $CellContext`r$$ {
+          Cos[$CellContext`theta2$$ Degree] Cos[$CellContext`phi2$$ Degree], 
+           Cos[$CellContext`theta2$$ Degree] Sin[$CellContext`phi2$$ Degree], 
+           
+           
+           Sin[$CellContext`theta2$$ 
+            Degree]}; $CellContext`p = $CellContext`p1 + $CellContext`t \
+($CellContext`p2 - $CellContext`p1); $CellContext`sol = Part[
+          Flatten[
+           
+           Solve[$CellContext`k[$CellContext`t] 
+             Norm[$CellContext`p1 + $CellContext`t ($CellContext`p2 - \
+$CellContext`p1)] == $CellContext`r$$, 
+            $CellContext`k[$CellContext`t]]], 1]; $CellContext`pts = 
+        DeleteCases[
+          Quiet[
+           Table[
+            ReplaceAll[
+             
+             ReplaceAll[$CellContext`k[$CellContext`t] $CellContext`p, \
+$CellContext`sol], $CellContext`t -> $CellContext`t2], {$CellContext`t2, 0, 
+             0.995, 0.005}]], {Indeterminate, 0, 0}]; Show[
+         Graphics3D[{
+           Text[N, {0, 0, 1.2 $CellContext`r$$}], 
+           Sphere[{0, 0, 0}, $CellContext`r$$], {
+            Dashing[{0.005, 0.005}], Red, 
+            Line[$CellContext`pts]}, {
+            Thickness[0.005], 
+            Point[{$CellContext`p1, $CellContext`p2}], 
+            Line[$CellContext`r$$ {{0, 0, -1.1}, {0, 0, 1.1}}]}}], 
+         ParametricPlot3D[$CellContext`r$$ {
+            Cos[$CellContext`u], 
+            Sin[$CellContext`u], 0}, {$CellContext`u, 0, 2 Pi}], 
+         ParametricPlot3D[$CellContext`r$$ {
+            Cos[$CellContext`t], 0, 
+            Sin[$CellContext`t]}, {$CellContext`t, 0, 2 Pi}], Boxed -> False, 
+         PlotLabel -> Row[{"The shortest path between the two points is ", 
+            NumberForm[
+             N[$CellContext`r$$ 
+              ArcCos[$CellContext`r$$^2 (
+                 Dot[{Cos[$CellContext`theta1$$ Degree] 
+                    Cos[$CellContext`phi1$$ Degree], 
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Sin[$CellContext`phi1$$ Degree], 
+                    Sin[$CellContext`theta1$$ Degree]}, {
+                   Cos[$CellContext`theta2$$ Degree] 
+                    Cos[$CellContext`phi2$$ Degree], 
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Sin[$CellContext`phi2$$ Degree], 
+                    Sin[$CellContext`theta2$$ Degree]}]/(
+                 Norm[$CellContext`r$$ {
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Cos[$CellContext`phi1$$ Degree], 
+                    Cos[$CellContext`theta1$$ Degree] 
+                    Sin[$CellContext`phi1$$ Degree], 
+                    Sin[$CellContext`theta1$$ Degree]}] 
+                 Norm[$CellContext`r$$ {
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Cos[$CellContext`phi2$$ Degree], 
+                    Cos[$CellContext`theta2$$ Degree] 
+                    Sin[$CellContext`phi2$$ Degree], 
+                    Sin[$CellContext`theta2$$ Degree]}]))]], {5, 1}], 
+            " km."}], ImageSize -> 300, SphericalRegion -> True]), 
+      "Specifications" :> {
+       "All coordinates are in degrees.\n", {{$CellContext`theta1$$, 40, 
+          "latitude 1"}, -90, 90, 0.1, ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, {{$CellContext`phi1$$, -88, "longitude 1"}, -180, 180, 
+         0.1, ImageSize -> Tiny, Appearance -> "Labeled"}, 
+        Delimiter, {{$CellContext`theta2$$, 0., "latitude 2"}, -89, 89, 0.1, 
+         ImageSize -> Tiny, Appearance -> 
+         "Labeled"}, {{$CellContext`phi2$$, 0., "longitude 2"}, -180, 180, 
+         0.1, ImageSize -> Tiny, Appearance -> "Labeled"}, 
+        Delimiter, {{$CellContext`r$$, 6370, "radius km"}, 1000, 10000, 1, 
+         ImageSize -> Tiny, Appearance -> "Labeled"}}, 
+      "Options" :> {
+       ControlPlacement -> Left, 
+        TrackedSymbols -> {$CellContext`r$$, $CellContext`theta1$$, \
+$CellContext`phi1$$, $CellContext`theta2$$, $CellContext`phi2$$}}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{549., {184., 190.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellID->13463907,ExpressionUUID->"15d1d3bb-b4fd-4a05-808d-be27b91b96e5"]
+}, Open  ]],
+
+Cell["", "DetailsSection",ExpressionUUID->"d42d2007-0fff-485f-8178-56fd4a0a2753"],
+
+Cell[CellGroupData[{
+
+Cell["", "ControlSuggestionsSection",ExpressionUUID->"fe6c888e-2e21-41ea-9627-ca49695dfa0a"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[
+   " Resize Images",ExpressionUUID->"21b2abb0-75f0-4ff3-a4fe-ff0f54e09ee3"]}],
+  
+  "\"Click inside an image to reveal its orange resize frame.\\nDrag any of \
+the orange resize handles to resize the image.\"",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->
+  "ResizeImages",ExpressionUUID->"561dc9a5-51cd-46a9-8fe9-808f447dfcc1"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[True], Cell[
+   " Rotate and Zoom in 3D",ExpressionUUID->
+    "07a950a4-7dcb-4c56-a447-030af5ff4796"]}],
+  RowBox[{
+   "\"Drag a 3D graphic to rotate it. Starting the drag near the center \
+tumbles\\nthe graphic; starting near a corner turns it parallel to the plane \
+of the screen.\\nHold down \"", 
+    FrameBox[
+    "Ctrl", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" (or \"", 
+    FrameBox[
+    "Cmd", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" on Mac) and drag up and down to zoom.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ CellChangeTimes->{3.5172250680300093`*^9},
+ FontFamily->"Verdana",
+ CellTags->
+  "RotateAndZoomIn3D",ExpressionUUID->"1c0487b7-d9c7-4d01-9f0a-766c7c10ca2d"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[
+   " Drag Locators",ExpressionUUID->"289aa2a7-15b7-4f7d-aab8-2c314227513e"]}],
+  
+  RowBox[{"\"Drag any locator (\"", 
+    GraphicsBox[
+     LocatorBox[
+      Scaled[{0.5, 0.5}]], ImageSize -> 20], 
+    "\", etc.) to move it around.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->
+  "DragLocators",ExpressionUUID->"7a5d0ce9-7b4d-4c8a-a0f2-eb02caf2f230"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[
+   " Create and Delete Locators",ExpressionUUID->
+    "608c3e57-0cf3-4015-82ea-073bd9c56ad5"]}],
+  RowBox[{"\"Insert a new locator in the graphic by holding down the \"", 
+    FrameBox[
+    "Alt", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], 
+    "\" key\\nand clicking where you want it to be. Delete a locator by \
+clicking it\\nwhile holding down the \"", 
+    FrameBox[
+    "Alt", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" key.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->
+  "CreateAndDeleteLocators",ExpressionUUID->"2078f0e7-6d84-46bd-b27a-\
+eb1ffbaa70d1"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[
+   " Slider Zoom",ExpressionUUID->"76ebe23c-66f2-4610-b942-ead433f20f28"]}],
+  RowBox[{"\"Hold down the \"", 
+    FrameBox[
+    "Alt", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], 
+    "\" key while moving a slider to make fine adjustments in the slider \
+value.\\nHold \"", 
+    FrameBox[
+    "Ctrl", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" and/or \"", 
+    FrameBox[
+    "Shift", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" at the same time as \"", 
+    FrameBox[
+    "Alt", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" to make ever finer adjustments.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->
+  "SliderZoom",ExpressionUUID->"d33f1c5c-8121-4e83-a76b-80ad210ff81e"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[
+   " Gamepad Controls",ExpressionUUID->
+    "480a77c8-5fd0-4b39-a919-c1e03b8fbf2e"]}],
+  "\"Control this Demonstration with a gamepad or other\\nhuman interface \
+device connected to your computer.\"",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ CellChangeTimes->{3.35696210375764*^9, 3.3895522232313623`*^9},
+ FontFamily->"Verdana",
+ CellTags->
+  "GamepadControls",ExpressionUUID->"02aba655-cda2-48e9-843c-aa68f420474f"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[
+   " Automatic Animation",ExpressionUUID->
+    "4b3e3d3d-97f4-4938-9f4a-79f44bb13c89"]}],
+  RowBox[{"\"Animate a slider in this Demonstration by clicking the\"", 
+    AdjustmentBox[
+     Cell[
+      GraphicsData[
+      "CompressedBitmap", 
+       "eJzzTSzJSM1NLMlMTlRwL0osyMhMLlZwyy8CCjEzMjAwcIKwAgOI/R/IhBKc\n\
+/4EAyGAG0f+nTZsGwgysIJIRKsWKLAXGIHFmEpUgLADxWUAkI24jZs+eTaEt\n\
+IG+wQKRmzJgBlYf5lhEA30OqWA=="], "Graphics", ImageSize -> {9, 9}, ImageMargins -> 
+      0, CellBaseline -> Baseline], BoxBaselineShift -> 0.1839080459770115, 
+     BoxMargins -> {{0., 0.}, {-0.1839080459770115, 0.1839080459770115}}], 
+    "\"button\\nnext to the slider, and then clicking the play button that \
+appears.\\nAnimate all controls by selecting \"", 
+    StyleBox["Autorun", FontWeight -> "Bold"], "\" from the\"", 
+    AdjustmentBox[
+     Cell[
+      GraphicsData[
+      "CompressedBitmap", 
+       "eJyNULENwyAQfEySIlMwTVJlCGRFsosokeNtqBmDBagoaZjAI1C8/8GUUUC6\n\
+57h7cQ8PvU7Pl17nUav7oj/TPH7V7b2QJAUAXBkKmCPRowxICy64bRvGGNF7\n\
+X8CctGoDSN4xhIDGGDhzFXwUh3/ClBKrDQPmnGXtI6u0OOd+tZBVUqy1xSaH\n\
+UqiK6pPe4XdEdAz6563tx/gejuORGMxJaz8mdpJn7hc="], "Graphics", 
+      ImageSize -> {10, 10}, ImageMargins -> 0, CellBaseline -> Baseline], 
+     BoxBaselineShift -> 0.1839080459770115, 
+     BoxMargins -> {{0., 0.}, {-0.1839080459770115, 0.1839080459770115}}], 
+    "\"menu.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->
+  "AutomaticAnimation",ExpressionUUID->"dbf3f9fb-3083-4304-9081-e8a726cbf409"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[
+   " Bookmark Animation",ExpressionUUID->
+    "97f384c0-ed7c-4a99-b1f9-57b26229f83b"]}],
+  RowBox[{
+   "\"See a prepared animation of this Demonstration by selecting\\n\"", 
+    StyleBox["Animate Bookmarks", FontWeight -> "Bold"], "\" from the\"", 
+    AdjustmentBox[
+     Cell[
+      GraphicsData[
+      "CompressedBitmap", 
+       "eJyNULENwyAQfEySIlMwTVJlCGRFsosokeNtqBmDBagoaZjAI1C8/8GUUUC6\n\
+57h7cQ8PvU7Pl17nUav7oj/TPH7V7b2QJAUAXBkKmCPRowxICy64bRvGGNF7\n\
+X8CctGoDSN4xhIDGGDhzFXwUh3/ClBKrDQPmnGXtI6u0OOd+tZBVUqy1xSaH\n\
+UqiK6pPe4XdEdAz6563tx/gejuORGMxJaz8mdpJn7hc="], "Graphics", 
+      ImageSize -> {10, 10}, ImageMargins -> 0, CellBaseline -> Baseline], 
+     BoxBaselineShift -> 0.1839080459770115, 
+     BoxMargins -> {{0., 0.}, {-0.1839080459770115, 0.1839080459770115}}], 
+    "\"menu.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->
+  "BookmarkAnimation",ExpressionUUID->"06b76573-0181-4a8b-a2bd-634d097548cf"]
+}, Open  ]],
+
+Cell["", "SearchTermsSection",ExpressionUUID->"9700cfcd-fa1a-4142-b6a8-e967d7bc2d59"],
+
+Cell[CellGroupData[{
+
+Cell["", "RelatedLinksSection",ExpressionUUID->"7e24cdcc-94d4-47e5-805c-730fbc9ebb0b"],
+
+Cell[TextData[ButtonBox["Great Circle",
+ BaseStyle->"Hyperlink",
+ ButtonData->{
+   URL["http://mathworld.wolfram.com/GreatCircle.html"], None},
+ ButtonNote->"http://mathworld.wolfram.com/GreatCircle.html"]], "RelatedLinks",\
+
+ CellChangeTimes->{{3.517225105445808*^9, 3.51722510544735*^9}},
+ CellID->736126737,ExpressionUUID->"b2aab2e3-0a2c-4bf1-8d07-9de685bb3838"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "AuthorSection",ExpressionUUID->"23ab1bb7-3076-4669-be1a-a37ea312d4b0"],
+
+Cell[TextData[{
+ "Contributed by: ",
+ ButtonBox["Bernard Vuilleumier",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://demonstrations.wolfram.com/author.html?author=Bernard%\
+20Vuilleumier"], None},
+  ButtonNote->
+   "http://demonstrations.wolfram.com/author.html?author=Bernard%\
+20Vuilleumier"]
+}], "Author",
+ CellChangeTimes->{{3.517225119478469*^9, 3.517225123252454*^9}, {
+  3.5759974982744117`*^9, 
+  3.575997498277412*^9}},ExpressionUUID->"96da9947-af26-4050-993b-\
+dac14955b31d"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1366, 685},
+WindowMargins->{{0, Automatic}, {4, Automatic}},
+FrontEndVersion->"11.2 for Linux x86 (64-bit) (September 10, 2017)",
+StyleDefinitions->FrontEnd`FileName[{"Wolfram"}, "Demonstration.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{
+ "ResizeImages"->{
+  Cell[43199, 928, 432, 11, 22, "ControlSuggestions",ExpressionUUID->"561dc9a5-51cd-46a9-8fe9-808f447dfcc1",
+   CellTags->"ResizeImages"]},
+ "RotateAndZoomIn3D"->{
+  Cell[43634, 941, 843, 20, 22, "ControlSuggestions",ExpressionUUID->"1c0487b7-d9c7-4d01-9f0a-766c7c10ca2d",
+   CellTags->"RotateAndZoomIn3D"]},
+ "DragLocators"->{
+  Cell[44480, 963, 460, 14, 22, "ControlSuggestions",ExpressionUUID->"7a5d0ce9-7b4d-4c8a-a0f2-eb02caf2f230",
+   CellTags->"DragLocators"]},
+ "CreateAndDeleteLocators"->{
+  Cell[44943, 979, 761, 19, 22, "ControlSuggestions",ExpressionUUID->"2078f0e7-6d84-46bd-b27a-eb1ffbaa70d1",
+   CellTags->"CreateAndDeleteLocators"]},
+ "SliderZoom"->{
+  Cell[45707, 1000, 961, 23, 22, "ControlSuggestions",ExpressionUUID->"d33f1c5c-8121-4e83-a76b-80ad210ff81e",
+   CellTags->"SliderZoom"]},
+ "GamepadControls"->{
+  Cell[46671, 1025, 491, 12, 22, "ControlSuggestions",ExpressionUUID->"02aba655-cda2-48e9-843c-aa68f420474f",
+   CellTags->"GamepadControls"]},
+ "AutomaticAnimation"->{
+  Cell[47165, 1039, 1586, 34, 22, "ControlSuggestions",ExpressionUUID->"dbf3f9fb-3083-4304-9081-e8a726cbf409",
+   CellTags->"AutomaticAnimation"]},
+ "BookmarkAnimation"->{
+  Cell[48754, 1075, 1030, 24, 22, "ControlSuggestions",ExpressionUUID->"06b76573-0181-4a8b-a2bd-634d097548cf",
+   CellTags->"BookmarkAnimation"]}
+ }
+*)
+(*CellTagsIndex
+CellTagsIndex->{
+ {"ResizeImages", 51371, 1151},
+ {"RotateAndZoomIn3D", 51535, 1154},
+ {"DragLocators", 51699, 1157},
+ {"CreateAndDeleteLocators", 51869, 1160},
+ {"SliderZoom", 52037, 1163},
+ {"GamepadControls", 52198, 1166},
+ {"AutomaticAnimation", 52367, 1169},
+ {"BookmarkAnimation", 52539, 1172}
+ }
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 167, 3, 74, "DemoTitle",ExpressionUUID->"a2c43dd2-93ef-47fc-b8ab-1b2b7ebffee8"],
+Cell[749, 27, 88, 0, 321, "InitializationSection",ExpressionUUID->"d35d7cf0-e728-4262-b234-ac395d66a6ca"],
+Cell[CellGroupData[{
+Cell[862, 31, 84, 0, 206, "ManipulateSection",ExpressionUUID->"f4237a4c-1764-40eb-acd7-104c5f63c15f"],
+Cell[CellGroupData[{
+Cell[971, 35, 7083, 184, 453, "Input",ExpressionUUID->"e98aa0c7-4a70-4877-be76-30f29fec037b"],
+Cell[8057, 221, 5480, 109, 372, "Output",ExpressionUUID->"60e2f991-bb56-442d-88d3-d2a58431707a",
+ CellID->973817852]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13586, 336, 91, 0, 175, "ManipulateCaptionSection",ExpressionUUID->"f69080bb-c467-4d55-a4db-63573252bf71"],
+Cell[13680, 338, 660, 11, 55, "ManipulateCaption",ExpressionUUID->"13ba7310-bbda-4828-a204-2764a0343677"],
+Cell[14343, 351, 892, 14, 55, "ManipulateCaption",ExpressionUUID->"d24b746a-a944-4e9b-bcfc-169a3e4d75fc",
+ CellID->501016994]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15272, 370, 83, 0, 178, "ThumbnailSection",ExpressionUUID->"c9e8f4cc-559b-42e0-8a3c-b6df45f13b9a"],
+Cell[15358, 372, 6762, 131, 386, "Output",ExpressionUUID->"94139698-a627-4676-a014-4e19bffd2325",
+ CellID->188854439]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[22157, 508, 83, 0, 142, "SnapshotsSection",ExpressionUUID->"8925bbfa-1cc4-4ebf-a52e-b7e856d5534a"],
+Cell[22243, 510, 7008, 138, 386, "Output",ExpressionUUID->"c46f1aaf-e5cf-44c6-952b-6d56174a3048",
+ CellID->421903215],
+Cell[29254, 650, 6961, 136, 386, "Output",ExpressionUUID->"7d6e4469-fd70-4d2c-a13e-9704a1e701f5",
+ CellID->31658825],
+Cell[36218, 788, 6765, 131, 386, "Output",ExpressionUUID->"15d1d3bb-b4fd-4a05-808d-be27b91b96e5",
+ CellID->13463907]
+}, Open  ]],
+Cell[42998, 922, 81, 0, 339, "DetailsSection",ExpressionUUID->"d42d2007-0fff-485f-8178-56fd4a0a2753"],
+Cell[CellGroupData[{
+Cell[43104, 926, 92, 0, 114, "ControlSuggestionsSection",ExpressionUUID->"fe6c888e-2e21-41ea-9627-ca49695dfa0a"],
+Cell[43199, 928, 432, 11, 22, "ControlSuggestions",ExpressionUUID->"561dc9a5-51cd-46a9-8fe9-808f447dfcc1",
+ CellTags->"ResizeImages"],
+Cell[43634, 941, 843, 20, 22, "ControlSuggestions",ExpressionUUID->"1c0487b7-d9c7-4d01-9f0a-766c7c10ca2d",
+ CellTags->"RotateAndZoomIn3D"],
+Cell[44480, 963, 460, 14, 22, "ControlSuggestions",ExpressionUUID->"7a5d0ce9-7b4d-4c8a-a0f2-eb02caf2f230",
+ CellTags->"DragLocators"],
+Cell[44943, 979, 761, 19, 22, "ControlSuggestions",ExpressionUUID->"2078f0e7-6d84-46bd-b27a-eb1ffbaa70d1",
+ CellTags->"CreateAndDeleteLocators"],
+Cell[45707, 1000, 961, 23, 22, "ControlSuggestions",ExpressionUUID->"d33f1c5c-8121-4e83-a76b-80ad210ff81e",
+ CellTags->"SliderZoom"],
+Cell[46671, 1025, 491, 12, 22, "ControlSuggestions",ExpressionUUID->"02aba655-cda2-48e9-843c-aa68f420474f",
+ CellTags->"GamepadControls"],
+Cell[47165, 1039, 1586, 34, 22, "ControlSuggestions",ExpressionUUID->"dbf3f9fb-3083-4304-9081-e8a726cbf409",
+ CellTags->"AutomaticAnimation"],
+Cell[48754, 1075, 1030, 24, 22, "ControlSuggestions",ExpressionUUID->"06b76573-0181-4a8b-a2bd-634d097548cf",
+ CellTags->"BookmarkAnimation"]
+}, Open  ]],
+Cell[49799, 1102, 85, 0, 158, "SearchTermsSection",ExpressionUUID->"9700cfcd-fa1a-4142-b6a8-e967d7bc2d59"],
+Cell[CellGroupData[{
+Cell[49909, 1106, 86, 0, 131, "RelatedLinksSection",ExpressionUUID->"7e24cdcc-94d4-47e5-805c-730fbc9ebb0b"],
+Cell[49998, 1108, 365, 7, 22, "RelatedLinks",ExpressionUUID->"b2aab2e3-0a2c-4bf1-8d07-9de685bb3838",
+ CellID->736126737]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[50400, 1120, 80, 0, 141, "AuthorSection",ExpressionUUID->"23ab1bb7-3076-4669-be1a-a37ea312d4b0"],
+Cell[50483, 1122, 497, 14, 22, "Author",ExpressionUUID->"96da9947-af26-4050-993b-dac14955b31d"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
