@@ -2,7 +2,7 @@
 
 #define sum(y, k, c) for(i = 0; i < size; i++) buff[i] = (y)[i] + (c)*(k)[i] 
 #define ST_SIZE 32
-#define eps 0.000001
+#define eps 0.00000001
 
 int evaluate(double x0, double x, double* y0, double *y, int size, int num_steps) {
 	int i = 0;
