@@ -6,8 +6,12 @@ void f(double x, double* y, int size, double* res) {
 }
 
 int main(void) {
-	double x0 = 0, x = 1, y0 = 0, y = 0;
-	evaluate(x0, x, &y0, &y, 1, 100);	
-	printf("%lf\n", y);
+	int i;
+	double x0 = 0, x = 2, y0[1], y[1];
+	y0[0] = 0; 
+	for( i = 10; i < 25; i++) {
+		evaluate(x0, x, y0, y, 1, i);	
+		printf("%lf\n", y[0]);
+	}
 	return 0;
 }
