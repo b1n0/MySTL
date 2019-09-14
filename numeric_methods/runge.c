@@ -22,3 +22,30 @@ int evaluate(double x0, double x, double* y0, double *y, int size, int num_steps
 	return 0;
 }
 
+int evaluate_with_autostep(double x0, double x, double* y0, double* y, int size, double h, double err, double K) {
+	int i = 0, j = 0;
+	double k[4*ST_SIZE], buff[ST_SIZE], E;
+	memcpy(y, y0, size * sizeof(double));
+	for(; x0 < x - h; x0 += h) {
+		while (1) {
+			f(x0, y, size, k);
+			sum(y, k, h/2);
+			f(x0 + h/2, buff, size, k + size);
+			sum(y, k + size, h/2);
+			f(x0 + h/2, buff, size, k + 2*size);
+			sum(y, k + 2*size, h);
+			f(x0 + h, buff, size, k + 3*size);
+			for(E = 0, i = 0; i < size; i++)
+				E +=(k[i] - k[size + i] - k[2*size + i] + k[3*size + i]) * 
+					(k[i] - k[size + i] - k[2*size + i] + k[3*size + i]) * 4./9.;
+			if (E < err/K)  h *= 2;
+			else if (E > err)  h /= 2; 
+			else break;
+		}
+		for(i = 0; i < size; i++)
+			y[i] += (k[i] + 2.*k[size + i] + 2.*k[2*size + i] + k[3*size + i])*h/6.;
+	}
+	evaluate(x0, x, y, buff, size, 20);
+	memcpy(y, buff, size * sizeof(double));
+	return 0;
+}
