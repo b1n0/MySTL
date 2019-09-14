@@ -1,11 +1,14 @@
 #include "h.h"
+
 #define sum(y, k, c) for(i = 0; i < size; i++) buff[i] = (y)[i] + (c)*(k)[i] 
+#define ST_SIZE 32
+#define eps 0.000001
 
 int evaluate(double x0, double x, double* y0, double *y, int size, int num_steps) {
 	int i = 0;
 	double h = (x - x0)/num_steps, k[4*ST_SIZE], buff[ST_SIZE];
 	memcpy(y, y0, size*sizeof(double)); 
-	for (; x0 < x - h; x0 += h) {
+	for (; x0 < x + eps - h; x0 += h) {
 		f(x0, y, size, k);
 		sum(y, k, h/2);
 		f(x0 + h/2, buff, size, k + size);

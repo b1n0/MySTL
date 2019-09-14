@@ -11,7 +11,7 @@ int main(void) {
 	y0[0] = 0; 
 	for( i = 10; i < 25; i++) {
 		evaluate(x0, x, y0, y, 1, i);	
-		printf("%lf\n", y[0]);
+		printf("steps = %d, y =  %lf\n", i, y[0]);
 	}
 	return 0;
 }
