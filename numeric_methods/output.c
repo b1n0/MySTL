@@ -15,5 +15,6 @@ int plot(double* y, int num_points) {
 		fprintf(temp, "%lf %lf \n", y[2*i], y[2*i+1]);
 	fprintf(gnuplot_pipe, "%s \n", gnuplot_commands[0]);
 	fprintf(gnuplot_pipe, "%s \n", gnuplot_commands[1]);
+	fclose(temp); fclose(gnuplot_pipe);
 	return 0;
 }
