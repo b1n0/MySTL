@@ -1,6 +1,4 @@
 #include "h.h"
-
-#define sum(y, k, c) for(i = 0; i < size; i++) buff[i] = (y)[i] + (c)*(k)[i] 
 #define ST_SIZE 32
 
 int runge(double x0, double x, double* y0, double *y, int size, int num_steps) {
