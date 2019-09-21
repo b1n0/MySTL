@@ -9,10 +9,10 @@ int runge(double x0, double x, double* y0, double *y, int size, int num_steps) {
 	memcpy(y, y0, size*sizeof(double)); 
 	for (j = 0; j < num_steps; j++) {
 		f(x0, y, size, k);
-		sum(y, k, h/2);
-		f(x0 + h/2, buff, size, k + size);
+		sum(y, k, h*0.5);
+		f(x0 + h*0.5, buff, size, k + size);
 		sum(y, k + size, h/2);
-		f(x0 + h/2, buff, size, k + 2*size);
+		f(x0 + h*0.5, buff, size, k + 2*size);
 		sum(y, k + 2*size, h);
 		x0 += h;
 		f(x0, buff, size, k + 3*size);	
@@ -30,16 +30,16 @@ int runge_with_autostep(double x0, double x, double* y0, double* y, int size, do
 		while (1) {
 			f(x0, y, size, k);
 			sum(y, k, h/2);
-			f(x0 + h/2, buff, size, k + size);
+			f(x0 + h*0.5, buff, size, k + size);
 			sum(y, k + size, h/2);
-			f(x0 + h/2, buff, size, k + 2*size);
+			f(x0 + h*0.5, buff, size, k + 2*size);
 			sum(y, k + 2*size, h);
 			f(x0 + h, buff, size, k + 3*size);
 			for(E = 0, i = 0; i < size; i++)
 				E +=(k[i] - k[size + i] - k[2*size + i] + k[3*size + i]) * 
 					(k[i] - k[size + i] - k[2*size + i] + k[3*size + i]) * 4./9.;
 			if (E < err/K)  h *= 2;
-			else if (E > err)  h /= 2; 
+			else if (E > err)  h *= 0.5; 
 			else break;
 		}
 		for(i = 0; i < size; i++)
