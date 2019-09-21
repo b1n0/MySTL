@@ -11,3 +11,4 @@ int runge_with_autostep(double x0, double x, double* y0, double* y, int size, do
 int euler(double x0, double x, double* y0, double* y, int size, int num_steps);
 void print(double* y, int size);
 int plot(double* y, int num_points);
+int derivative(double x, double* y, double* res, int size, double h);
