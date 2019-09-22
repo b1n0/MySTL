@@ -17,6 +17,7 @@ int runge(double x0, double x, double* y0, double *y, int size, int num_steps) {
 		f(x0 + 2*h/3, buff, size, k + 4*size);
 		for(i = 0; i < size; i++) buff[i] = y[i] + h*(28*k[i] - 125*k[size+i] + 546*k[2*size+i] + 54*k[3*size+i] - 378*k[4*size+i])/625;
 		f(x0 + h*0.2, buff, size, k + 5*size);
+
 		x0 += h;	
 		for(i = 0; i < size; i++) 
 			y[i] += (14*k[i] + 35*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
@@ -53,7 +54,7 @@ int runge_with_autostep(double x0, double x, double* y0, double* y, int size, do
 			else if (E > err) h *= 0.5; 
 			else break;
 		}
-		for(i = 0; i < size; i++)
+		for(i = 0; i < size; i++) 
 			y[i] += (14*k[i] + 35*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
 	}
 	runge(x0, x, y, buff, size, 20);
