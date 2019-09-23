@@ -10,24 +10,24 @@ int fill_random(double* beta, int k) {
 }
 
 int shooting(double* y0, int size, int k, double a, double b) {
-	double beta[ST_SIZE], buff[ST_SIZE], res[ST_SIZE], *A[ST_SIZE];
-	for(i = 0; i < size; i++)
-		A[i] = (double*)malloc(k*size*sizeof(double));
+	double beta[ST_SIZE], y0_buff[ST_SIZE], res[ST_SIZE], **m;
+
 	fill_random(beta, k);
-	memcpy(buff, y0, (size-k)*sizeof(double));
-	memcpy(buff + size - k, beta, k*sizeof(double));
-	runge(a, b, buff, res, size, NUM_STEPS);
+	memcpy(y0_buff, y0, (size-k)*sizeof(double));
+	memcpy(y0_buff + size - k, beta, k*sizeof(double));
+	runge(a, b, y0_buff, res, size, NUM_STEPS);
 	
 	for(i = 0; i < k; i++) {
-		if (i > 0)  buff[i-1] -= delta; 
-		buff[i] += delta;
-		runge(a, b, buff, A+i, size, NUM_STEPS);
+		if (i > 0)  y0_buff[n-k+i-1] -= delta; 
+		y0_buff[n-k+i] += delta;
+		runge(a, b, y0_buff, , size, NUM_STEPS);
+		m[i] = A[i] + n - k;
 		for(j = 0; j < k; j++) 
-			A[size-k+j] = (A[size-k+j] - res[size-k+j])/delta;
+			A[i][n-k+i] = (A[i][n-k+j] - res[n-k+j])/delta;
 	}
-	beta[k-1] -= h;
+	buff[n-1] -= h;
 
-	solve(A, x, b, k);
+	solve(m, x, , k);
 	beta += sol;
 	for(i = 0; i < size; i++) free(A[i]);
 	return 0;
