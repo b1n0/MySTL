@@ -12,3 +12,4 @@ int runge_with_autostep(double x0, double x, double* y0, double* y, int size, do
 void print(double* y, int size);
 int plot(double* y, int num_points);
 int gauss(double** m, double* x, double* b, int n);
+int shooting(double* y0, int size, int k, double a, double b);
