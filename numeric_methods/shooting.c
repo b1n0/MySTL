@@ -1,7 +1,6 @@
 #include "h.h"
 
 #define delta 0.00000001
-#define ST_SIZE 32
 #define NUM_STEPS 1000
 #define NUM_SHOTS 1
 #define random(min, max) (min) + ((double)rand()/RAND_MAX)*((max) - (min))

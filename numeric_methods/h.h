@@ -18,3 +18,4 @@ int runge_with_autostep(double x0, double x, double* y0, double* y, int size, do
 int gauss(double** m, double* x, double* b, int n);
 int shooting(double* y0, int size, int k, double a, double b);
 
+#define ST_SIZE 32

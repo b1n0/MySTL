@@ -1,5 +1,4 @@
 #include "h.h"
-#define ST_SIZE 32
 
 int runge(double x0, double x, double* y0, double *y, int size, int num_steps) {
 	int i = 0, j = 0;
