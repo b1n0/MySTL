@@ -1,9 +1,21 @@
 #include "h.h"
 #define NUM_POINTS 100
 
+void plot(double* y, int num_points);
 void f(double x, double* y, int size, double* res) {
 	res[0] = y[1];
 	res[1] = -1.*y[0];
+}
+
+void plot(double* y, int num_points) {
+        char* gnuplot_commands[] = {"set title \"curve\"", "plot 'data.temp'"};
+        FILE * temp = fopen("data.temp", "w");
+        FILE * gnuplot_pipe = popen("gnuplot -persistent", "w");
+        int i;
+        for (i = 0; i < num_points; i++)
+                fprintf(temp, "%lf %lf \n", y[2*i], y[2*i+1]);
+        fprintf(gnuplot_pipe, "%s \n", gnuplot_commands[0]);
+        fprintf(gnuplot_pipe, "%s \n", gnuplot_commands[1]);
 }
 
 int main(void) {
@@ -15,3 +27,5 @@ int main(void) {
 	plot(y, NUM_POINTS);
 	return 0;
 }
+
+
