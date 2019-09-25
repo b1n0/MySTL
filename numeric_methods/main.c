@@ -8,7 +8,7 @@ void f(double x, double* y, int size, double* res) {
 
 int main(void) {
 	double y0[5];
-	y0[0] = 0.; y0[1] = 0;
-        shooting(y0, 2, 1, 0., 1.);
+	y0[0] = 0.1; y0[1] = 0;
+        shooting(y0, 2, 1, 0.1, 1.);
 	return 0;	
 }
