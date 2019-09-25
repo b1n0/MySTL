@@ -25,9 +25,9 @@ int runge(double x0, double x, double* y0, double *y, int size, int num_steps) {
 	return 0;
 }
 
-int runge_with_autostep(double x0, double x, double* y0, double* y, int size, double h, double err, double K) {
+int runge_with_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max) {
 	int i = 0, j = 0;
-	double k[6*ST_SIZE], buff[ST_SIZE], E, c;
+	double k[6*ST_SIZE], buff[ST_SIZE], E, c, h = (x - x0)/1000.;
 	memcpy(y, y0, size * sizeof(double));
 	for(; x0 < x - h; x0 += h) {
 		while (1) {
@@ -47,12 +47,9 @@ int runge_with_autostep(double x0, double x, double* y0, double* y, int size, do
 				c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
 				E += c*c;
 			}
-			printf("%0.30lf %0.30lf %lf\n", E, h, x0);
-			if (E < err/K) {
-			       	h *= 2;
-				break;
-			}
-			else if (E > err) h *= 0.5; 
+			//printf("%0.30lf %0.30lf %lf\n", E, h, x0);
+			if (E < err_min) { h *= 2; break; }
+			else if (E > err_max) h *= 0.5; 
 			else break;
 		}
 		for(i = 0; i < size; i++) 
