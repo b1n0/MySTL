@@ -3,8 +3,15 @@
 #define delta 0.00000001
 #define ST_SIZE 32
 #define NUM_STEPS 1000
-#define NUM_SHOTS 1
+#define NUM_SHOTS 100
 #define random(min, max) (min) + ((double)rand()/RAND_MAX)*((max) - (min))
+
+void print_vector(double *y, int size);
+void print_vector(double* y, int size) {\
+	for(int i = 0; i < size; i++)
+		printf("%lf ", y[i]);
+	printf("\n");
+}
 
 int fill_random(double* beta, int k) {
 	for(int i = 0; i < k; i++)
@@ -33,12 +40,12 @@ int shooting(double* y0, int size, int k, double a, double b) {
 				m[i][k+j] = (m[i][k+j] - res[k+j])/delta;
 			v[i] = y0[k+i] - res[k+i];
 		}
-		//print(res, size);
+		//print_vector(res, size);
 		y0_buff[size-1] -= delta;
 		gauss(m, h, v, size - k);
 		for(i = 0; i < size - k; i++) 
 			y0_buff[k+i] += h[i];
-		print(v, size - k);
+		print_vector(v, size - k);
 	}
 	for(i = 0; i < size - k; i++) free(m[i]);
 	free(m);

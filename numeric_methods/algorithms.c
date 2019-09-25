@@ -47,6 +47,7 @@ int runge_with_autostep(double x0, double x, double* y0, double* y, int size, do
 				c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
 				E += c*c;
 			}
+			printf("%0.30lf %0.30lf %lf\n", E, h, x0);
 			if (E < err/K) {
 			       	h *= 2;
 				break;

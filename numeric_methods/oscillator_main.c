@@ -8,7 +8,7 @@ void f(double x, double* y, int size, double* res) {
 }
 
 void plot(double* y, int num_points) {
-        char* gnuplot_commands[] = {"set title \"curve\"", "plot 'data.temp'"};
+        char* gnuplot_commands[] = {"set title \"curve\"", "plot 'data.temp' with line"};
         FILE * temp = fopen("data.temp", "w");
         FILE * gnuplot_pipe = popen("gnuplot -persistent", "w");
         int i;
