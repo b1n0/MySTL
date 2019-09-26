@@ -10,6 +10,7 @@ void delete_matrix(double** A, int rows);
 int read_matrix(double** m, int rows, int cols, FILE* inp);
 void print(double** m, int rows, int cols);
 void print_vector(double* y, int size, FILE* out);
+double norm(double* y, int size);
 int multiply(double** A, double** B, double** res, int arows, int acols, int brows, int bcols);
 
 

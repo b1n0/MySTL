@@ -94,5 +94,9 @@ int multiply(double** A, double** B, double** res, int arows, int acols, int bro
 	return -1;
 }
 
-
-
+double norm(double* y, int size) {
+	double l = 0.;
+	for(int i = 0; i < size; i++)
+		l += y[i]*y[i];
+	return l;
+}
