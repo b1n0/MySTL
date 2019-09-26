@@ -28,7 +28,7 @@ int runge_with_autostep(double x0, double x, double* y0, double* y, int size, do
 	int i = 0, j = 0;
 	double k[6*ST_SIZE], buff[ST_SIZE], E, c, h = (x - x0)/1000.;
 	memcpy(y, y0, size * sizeof(double));
-	for(; x0 < x - h; x0 += h) {
+	for(; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h) {
 		while (1) {
 			f(x0, y, size, k);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*k[i]*0.5;
