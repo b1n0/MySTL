@@ -65,6 +65,7 @@ int read_matrix(double** m, int rows, int cols, FILE* inp) {
 	}
 	return -1;
 }
+
 void print(double** m, int rows, int cols) {
 	for(int i = 0; i < rows; i++) {
 		for(int j = 0; j < cols; j++)
@@ -72,6 +73,13 @@ void print(double** m, int rows, int cols) {
 		printf("\n");
 	}
 }
+
+void print_vector(double* y, int size, FILE* out) {
+	for(int i = 0; i < size; i++)
+		fprintf(out, "%lf ", y[i]);
+	fprintf(out, "\n");
+}
+
 int multiply(double** A, double** B, double** res, int arows, int acols, int brows, int bcols) {
 	if(A && B && res && acols == brows) {
 		for(int i = 0; i < arows; i++) {
