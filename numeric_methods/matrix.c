@@ -1,5 +1,5 @@
 #include "h.h"
-#define is_zero(a) ((a) < 0.000000001 && (a) > -0.000000001)
+#define is_zero(a) ((a) < 0.00000000001 && (a) > -0.00000000001)
 
 int gauss(double** m, double* x, double* b, int n) {
         int i, j, k, ind, c = 0, rank = 0;
@@ -25,7 +25,6 @@ int gauss(double** m, double* x, double* b, int n) {
                 }
                 c++;
         }
-
         for(k = 0; k < n; k++) {
                 double s;
                 if is_zero(m[n-1-k][n-1-k])  x[n-1-k] = 0;
@@ -98,5 +97,5 @@ double norm(double* y, int size) {
 	double l = 0.;
 	for(int i = 0; i < size; i++)
 		l += y[i]*y[i];
-	return l;
+	return sqrt(l);
 }
