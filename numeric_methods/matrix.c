@@ -97,5 +97,5 @@ double norm(double* y, int size) {
 	double l = 0.;
 	for(int i = 0; i < size; i++)
 		l += y[i]*y[i];
-	return sqrt(l);
+	return l;
 }
