@@ -1,6 +1,6 @@
 #include "h.h"
 #define NUM_POINTS 100
-
+#define PI 3.14159265358979323846
 void f(double x, double* y, int size, double* res) {
 	res[0] = y[1];
 	res[1] = -1.*y[0];
@@ -12,7 +12,7 @@ void plot(char* fname, int num_points) {
 }
 
 int main(void) {
-	double x0 = 0, x = 0, y0[2], y[2], h = 2*3.14/NUM_POINTS;
+	double x0 = 0, x = 0, y0[2], y[2], h = 2*PI/NUM_POINTS;
 	y0[0] = 0; y0[1] = 1;
 	FILE *out = fopen("data.txt", "w");
 	for(int i = 0; i < NUM_POINTS; i++, x+=h) {
@@ -24,5 +24,6 @@ int main(void) {
 	fclose(out);
 	return 0;
 }
+
 
 
