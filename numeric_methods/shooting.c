@@ -1,8 +1,7 @@
 #include "h.h"
 
 #define delta 0.00000001
-#define NUM_POINTS 100
-#define eps 0.3
+#define eps 0.001
 #define random(min, max) (min) + ((double)rand()/RAND_MAX)*((max) - (min))
 
 int shooting(double* y0, int size, int k, double a, double b) {
@@ -37,17 +36,6 @@ int shooting(double* y0, int size, int k, double a, double b) {
 		}
 		else break;
 	}
-
-	/*
-	FILE *f = fopen("track.txt", "w"), *yf = fopen("y.txt", "w"), *xf = fopen("x.txt", "w");
-	for(double step = (b-a)/NUM_POINTS, x = a, i = 0; i < NUM_POINTS; i++, x+=step) {
-		runge(a, x, y0_buff, res, size, 10000);
-		print_vector(res, size, f);
-		fprintf(xf, "%lf %lf \n", x, res[0]);
-		fprintf(yf, "%lf %lf \n", x, res[1]);
-	}
-	fclose(f); fclose(yf); fclose(xf); 
-	*/	
 	delete_matrix(m, size - k);
 	return 0;
 }

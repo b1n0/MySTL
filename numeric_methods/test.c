@@ -1,21 +1,19 @@
 #include "h.h"
 
 int main(void) {
-	double **m = create_matrix(3, 3);
-	double **x = create_matrix(1, 3);
-	double **b = create_matrix(1, 3);
-	read_matrix(m, 3, 3, stdin);
-	read_matrix(b, 1, 3, stdin);
+	double **m = create_matrix(1, 1);
+	double **x = create_matrix(1, 1);
+	double **b = create_matrix(1, 1);
+	read_matrix(m, 1, 1, stdin);
+	read_matrix(b, 1, 1, stdin);
 	printf("\n");
 	
-	gauss(m, x[0], b[0], 3);
-	multiply(x, m, b, 3, 1, 3, 3);
-	print_vector(x[0], 3, stdout);
-	printf("\n");
-	print_vector(b[0], 3, stdout);
+	gauss(m, x[0], b[0], 1);
+	print(m, 1, 1);
+	print_vector(x[0], 1, stdout);
 
-	delete_matrix(m, 3);
-	delete_matrix(x, 3);
-	delete_matrix(b, 3);
+	delete_matrix(m, 1);
+	delete_matrix(x, 1);
+	delete_matrix(b, 1);
 	return 0;
 }
