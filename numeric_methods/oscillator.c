@@ -17,7 +17,7 @@ int main(void) {
 	FILE *out = fopen("data.txt", "w");
 	for(int i = 0; i < NUM_POINTS; i++, x+=h) {
 		//euler(x0, x, y0, y+2*i, 2, 10000);
-		runge_with_autostep(x0, x, y0, y, 2,0.0000001, 0.00001);
+		runge_with_autostep(x0, x, y0, y, 2, 1.e-9, 1.e-8);
 		fprintf(out, "%lf %lf \n", y[0], y[1]);
 	}
 	plot("data.txt", NUM_POINTS);
