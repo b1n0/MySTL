@@ -15,7 +15,6 @@ int main(void) {
 	double y0[2], y[2], a = 1., b = 0., h = (b - a)/NUM_POINTS, x = a;
 	y0[0] = 0.; y0[1] = 0.;
         shooting(y0, 2, 1, a, b);
-	y0[1] = 0.411;
 	FILE* f = fopen("track.txt", "w");
 	for(int i = 0; i < NUM_POINTS; i++, x += h) {
 		runge(a, x, y0, y, 2, 1000);

@@ -35,9 +35,8 @@ int shooting(double* y0, int size, int k, double a, double b) {
 		}
 		else break;
 	}
-	printf("%lf \n", y0_buff[size - 1]);
-	free(A);
-	free(m);
+	free(A); free(m);
+	memcpy(y0, y0_buff, size*sizeof(double));
 	return 0;
 }
 
