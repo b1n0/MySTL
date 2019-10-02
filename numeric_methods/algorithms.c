@@ -26,7 +26,7 @@ int runge(double x0, double x, double* y0, double *y, int size, int num_steps) {
 
 int runge_with_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max) {
 	int i = 0, j = 0;
-	double k[6*ST_SIZE], buff[ST_SIZE], E, c, h = (x - x0)/1000.;
+	double k[6*ST_SIZE], buff[ST_SIZE], E, c, h = (x - x0)/1000000;
 	memcpy(y, y0, size * sizeof(double));
 	for(; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h) {
 		while (1) {
