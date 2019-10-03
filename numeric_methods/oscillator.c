@@ -1,5 +1,5 @@
 #include "h.h"
-#define NUM_POINTS 100
+#define NUM_POINTS 10000
 #define PI 3.14159265358979323846
 void runge_numbers(double x0, double x, double* y0, int size);
 
@@ -14,10 +14,12 @@ void plot(char* fname, int num_points) {
 }
 
 int main(void) {
-	double x0 = 0, x = 0, y0[2], y[2], h = 2*PI/NUM_POINTS, err = 0.;
+	double x0 = 0, x = 0, y0[2], y[2], h = 20*PI/NUM_POINTS, err = 0.;
 	y0[0] = 0; y0[1] = 1;
 	FILE *out = fopen("data.txt", "w");
 	for(int i = 0; i < NUM_POINTS; i++, x+=h) {
+		//euler(x0, x, y0, y, 2, 200000);
+		//err = runge(x0, x, y0, y, 2, 2000);
 		err = runge_with_autostep(x0, x, y0, y, 2, 1.e-9, 1.e-8);
 		fprintf(out, "%lf %lf \n", y[0], y[1]);
 	}
