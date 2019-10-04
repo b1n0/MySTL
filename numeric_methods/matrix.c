@@ -2,7 +2,7 @@
 #define is_zero(a) ((a) < 0.00000000001 && (a) > -0.00000000001)
 
 int gauss(double** m, double* x, double* b, int n) {
-        int i, j, k, ind, c = 0, rank = 0;
+        int i, j, k, ind, c = 0;
         double* tmp;
         for(k = 0; k < n; k++) {
                 for(ind = -1, i = c; i < n; i++)
