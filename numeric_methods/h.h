@@ -15,10 +15,15 @@ int multiply(double** A, double** B, double** res, int arows, int acols, int bro
 
 
 void f(double x, double* y, int size, double* res);
+double eugen_value(double x, double* y);
+void plot(const char* fname);
+void runge_numbers(double x0, double x, double* y0, int size);
 int euler(double x0, double x, double* y0, double* y, int size, int num_steps);
 double runge(double x0, double x, double *y0, double *y, int size, int num_steps);
 double runge_with_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max);
 int gauss(double** m, double* x, double* b, int n);
-int shooting(double* y0, int size, int k, double a, double b);
+int shooting(double a, double b, double* y0, int size, int k, double eps);
 
 #define ST_SIZE 32
+#define ALPHA 0.1
+#define DELTA 1.e-8

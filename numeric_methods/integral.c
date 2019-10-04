@@ -6,14 +6,14 @@ double down(int k);
 double integrate(int k, int num_steps);
 
 int main(void) {
-	printf("%lf\n", up(2));
-	printf("%lf\n", down(2));
-	printf("%lf\n", integrate(2;, 1000000));
+	printf("%lf\n", up(30));
+	printf("%lf\n", down(30));
+	printf("%lf\n", integrate(30, 1000000));
 	return 0;
 }
 
 double up(int k) {
-	double res = log(7/6);
+	double res = log(7./6.);
 	for(int n = 1; n <= k; n++)
 		res = 1./n - 6.*res;
 	return res;
