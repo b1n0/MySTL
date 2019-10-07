@@ -25,5 +25,5 @@ int gauss(double** m, double* x, double* b, int n);
 int shooting(double a, double b, double* y0, int size, int k, double eps);
 
 #define ST_SIZE 32
-#define ALPHA 0.1
+#define ALPHA 1
 #define DELTA 1.e-8

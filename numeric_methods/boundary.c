@@ -16,7 +16,7 @@ int main(void) {
 		err = runge(b, x, y0, y, 2, 1000);
 		fprintf(f, "%lf %lf \n", y[0], y[1]);	
 	}
-	printf("global error = %lf \n", err);
+	printf("global error = %5.20lf \n", err);
 	runge_numbers(b, 0.75, y0, 2);
 	runge_numbers(b, 0.5, y0, 2);
 	runge_numbers(b, 0.25, y0, 2);
