@@ -36,12 +36,11 @@ int shoot(double a, double b, double* y0, double* y, int n) {
 	double u[2], err, d;
 	for(int i = 0; i < n; i++) {
 		runge(a, b, y0, y, 2, 10000);
-		//runge_with_autostep(a, b, y0, y, 2, 1.e-8, 1.e-7);
 		err = y[0];
+		if (isnan(err) || isnan(y[1])) { printf("nan"); return 0; }
 		if(err*err < EPS) return 1;
 		y0[1] += DELTA;
 		runge(a, b, y0, u, 2, 10000);
-		//runge_with_autostep(a, b, y0, u, 2, 1.e-8, 1.e-7);
 		d = (u[0] - err)/DELTA;
 		y0[1] -= DELTA;
 		y0[1] += -err/d;
@@ -52,7 +51,9 @@ int shoot(double a, double b, double* y0, double* y, int n) {
 int main(void) {
         double y0[2], y[2], a, b, lambda, beta, lambda_step, c, err;
 	FILE *f = fopen("track.txt", "w");
-	system("wget https://raw.githubusercontent.com/b1n0/study/master/wolfram/tmp.png && clear && gsettings set org.gnome.desktop.background picture-uri file://$PWD/tmp.png");
+	//system("wget https://raw.githubusercontent.com/b1n0/study/master/wolfram/tmp.png && clear"
+	system("gsettings set org.gnome.desktop.background picture-uri file://$PWD/tmp.png");
+	system("dcop kdesktop KBackgroundIface setWallpaper $PWD/tmp.png 6");
         a = 0.; b = 1.;
         lambda = 0.1;
         beta = 2.;
