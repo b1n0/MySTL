@@ -66,6 +66,7 @@ int main(void) {
                 else { c = 0.5; lambda_step *= c; lambda -= c*lambda_step; }
 	}
 	printf("min lambda = %lf\n", lambda);
+	printf("beta = %lf\n", y0[1]);
 	for(double x = b; x > a + (b-a)/300; x -= (b-a)/300) {
 		err = runge_with_autostep(b, x, y0, y, 2, 1.e-8, 1.e-7);
 		fprintf(f, "%lf %lf\n", y[0], y[1]);
