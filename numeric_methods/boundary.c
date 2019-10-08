@@ -13,14 +13,19 @@ int main(void) {
 	y0[0] = 0.; y0[1] = 0.;
         shooting(b, a, y0, 2, 1, 1.e-5);
 	for(double x = b; x > a + h; x -= h) {
-		err = runge(b, x, y0, y, 2, 1000);
+		err = runge(x, x-h, y0, y, 2, 1000);
+		//err = runge_with_autostep(x, x-h, y0, y, 2, 1.e-8, 1.e-7);
+		y0[0] = y[0]; y0[1] = y[1];
 		fprintf(f, "%lf %lf \n", y[0], y[1]);	
 	}
 	printf("global error = %5.20lf \n", err);
+	y0[0] = 0.; y0[1] = 0.;
+	
 	runge_numbers(b, 0.75, y0, 2);
 	runge_numbers(b, 0.5, y0, 2);
 	runge_numbers(b, 0.25, y0, 2);
 	runge_numbers(b, 0., y0, 2);
+	
 	plot("track.txt");
 	fclose(f);
 	return 0;	

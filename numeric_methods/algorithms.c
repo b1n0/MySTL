@@ -26,6 +26,7 @@ double runge(double x0, double x, double* y0, double *y, int size, int num_steps
 			c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
 			E += c*c;
 		}
+		E = sqrt(E);
 		global_err = exp(h*eugen_value(x, y))*global_err + E;
 		for(i = 0; i < size; i++) 
 			y[i] += (14*k[i] + 35*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
@@ -55,6 +56,7 @@ double runge_with_autostep(double x0, double x, double* y0, double* y, int size,
 				c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
 				E += c*c;
 			}
+			E = sqrt(E);
 			if (E < err_min) { global_err = exp(h*eugen_value(x, y))*global_err + E; h*=2.; break;}
 			else if(E > err_max) h *= 0.5; 
 			else { global_err = exp(h*eugen_value(x, y))*global_err + E; break; }
