@@ -7,6 +7,7 @@ void f(double x, double* y, int size, double* res) {
 	res[0] = y[1];
 	res[1] = -1.*y[0];
 }
+double eigen_value(double x, double* y) { return 0; }
 
 int main(void) {
 	double x0 = 0, y0[2], y[2], h = 2*PI/NUM_POINTS, err = 0.;
@@ -15,7 +16,6 @@ int main(void) {
 	for(double x = x0; x < 2*PI - h; x+=h) {
 		//euler(x0, x, y0, y, 2, 200000);
 		//err = runge(x0, x, y0, y, 2, 2000);
-		printf("%lf \n", x);
 		err = runge_with_autostep(x, x+h, y0, y, 2, 1.e-9, 1.e-8);
 		y0[0] = y[0]; y0[1] = y[1];
 		fprintf(out, "%lf %lf \n", y[0], y[1]);

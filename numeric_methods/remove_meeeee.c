@@ -12,7 +12,7 @@
 void plot(const char* fname);
 void f(double x, double* y, int size, double* res);
 void runge_numbers(double x0, double x, double* y0, int size);
-double eugen_value(double x, double* y);
+double eigen_value(double x, double* y);
 double runge(double x0, double x, double* y0, double *y, int size, int num_steps);
 double runge_with_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max);
 int shoot(double a, double b, double* y0, double* y, int n);
@@ -26,7 +26,7 @@ void f(double x, double* y, int size, double* res) {
 	res[0] = y[1];
 	res[1] = x/y[0];
 }
-double eugen_value(double x, double* y) { return 1 - x/(y[0]*y[0]); }
+double eigen_value(double x, double* y) { return 1 - x/(y[0]*y[0]); }
 
 int shoot(double a, double b, double* y0, double* y, int n) {
 	double u[2], err, d;
@@ -42,28 +42,12 @@ int shoot(double a, double b, double* y0, double* y, int n) {
 	}
 	return 0;
 }
-/*
-int shoot(double a, double b, double* y0, double* y, int n) {
-	double u[2], err, prev_err, d;
-	for(int flag = 0;;flag++) {
-		runge(a, b, y0, y, 2, 10000);
-		err = y[0];
-		if(flag && fabs(err) > fabs(prev_err)) return 0;
-		if(fabs(err) < EPS) return 1;
-		y0[1] += DELTA;
-		runge(a, b, y0, u, 2, 10000);
-		d = (u[0] - err)/DELTA;
-		y0[1] -= DELTA;
-		y0[1] -= err/d;
-		prev_err = err;
-	}
-}
-*/
+
 int main(void) {
         double y0[2], y[2], a, b, lambda, beta, lambda_step, c, err, h;
 	FILE *f = fopen("track.txt", "w");
 	//system("wget https://raw.githubusercontent.com/b1n0/study/master/wolfram/tmp.png && clear");
-	system("gsettings set org.gnome.desktop.background picture-uri file://$PWD/tmp.png");
+	//system("gsettings set org.gnome.desktop.background picture-uri file://$PWD/tmp.png");
         a = 0.; b = 1.;
         lambda = 0.1;
         beta = 2.;
@@ -129,9 +113,9 @@ double runge_with_autostep(double x0, double x, double* y0, double* y, int size,
                                 c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
                                 E += c*c;
                         }
-                        if (E < err_min) { global_err = exp(h*eugen_value(x, y))*global_err + E; h*=2.; break;}
+                        if (E < err_min) { global_err = exp(h*eigen_value(x, y))*global_err + E; h*=2.; break;}
                         else if(E > err_max) h *= 0.5;
-                        else { global_err = exp(h*eugen_value(x, y))*global_err + E; break; }
+                        else { global_err = exp(h*eigen_value(x, y))*global_err + E; break; }
                 }
                 for(i = 0; i < size; i++)
                         y[i] += (14*k[i] + 35*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
@@ -161,7 +145,7 @@ double runge(double x0, double x, double* y0, double *y, int size, int num_steps
                         c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
                         E += c*c;
                 }
-                global_err = exp(h*eugen_value(x, y))*global_err + E;
+                global_err = exp(h*eigen_value(x, y))*global_err + E;
                 for(i = 0; i < size; i++)
                         y[i] += (14*k[i] + 35*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
         }
