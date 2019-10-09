@@ -17,6 +17,7 @@ int main(void) {
 		//euler(x0, x, y0, y, 2, 200000);
 		//err = runge(x0, x, y0, y, 2, 2000);
 		err = runge_with_autostep(x, x+h, y0, y, 2, 1.e-9, 1.e-8);
+		printf("%lf %lf\n", x, err);
 		y0[0] = y[0]; y0[1] = y[1];
 		fprintf(out, "%lf %lf \n", y[0], y[1]);
 	}
