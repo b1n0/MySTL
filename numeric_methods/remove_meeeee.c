@@ -34,7 +34,7 @@ int shoot(double a, double b, double* y0, double* y, int n) {
 	for(int i = 0; i < n; i++) {
 		runge(a, b, y0, y, 2, 10000);
 		err = y[0];
-		if(err*err < EPS) return 1;
+		if(fabs(err) < EPS) return 1;
 		y0[1] += DELTA;
 		runge(a, b, y0, u, 2, 10000);
 		d = (u[0] - err)/DELTA;
@@ -64,7 +64,7 @@ int main(void) {
 	printf("min lambda = %lf\n", lambda);
 	printf("beta = %lf\n", y0[1]);
 	h = (b-a)/NUM_POINTS;
-	for(double x = b; x > a + h; x -= h) {
+	for(double x = b; x > a; x -= h) {
 		err = runge_with_autostep(x, x-h, y0, y, 2, 1.e-8, 1.e-7);
 		y0[0] = y[0]; y0[1] = y[1];
 		fprintf(f, "%lf %lf\n", y[0], y[1]);
