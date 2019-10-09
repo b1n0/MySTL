@@ -28,8 +28,9 @@ int main(void) {
 	fclose(f);
 	printf("global error = %5.20lf \n", err);	
 	plot("track.txt");
-	/*	
+		
 	runge_numbers(b, 0.75, y0, 2);
+	/*
 	runge_numbers(b, 0.5, y0, 2);
 	runge_numbers(b, 0.25, y0, 2);
 	runge_numbers(b, 0., y0, 2);
