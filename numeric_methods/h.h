@@ -10,7 +10,7 @@ void delete_matrix(double** A, int rows);
 int read_matrix(double** m, int rows, int cols, FILE* inp);
 void print(double** m, int rows, int cols);
 void print_vector(double* y, int size, FILE* out);
-double norm(double* y, int size);
+double norm(double* y, int size, const char name);
 int multiply(double** A, double** B, double** res, int arows, int acols, int brows, int bcols);
 
 
@@ -25,6 +25,5 @@ int gauss(double** m, double* x, double* b, int n);
 int shooting(double a, double b, double* y0, int size, int k, double eps);
 
 #define ST_SIZE 32
-#define ALPHA 1
 #define DELTA 1.e-8
 #define MAX(a,b) (a)>(b)?(a):(b)

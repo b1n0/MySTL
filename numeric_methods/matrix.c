@@ -93,9 +93,15 @@ int multiply(double** A, double** B, double** res, int arows, int acols, int bro
 	return -1;
 }
 
-double norm(double* y, int size) {
+double norm(double* y, int size, const char name) {
 	double l = 0.;
-	for(int i = 0; i < size; i++)
-		l += y[i]*y[i];
+	if(name == 'e') {
+		for(int i = 0; i < size; i++)
+			l += y[i]*y[i];
+		l = sqrt(l);
+	}
+	else if (name == 'm') 
+		for(int i = 0; i < size; i++)
+			l += fabs(y[i]);
 	return l;
 }

@@ -14,7 +14,7 @@ int shooting(double a, double b, double* y0, int size, int k, double eps) {
 		runge_with_autostep(a, b, y0_buff, y, size, 1.e-7, 1.e-6);
 		for(i = 0 ; i < size - k; i++)
 			v[i] = y0[k+i] - y[k+i];
-		err = sqrt(norm(v, size - k));
+		err = norm(v, size - k, 'm');
 		if(err > eps) {
 			for(i = 0; i < size - k; i++) {
 				if (i > 0) 

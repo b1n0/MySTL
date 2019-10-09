@@ -8,6 +8,7 @@
 #define MIN_STEP 0.000001
 #define ST_SIZE 32
 #define NUM_POINTS 300
+#define MAX(a, b) (a)>(b)?(a):(b)
 
 void plot(const char* fname);
 void f(double x, double* y, int size, double* res);
@@ -111,7 +112,8 @@ double runge_with_autostep(double x0, double x, double* y0, double* y, int size,
 
                         for(E = 0, i = 0; i < size; i++) {
                                 c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
-                                E += c*c;
+				E += fabs(c);
+				//E = MAX(fabs(E), fabs(c));
                         }
                         if (E < err_min) { global_err = exp(h*eigen_value(x, y))*global_err + E; h*=2.; break;}
                         else if(E > err_max) h *= 0.5;
@@ -143,7 +145,8 @@ double runge(double x0, double x, double* y0, double *y, int size, int num_steps
                 f(x0 + h*0.2, buff, size, k + 5*size);
                 for(E = 0, i = 0; i < size; i++) {
                         c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
-                        E += c*c;
+			E += fabs(c);
+			//E = MAX(fabs(E), fabs(c));
                 }
                 global_err = exp(h*eigen_value(x, y))*global_err + E;
                 for(i = 0; i < size; i++)
