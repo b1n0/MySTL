@@ -1,6 +1,6 @@
 #include "h.h"
 #define NUM_POINTS 100
-#define ALPHA 1.
+#define ALPHA 0.1
 
 void f(double x, double* y, int size, double* res) {
 	size++;
