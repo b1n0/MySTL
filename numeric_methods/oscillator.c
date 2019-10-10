@@ -13,16 +13,15 @@ int main(void) {
 	double x0 = 0, y0[2], y[2], h = 2*PI/NUM_POINTS, err = 0.;
 	FILE *out = fopen("data.txt", "w");
 	y0[0] = 0; y0[1] = 1;
-	for(double x = x0; x < 2*PI - h; x+=h) {
+	for(double x = x0; x < 2*PI; x+=h) {
 		//euler(x0, x, y0, y, 2, 200000);
 		//err = runge(x0, x, y0, y, 2, 2000);
-		err += runge_with_autostep(x, x+h, y0, y, 2, 0, 1.e-10);
-		printf("%lf %lf\n", x, err);
+		err += runge_hardcore(x, x+h, y0, y, 2, 1.e-10, 1.e-9);
 		y0[0] = y[0]; y0[1] = y[1];
 		fprintf(out, "%lf %lf \n", y[0], y[1]);
 	}
-	printf("global error = %lf\n", err);
-	
+	printf("global error = %5.30lf\n", err);
+		
 	y0[0] = 0; y0[1] = 1;
 	runge_numbers(x0, 0.5*PI, y0, 2);
 	runge_numbers(x0, PI, y0, 2);

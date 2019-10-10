@@ -20,7 +20,7 @@ int main(void) {
 
 	u0[0] = y0[0]; u0[1] = y0[1];
 	for(double x = b + h, x0 = b; x > a; x -= h) {
-		err = runge_with_autostep(x0, x-h, u0, y, 2, 1.e-9, 1.e-8);
+		err = runge_hardcore(x0, x-h, u0, y, 2, 1.e-9, 1.e-8);
 		u0[0] = y[0]; u0[1] = y[1]; x0 = x - h;
 		fprintf(f, "%lf %lf \n", y[0], y[1]);	
 		//printf("%lf %lf\n", x, err);
@@ -28,12 +28,11 @@ int main(void) {
 	fclose(f);
 	printf("global error = %5.20lf \n", err);	
 	plot("track.txt");
-		
+	
 	runge_numbers(b, 0.75, y0, 2);
-	/*
 	runge_numbers(b, 0.5, y0, 2);
 	runge_numbers(b, 0.25, y0, 2);
 	runge_numbers(b, 0., y0, 2);
-	*/
+	
 	return 0;	
 }

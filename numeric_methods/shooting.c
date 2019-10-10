@@ -11,7 +11,7 @@ int shooting(double a, double b, double* y0, int size, int k, double eps) {
 	memcpy(y0_buff, y0, k*sizeof(double));
 	
 	while(1) {
-		runge_with_autostep(a, b, y0_buff, y, size, 1.e-7, 1.e-6);
+		runge_hardcore(a, b, y0_buff, y, size, 1.e-7, 1.e-6);
 		for(i = 0 ; i < size - k; i++)
 			v[i] = y0[k+i] - y[k+i];
 		err = norm(v, size - k, 'm');
@@ -20,7 +20,7 @@ int shooting(double a, double b, double* y0, int size, int k, double eps) {
 				if (i > 0) 
 		       			y0_buff[k + i - 1] -= DELTA; 
 				y0_buff[k + i] += DELTA;
-				runge_with_autostep(a, b, y0_buff, A + i*size, size, 1.e-7, 1.e-6);
+				runge_hardcore(a, b, y0_buff, A + i*size, size, 1.e-7, 1.e-6);
 				for(j = 0; j < size - k; j++) 
 					m[i][j] = (m[i][j] - y[k+j])/DELTA;
 			}
