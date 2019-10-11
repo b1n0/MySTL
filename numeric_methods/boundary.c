@@ -1,6 +1,6 @@
 #include "h.h"
 #define NUM_POINTS 100
-#define ALPHA 0.1
+#define ALPHA 1.
 
 void f(double x, double* y, int size, double* res) {
 	size++;
@@ -19,9 +19,9 @@ int main(void) {
 	printf("%lf %lf\n", y0[0], y0[1]);
 
 	u0[0] = y0[0]; u0[1] = y0[1];
-	for(double x = b + h, x0 = b; x > a; x -= h) {
+	for(double x = b + h, x0 = b; x > a; x0 = x - h, x -= h) {
 		err = runge_hardcore(x0, x-h, u0, y, 2, 1.e-9, 1.e-8);
-		u0[0] = y[0]; u0[1] = y[1]; x0 = x - h;
+		u0[0] = y[0]; u0[1] = y[1];
 		fprintf(f, "%lf %lf \n", y[0], y[1]);	
 		//printf("%lf %lf\n", x, err);
 	}
@@ -32,7 +32,7 @@ int main(void) {
 	runge_numbers(b, 0.75, y0, 2);
 	runge_numbers(b, 0.5, y0, 2);
 	runge_numbers(b, 0.25, y0, 2);
-	runge_numbers(b, 0., y0, 2);
+	runge_numbers(b, 0.001, y0, 2);
 	
 	return 0;	
 }

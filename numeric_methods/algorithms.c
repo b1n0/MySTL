@@ -91,7 +91,7 @@ void plot(const char* fname) {
 }
 
 double runge_hardcore(double x0, double x, double* y0, double* y, int size, double err_min, double err_max) {
-	double k[7][ST_SIZE], y1[ST_SIZE], y2[ST_SIZE], buff[ST_SIZE], E, c, h = (x - x0)/1000000, global_err = 0.;
+	double k[7][ST_SIZE], y1[ST_SIZE], y2[ST_SIZE], buff[ST_SIZE], E, c, h = (x - x0)*1.e-9, global_err = 0.;
 	int i;	
 	memcpy(y, y0, size * sizeof(double));
 	for(; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h) {
@@ -132,9 +132,9 @@ double runge_hardcore(double x0, double x, double* y0, double* y, int size, doub
 			else if(E > err_max) h *= 0.5; 
 			else { global_err = exp(h*eigen_value(x, y))*global_err + E; break; }
 		}
-		memcpy(y, y2, size*sizeof(double));
+		memcpy(y, y1, size*sizeof(double));
 	}
-	global_err += runge(x0, x, y, y2, size, 200);
+	global_err += runge(x0, x, y, y2, size, 2000);
 	memcpy(y, y2, size*sizeof(double));
 	return global_err;
 }
