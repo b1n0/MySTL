@@ -32,7 +32,7 @@ int main(void) {
 	runge_numbers(b, 0.75, y0, 2);
 	runge_numbers(b, 0.5, y0, 2);
 	runge_numbers(b, 0.25, y0, 2);
-	runge_numbers(b, 0.001, y0, 2);
+	runge_numbers(b, 0., y0, 2);
 	
 	return 0;	
 }

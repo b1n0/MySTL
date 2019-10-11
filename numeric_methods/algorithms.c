@@ -77,9 +77,9 @@ int euler(double x0, double x, double* y0, double* y, int size, int num_steps) {
 
 void runge_numbers(double x0, double x, double* y0, int size) {
         double y8[ST_SIZE], y10[ST_SIZE], y12[ST_SIZE];
-        runge_hardcore(x0, x, y0, y8, size, 1.e-9, 1.e-8);
-        runge_hardcore(x0, x, y0, y10, size, 1.e-11, 1.e-10);
-        runge_hardcore(x0, x, y0, y12, size, 1.e-13, 1.e-12);
+        runge_hardcore(x0, x, y0, y8, size, 1.e-10, 1.e-8);
+        runge_hardcore(x0, x, y0, y10, size, 1.e-12, 1.e-10);
+        runge_hardcore(x0, x, y0, y12, size, 1.e-14, 1.e-12);
 	printf("runge number in %lf \t ", x);
         for(int i = 0; i < size; i++) printf("%lf ", (y8[i] - y10[i])/(y10[i] - y12[i]));
         printf("\n");
@@ -91,7 +91,7 @@ void plot(const char* fname) {
 }
 
 double runge_hardcore(double x0, double x, double* y0, double* y, int size, double err_min, double err_max) {
-	double k[7][ST_SIZE], y1[ST_SIZE], y2[ST_SIZE], buff[ST_SIZE], E, c, h = (x - x0)*1.e-9, global_err = 0.;
+	double k[7][ST_SIZE], y1[ST_SIZE], y2[ST_SIZE], buff[ST_SIZE], E, c, h = (x - x0)*1.e-8, global_err = 0.;
 	int i;	
 	memcpy(y, y0, size * sizeof(double));
 	for(; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h) {
@@ -132,7 +132,7 @@ double runge_hardcore(double x0, double x, double* y0, double* y, int size, doub
 			else if(E > err_max) h *= 0.5; 
 			else { global_err = exp(h*eigen_value(x, y))*global_err + E; break; }
 		}
-		memcpy(y, y1, size*sizeof(double));
+		memcpy(y, y2, size*sizeof(double));
 	}
 	global_err += runge(x0, x, y, y2, size, 2000);
 	memcpy(y, y2, size*sizeof(double));
