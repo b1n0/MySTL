@@ -3,7 +3,7 @@
 #include "string.h"
 #include "math.h"
 
-#define EPS 0.001
+#define EPS 0.000001
 #define DELTA 1.e-8
 #define MIN_STEP 0.000001
 #define ST_SIZE 32
@@ -32,16 +32,21 @@ void f(double x, double* y, int size, double* res) {
 double eigen_value(double x, double* y) { return 1 - x/(y[0]*y[0]); }
 
 int shoot(double a, double b, double* y0, double* y, int n) {
-	double u[2], err, d;
+	double u[2], err, d, prev_err, c = 1;
 	for(int i = 0; i < n; i++) {
-		runge_hardcore(a, b, y0, y, 2, 1.e-9, 1.e-8);
+		//runge_hardcore(a, b, y0, y, 2, 1.e-6, 1.e-5);
+		runge(a, b, y0, y, 2., 20000);
 		err = y[0];
 		if(fabs(err) < EPS) return 1;
 		y0[1] += DELTA;
-		runge_hardcore(a, b, y0, u, 2, 1.e-9, 1.e-8);
+		//runge_hardcore(a, b, y0, u, 2, 1.e-6, 1.e-5);
+		runge(a, b, y0, u, 2., 20000);
 		d = (u[0] - err)/DELTA;
 		y0[1] -= DELTA;
-		y0[1] += -err/d;
+		if(i && fabs(err) > fabs(prev_err)) 
+			c *= 0.5;
+		y0[1] -= c*err/d;
+		prev_err = err;
 	}
 	return 0;
 }
@@ -50,20 +55,22 @@ int main(void) {
 	int i, res;
         double y0[2], y[2], betas[10], a, b, lambda, beta, lambda_step, c, h, err = 0.;
 	FILE *f = fopen("track.txt", "w");
-	for(i = 0; i < 10; i++) betas[i] = i; 
+	for(i = 0; i < 10; i++) betas[i] = 2*i + 1; 
         a = 0.; b = 1.;
         lambda = 0.0001;
-        lambda_step = 1.;
+        lambda_step = 0.1;
         c = 1.;
         while(lambda_step > MIN_STEP) {
 		printf("%lf \n", lambda);
 		for(y0[0] = lambda, y0[1] = betas[0], res = 0, i = 0; i < 10; i++, y0[0] = lambda, y0[1] = betas[i])
-			res += shoot(b, a, y0, y0, 100);
+			res += shoot(b, a, y0, y, 100);
 		if(res == 0) { lambda_step *= c; lambda += lambda_step; }
                 else { c = 0.5; lambda_step *= c; lambda -= c*lambda_step; }
 	}
-	printf("min lambda = %lf\n", lambda);
-	printf("beta = %lf\n", y0[1]);
+	printf("min lambda = %5.30lf\n", lambda);
+	y0[0] = lambda;
+	shoot(b, a, y0, y, 100);
+	printf("beta = %5.30lf\n", y0[1]);
 	h = (b-a)/NUM_POINTS;
 	for(double x = b; x > a; x -= h) {
 		err += runge_hardcore(x, x-h, y0, y, 2, 1.e-7, 1.e-8);
