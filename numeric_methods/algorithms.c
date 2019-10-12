@@ -1,31 +1,31 @@
 #include "h.h"
 
 double runge(double x0, double x, double* y0, double *y, int size, int num_steps) {
-	int i = 0, j = 0;
-	double h = (x - x0)/num_steps, k[6*ST_SIZE], buff[ST_SIZE], c, E, global_err= 0.;
-	memcpy(y, y0, size*sizeof(double)); 
-	for (j = 0; j < num_steps; j++, x0+=h) {
-		f(x0, y, size, k);
-		for(i = 0; i < size; i++) buff[i] = y[i] + h*k[i]*0.5;
-		f(x0 + h*0.5, buff, size, k + size);
-		for(i = 0; i < size; i++) buff[i] = y[i] + h*(k[i] + k[size+i])*0.25;
-		f(x0 + h*0.5, buff, size, k + 2*size);
-		for(i = 0; i < size; i++) buff[i] = y[i] + h*(2*k[2*size+i] - k[size+i]);
-		f(x0 + h, buff, size, k + 3*size);	
-		for(i = 0; i < size; i++) buff[i] = y[i] + h*(7*k[i] +10*k[size + i] + k[3*size + i])/27;
-		f(x0 + 2*h/3, buff, size, k + 4*size);
-		for(i = 0; i < size; i++) buff[i] = y[i] + h*(28*k[i] - 125*k[size+i] + 546*k[2*size+i] + 54*k[3*size+i] - 378*k[4*size+i])/625;
-		f(x0 + h*0.2, buff, size, k + 5*size);
-		for(E = 0, i = 0; i < size; i++) {
-			c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
+        int i = 0, j = 0;
+        double h = (x - x0)/num_steps, k[6][ST_SIZE], buff[ST_SIZE], c, E, global_err= 0.;
+        memcpy(y, y0, size*sizeof(double));
+        for (j = 0; j < num_steps; j++, x0+=h) {
+                f(x0, y, size, k[0]);
+                for(i = 0; i < size; i++) buff[i] = y[i] + h*k[0][i]*0.5;
+                f(x0 + h*0.5, buff, size, k[1]);
+                for(i = 0; i < size; i++) buff[i] = y[i] + h*(k[0][i] + k[1][i])*0.25;
+                f(x0 + h*0.5, buff, size, k[2]);
+                for(i = 0; i < size; i++) buff[i] = y[i] + h*(2*k[2][i] - k[1][i]);
+                f(x0 + h, buff, size, k[3]);
+                for(i = 0; i < size; i++) buff[i] = y[i] + h*(7*k[0][i] +10*k[1][i] + k[3][i])/27.;
+                f(x0 + 2*h/3, buff, size, k[4]);
+                for(i = 0; i < size; i++) buff[i] = y[i] + h*(28*k[0][i] - 125*k[1][i] + 546*k[2][i] + 54*k[3][i] - 378*k[4][i])/625.;
+                f(x0 + h*0.2, buff, size, k[5]);
+                for(E = 0, i = 0; i < size; i++) {
+                        c = ((-42)*k[0][i] - 244*k[2][i] - 21*k[3][i] + 162*k[4][i] + 125*k[5][i])*h/336.;
+			//E += fabs(c);
 			E = MAX(fabs(E), fabs(c));
-		}
-		E /= 31;
-		global_err = exp(h*eigen_value(x, y))*global_err + E;
-		for(i = 0; i < size; i++) 
-			y[i] += (14*k[i] + 35*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
-	}
-	return global_err;
+                }
+                global_err = exp(h*eigen_value(x, y))*global_err + E;
+                for(i = 0; i < size; i++)
+                        y[i] += (14*k[0][i] + 35*k[3][i] + 162*k[4][i] + 125*k[5][i])*h/336.;
+        }
+        return global_err;
 }
 
 double runge_with_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max) {
@@ -132,7 +132,7 @@ double runge_hardcore(double x0, double x, double* y0, double* y, int size, doub
 			else if(E > err_max) h *= 0.5; 
 			else { global_err = exp(h*eigen_value(x, y))*global_err + E; break; }
 		}
-		memcpy(y, y2, size*sizeof(double));
+		memcpy(y, y1, size*sizeof(double));
 	}
 	global_err += runge(x0, x, y, y2, size, 2000);
 	memcpy(y, y2, size*sizeof(double));

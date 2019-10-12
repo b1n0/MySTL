@@ -14,9 +14,9 @@ int main(void) {
 	FILE *out = fopen("data.txt", "w");
 	y0[0] = 0; y0[1] = 1;
 	for(double x = x0; x < 2*PI; x+=h) {
-		//euler(x0, x, y0, y, 2, 200000);
-		//err = runge(x0, x, y0, y, 2, 2000);
-		err += runge_hardcore(x, x+h, y0, y, 2, 1.e-6, 1.e-5);
+		//euler(x0, x+h, y0, y, 2, 200000);
+		//err += runge(x, x+h, y0, y, 2, 2000);
+		err += runge_hardcore(x, x+h, y0, y, 2, 1.e-7, 1.e-6);
 		y0[0] = y[0]; y0[1] = y[1];
 		fprintf(out, "%lf %lf \n", y[0], y[1]);
 	}
