@@ -77,9 +77,9 @@ int euler(double x0, double x, double* y0, double* y, int size, int num_steps) {
 
 void runge_numbers(double x0, double x, double* y0, int size) {
         double y8[ST_SIZE], y10[ST_SIZE], y12[ST_SIZE];
-        runge_hardcore(x0, x, y0, y8, size, 1.e-10, 1.e-8);
-        runge_hardcore(x0, x, y0, y10, size, 1.e-12, 1.e-10);
-        runge_hardcore(x0, x, y0, y12, size, 1.e-14, 1.e-12);
+        runge_hardcore(x0, x, y0, y8, size, 1.e-9, 1.e-8);
+        runge_hardcore(x0, x, y0, y10, size, 1.e-11, 1.e-10);
+        runge_hardcore(x0, x, y0, y12, size, 1.e-13, 1.e-12);
 	printf("runge number in %lf \t ", x);
         for(int i = 0; i < size; i++) printf("%lf ", (y8[i] - y10[i])/(y10[i] - y12[i]));
         printf("\n");

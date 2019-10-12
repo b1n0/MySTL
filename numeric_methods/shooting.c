@@ -2,7 +2,7 @@
 #define random(min, max) (min) + ((double)rand()/RAND_MAX)*((max) - (min))
 
 int shooting(double a, double b, double* y0, int size, int k, double eps) {
-	double **m, *A, y0_buff[ST_SIZE], y[ST_SIZE], v[ST_SIZE], h[ST_SIZE], err;
+	double **m, *A, y0_buff[ST_SIZE], y[ST_SIZE], v[ST_SIZE], h[ST_SIZE], err, prev_err, c = 1.;
 	int i, j;
 	m = (double**)malloc((size - k)*sizeof(double*));
 	A = (double*)malloc((size - k)*size*sizeof(double));
@@ -10,7 +10,7 @@ int shooting(double a, double b, double* y0, int size, int k, double eps) {
 	for(i = 0; i < size - k; i++) y0_buff[k+i] = random(-1., 1.);
 	memcpy(y0_buff, y0, k*sizeof(double));
 	
-	while(1) {
+	for(int n = 0 ; ; n++) {
 		runge_hardcore(a, b, y0_buff, y, size, 1.e-7, 1.e-6);
 		for(i = 0 ; i < size - k; i++)
 			v[i] = y0[k+i] - y[k+i];
@@ -26,8 +26,9 @@ int shooting(double a, double b, double* y0, int size, int k, double eps) {
 			}
 			y0_buff[size-1] -= DELTA;
 			gauss(m, h, v, size - k);
-			for(i = 0; i < size - k; i++) 
-				y0_buff[k+i] += h[i];
+			if(n && err > prev_err) c *= 0.5;
+			for(i = 0; i < size - k; i++) y0_buff[k+i] += c*h[i];
+			prev_err = err;
 		}
 		else break;
 	}
