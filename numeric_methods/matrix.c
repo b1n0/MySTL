@@ -65,10 +65,10 @@ int read_matrix(double** m, int rows, int cols, FILE* inp) {
 	return -1;
 }
 
-void print(double** m, int rows, int cols) {
+void print(double** m, int rows, int cols, FILE* out) {
 	for(int i = 0; i < rows; i++) {
 		for(int j = 0; j < cols; j++)
-			printf("%lf ", m[i][j]);
+			fprintf(out, "%lf ", m[i][j]);
 		printf("\n");
 	}
 }
