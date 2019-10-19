@@ -26,6 +26,6 @@ void triangle(double** m, double* b, int n);
 void gauss(double** m, double* x, double* b, int n);
 int shooting(double a, double b, double* y0, int size, int k, double eps);
 
-#define ST_SIZE 32
+#define ST_SIZE 8
 #define DELTA 1.e-8
 #define MAX(a,b) (a)>(b)?(a):(b)
