@@ -10,12 +10,22 @@ void f(double x, double* y, int size, double* res) {
 
 double eigen_value(double x, double* y) { return sqrt(4/ALPHA - ALPHA*ALPHA*x*x/(y[1]*y[1])); }
 
+void discrepancy(double* y, double* v) { v[0] = y[1]; }
+
+void jacobian(double** m, double* y0, double* v) {
+	double y[2];
+	y0[1] += DELTA;
+	runge_hardcore(1., 0., y0, y, 2, 1.e-8, 1.e-7);
+	m[0][0] = (y[1] - v[0])/DELTA;
+	y0[1] -= DELTA;
+}
+
 int main(void) {
 	double y0[2], y[2], u0[2], a = 0., b = 1., h = (b - a)/NUM_POINTS, err = 0.;
 	FILE* f = fopen("track.txt", "w");
 	y0[0] = 0.; y0[1] = 0.;
         
-	shooting(b, a, y0, 2, 1, 1.e-6);
+	shoot(b, a, y0, 2, 1, 1.e-6);
 	printf("%lf %lf\n", y0[0], y0[1]);
 
 	u0[0] = y0[0]; u0[1] = y0[1];
