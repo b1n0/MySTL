@@ -21,7 +21,6 @@ double runge(double x0, double x, double* y0, double *y, int size, int num_steps
 			E += c*c;
 			//E = MAX(fabs(E), fabs(c));
                 }
-		E = sqrt(E);
                 global_err = exp(h*eigen_value(x, y))*global_err + E;
                 for(i = 0; i < size; i++)
                         y[i] += (14*k[0][i] + 35*k[3][i] + 162*k[4][i] + 125*k[5][i])*h/336.;
@@ -52,7 +51,6 @@ double runge_with_autostep(double x0, double x, double* y0, double* y, int size,
 				E += c*c;
 				//E = MAX(fabs(E), fabs(c));
 			}
-			E = sqrt(E);
 			if (E < err_min) { global_err = exp(h*eigen_value(x, y))*global_err + E; h*=2.; break; }
 			else if(E > err_max) h *= 0.5; 
 			else { global_err = exp(h*eigen_value(x, y))*global_err + E; break; }
@@ -138,5 +136,4 @@ double runge_hardcore(double x0, double x, double* y0, double* y, int size, doub
 	}
 	global_err += runge(x0, x, y, y2, size, 200);
 	memcpy(y, y2, size*sizeof(double));
-	return global_err;
-}
+	return global_err; }
