@@ -19,11 +19,11 @@ int main(void) {
 	printf("%lf %lf\n", y0[0], y0[1]);
 
 	u0[0] = y0[0]; u0[1] = y0[1];
-	for(double x = b + h, x0 = b; x > a; x0 = x - h, x -= h) {
-		err = runge_hardcore(x0, x-h, u0, y, 2, 1.e-9, 1.e-8);
+	for(double x = b; x > a; x -= h) {
+		err = runge_hardcore(x, x-h, u0, y, 2, 1.e-9, 1.e-8);
 		u0[0] = y[0]; u0[1] = y[1];
 		fprintf(f, "%lf %lf \n", y[0], y[1]);	
-		//printf("%lf %lf\n", x, err);
+		printf("%lf %lf\n", x-h, err);
 	}
 	fclose(f);
 	printf("global error = %5.20lf \n", err);	
