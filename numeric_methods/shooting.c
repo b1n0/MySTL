@@ -1,5 +1,4 @@
 #include "h.h"
-#define random(min, max) (min) + ((double)rand()/RAND_MAX)*((max) - (min))
 
 int shooting(double a, double b, double* y0, int size, int k, double eps) {
 	double **m, *A, y0_buff[ST_SIZE], y[ST_SIZE], v[ST_SIZE], h[ST_SIZE], err;
@@ -7,7 +6,7 @@ int shooting(double a, double b, double* y0, int size, int k, double eps) {
 	m = (double**)malloc((size - k)*sizeof(double*));
 	A = (double*)malloc((size - k)*size*sizeof(double));
 	for(i = 0; i < size - k; i++) m[i] = m[i] = A + i*size + k;
-	for(i = 0; i < size - k; i++) y0_buff[k+i] = random(-1., 1.);
+	for(i = 0; i < size - k; i++) y0_buff[k+i] = 0.6;
 	memcpy(y0_buff, y0, k*sizeof(double));
 	
 	while(1) {
