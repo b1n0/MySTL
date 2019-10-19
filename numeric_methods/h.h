@@ -27,10 +27,10 @@ int shoot(double a, double b, double* y0, int size, int k, double eps);
 
 void f(double x, double* y, int size, double* res);
 double eigen_value(double x, double* y);
-void discrepancy(double* y, double* v);
+void discrepancy(double* y0, double* y, double* v);
 void jacobian(double** m, double* y0, double* v);
 
 #define MAX(a,b) (a)>(b)?(a):(b)
-#define is_zero(a) ((a) < 0.000000001 && (a) > -0.000000001)
+#define is_zero(a) ((a) < 0.00000000001 && (a) > -0.00000000001)
 #define DELTA 1.e-8
 #define ST_SIZE 8

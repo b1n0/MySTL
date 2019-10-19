@@ -39,19 +39,21 @@ int shoot(double a, double b, double* y0, int size, int k, double eps) {
 	int i, j, n;
 	double **m, y0_buff[ST_SIZE], v[ST_SIZE], y[ST_SIZE], h[ST_SIZE];
 	double err, prev_err, c;
+	prev_err = 100000.;
 	m = create_matrix(size - k, size - k);
-	for(i = k; i < size; i++) y0[i] = 2.;
+	for(i = k; i < size; i++) y0[i] = 4.;
 	//add loop for different beta
 	//add return 0 condition
 	runge_hardcore(a, b, y0, y, size, 1.e-8, 1.e-7);
-	discrepancy(y, v);
+	discrepancy(y0, y, v);
 	for(err = norm(v, size - k, 'm'); err > eps; prev_err = err) {
+		printf("%lf \n", err);
 		jacobian(m, y0, v);
 		gauss(m, h, v, size - k);
 		for(c = 1., i = 0; i < 30; i++, c*=0.5 ) {
 			for(j = k; j < size; j++) y0_buff[j] = y0[j] - c*h[j - k];	
 			runge_hardcore(a, b, y0_buff, y, size, 1.e-8, 1.e-7);
-			discrepancy(y, v);
+			discrepancy(y0, y, v);
 			err = norm(v, size - k, 'm');
 			if(err < prev_err) break;
 		}

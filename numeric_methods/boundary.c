@@ -10,7 +10,7 @@ void f(double x, double* y, int size, double* res) {
 
 double eigen_value(double x, double* y) { return sqrt(4/ALPHA - ALPHA*ALPHA*x*x/(y[1]*y[1])); }
 
-void discrepancy(double* y, double* v) { v[0] = y[1]; }
+void discrepancy(double* y0, double* y, double* v) { v[0] = y[1]; }
 
 void jacobian(double** m, double* y0, double* v) {
 	double y[2];
