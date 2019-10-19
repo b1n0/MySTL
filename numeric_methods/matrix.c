@@ -1,5 +1,4 @@
 #include "h.h"
-#define is_zero(a) ((a) < 0.000000001 && (a) > -0.000000001)
 
 void gauss(double** m, double* x, double* b, int n) {
 	double s;
