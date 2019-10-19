@@ -22,7 +22,8 @@ int euler(double x0, double x, double* y0, double* y, int size, int num_steps);
 double runge(double x0, double x, double *y0, double *y, int size, int num_steps);
 double runge_with_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max);
 double runge_hardcore(double x0, double x, double* y0, double* y, int size, double err_min, double err_max);
-int gauss(double** m, double* x, double* b, int n);
+void triangle(double** m, double* b, int n);
+void gauss(double** m, double* x, double* b, int n);
 int shooting(double a, double b, double* y0, int size, int k, double eps);
 
 #define ST_SIZE 32
