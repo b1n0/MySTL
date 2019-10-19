@@ -23,6 +23,7 @@ void runge_numbers(double x0, double x, double* y0, int size);
 void plot(const char* fname);
 
 int shooting(double a, double b, double* y0, int size, int k, double eps);
+int shoot(double a, double b, double* y0, int size, int k, double eps);
 
 void f(double x, double* y, int size, double* res);
 double eigen_value(double x, double* y);
