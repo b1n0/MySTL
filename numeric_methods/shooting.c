@@ -6,7 +6,7 @@ int shooting(double a, double b, double* y0, int size, int k, double eps) {
 	m = (double**)malloc((size - k)*sizeof(double*));
 	A = (double*)malloc((size - k)*size*sizeof(double));
 	for(i = 0; i < size - k; i++) m[i] = m[i] = A + i*size + k;
-	for(i = 0; i < size - k; i++) y0_buff[k+i] = 0.6;
+	for(i = 0; i < size - k; i++) y0_buff[k+i] = 1.;
 	memcpy(y0_buff, y0, k*sizeof(double));
 	
 	while(1) {
