@@ -31,6 +31,6 @@ void discrepancy(double* y0, double* y, double* v);
 void jacobian(double** m, double* y0, double* v);
 
 #define MAX(a,b) (a)>(b)?(a):(b)
-#define is_zero(a) ((a) < 0.00000000001 && (a) > -0.00000000001)
+#define is_zero(a) ((a) < 1.e-15 && (a) > -1.e-15)
 #define DELTA 1.e-8
 #define ST_SIZE 8

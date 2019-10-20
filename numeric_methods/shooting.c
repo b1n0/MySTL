@@ -36,26 +36,27 @@ int shooting(double a, double b, double* y0, int size, int k, double eps) {
 }
 
 int shoot(double a, double b, double* y0, int size, int k, double eps) {
-	int i, j, n;
+	int i, j, n, flag;
 	double **m, y0_buff[ST_SIZE], v[ST_SIZE], y[ST_SIZE], h[ST_SIZE];
 	double err, prev_err, c;
-	prev_err = 10.;
+	prev_err = 5.;
 	m = create_matrix(size - k, size - k);
 	for(i = k; i < size; i++) y0[i] = 1.;
 	//add loop for different beta
 	//add return 0 condition
+	y0_buff[0] = y0[0];
 	runge_hardcore(a, b, y0, y, size, 1.e-8, 1.e-7);
 	discrepancy(y0, y, v);
 	for(err = norm(v, size - k, 'm'); err > eps; prev_err = err) {
 		jacobian(m, y0, v);
+		//printf("%5.30lf__%lf\n", m[0][0], v[0]);
 		gauss(m, h, v, size - k);
-		for(c = 1., i = 0; i < 50; i++, c*=0.5 ) {
+		for(c = 1., flag = 1, i = 0; flag == 1 && i < 30 ; i++, c*=0.5 ) {
 			for(j = k; j < size; j++) y0_buff[j] = y0[j] - c*h[j - k];	
 			runge_hardcore(a, b, y0_buff, y, size, 1.e-8, 1.e-7);
 			discrepancy(y0, y, v);
 			err = norm(v, size - k, 'm');
-			printf("%lf \n", err);
-			if(err < prev_err) break;
+			if(err < prev_err) flag = 0;
 		}
 		memcpy(y0 + k, y0_buff + k, sizeof(double)*(size - k));
 	}	
