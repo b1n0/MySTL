@@ -26,5 +26,6 @@ int main(void) {
 	y0[0] = 0;
 	shoot(a, b, y0, 4, 1, 0.000001);
 	printf("%lf %lf %lf %lf \n", y0[0], y0[1], y0[2], y0[3]);	
+	plot(a, b, y0, 4, 100);
 	return 0;
 }
