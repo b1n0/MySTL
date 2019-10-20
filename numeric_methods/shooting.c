@@ -48,8 +48,13 @@ int shoot(double a, double b, double* y0, int size, int k, double eps) {
 	runge_hardcore(a, b, y0, y, size, 1.e-8, 1.e-7);
 	discrepancy(y0, y, v);
 	for(err = norm(v, size - k, 'm'); err > eps; prev_err = err) {
-		jacobian(m, y0, v);
-		//printf("%5.30lf__%lf\n", m[0][0], v[0]);
+		for(i = k; i < size; i++) {
+			y0[i] += DELTA;
+			runge_hardcore(a, b, y0, y, size, 1.e-8, 1.e-7);
+			discrepancy(y0, y, h);
+			for(j = 0; j < size - k; j++) m[j][i-k] = (h[j] - v[j])/DELTA;
+			y0[i] -= DELTA;
+		}
 		gauss(m, h, v, size - k);
 		for(c = 1., flag = 1, i = 0; flag == 1 && i < 30 ; i++, c*=0.5 ) {
 			for(j = k; j < size; j++) y0_buff[j] = y0[j] - c*h[j - k];	

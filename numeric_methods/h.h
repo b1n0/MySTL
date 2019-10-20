@@ -28,8 +28,8 @@ int shoot(double a, double b, double* y0, int size, int k, double eps);
 void f(double x, double* y, int size, double* res);
 double eigen_value(double x, double* y);
 void discrepancy(double* y0, double* y, double* v);
-void jacobian(double** m, double* y0, double* v);
 
+#define PI 3.14159265358979323846
 #define MAX(a,b) (a)>(b)?(a):(b)
 #define is_zero(a) ((a) < 1.e-15 && (a) > -1.e-15)
 #define DELTA 1.e-8

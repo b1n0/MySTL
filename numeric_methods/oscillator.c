@@ -1,6 +1,5 @@
 #include "h.h"
 #define NUM_POINTS 100
-#define PI 3.14159265358979323846
 
 void f(double x, double* y, int size, double* res) {
 	size++; x++;
