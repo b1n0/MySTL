@@ -20,9 +20,8 @@ double runge(double x0, double x, double *y0, double *y, int size, int num_steps
 double runge_with_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max);
 double runge_hardcore(double x0, double x, double* y0, double* y, int size, double err_min, double err_max);
 void runge_numbers(double x0, double x, double* y0, int size);
-void plot(const char* fname);
+double plot(double a, double b, double* y0, int size, int num_points);
 
-int shooting(double a, double b, double* y0, int size, int k, double eps);
 int shoot(double a, double b, double* y0, int size, int k, double eps);
 
 void f(double x, double* y, int size, double* res);

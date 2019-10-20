@@ -85,9 +85,20 @@ void runge_numbers(double x0, double x, double* y0, int size) {
         printf("\n");
 }
 
-void plot(const char* fname) { 
+double plot(double a, double b, double* y0, int size, int num_points) { 
+	FILE * f = fopen("plt.txt", "w");
         FILE * gnuplot_pipe = popen("gnuplot -persistent", "w");
-        fprintf(gnuplot_pipe, "%s '%s' %s\n", "plot", fname, "with line");
+	double u0[ST_SIZE], y[ST_SIZE], h = (b - a)/num_points, global_err = 0.;
+	memcpy(u0, y0, size*sizeof(double));
+	for(double x = a; (x < b && h > 0) || (x > b && h < 0); x += h) {
+		global_err += runge_hardcore(x, x + h, u0, y, size, 1.e-8, 1.e-7);
+		memcpy(u0, y, size*sizeof(double));
+		for(int i = 0; i < size; i++) fprintf(f, "%lf\t", y[i]);
+		fprintf(f, "\n");
+	}
+        fprintf(gnuplot_pipe, "%s\n", "plot 'plt.txt' with line");
+	fclose(f);
+	return global_err;
 }
 
 double runge_hardcore(double x0, double x, double* y0, double* y, int size, double err_min, double err_max) {
