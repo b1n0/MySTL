@@ -5,7 +5,7 @@ int shoot(double a, double b, double* y0, int size, int k, double eps) {
 	double **m, y0_buff[ST_SIZE], v[ST_SIZE], y[ST_SIZE], h[ST_SIZE];
 	double err, prev_err, c;
 	m = create_matrix(size - k, size - k);
-	for(i = k; i < size; i++) y0[i] = 3.;
+	for(i = k; i < size; i++) y0[i] = 2.;
 	//add loop for different beta
 	//add return 0 condition
 	y0_buff[0] = y0[0];

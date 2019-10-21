@@ -21,10 +21,10 @@ void discrepancy(double* y0, double* y, double* v) {
 }
 
 int main(void) {
-	double a, b, y0[4], y[4];
+	double a, b, y0[4];
 	a = 0.; b = 4.;
 	y0[0] = 0;
-	shoot(a, b, y0, 4, 1, 0.000001);
+	shoot(a, b, y0, 4, 1, 0.0001);
 	printf("%lf %lf %lf %lf \n", y0[0], y0[1], y0[2], y0[3]);	
 	plot(a, b, y0, 4, 100);
 	return 0;
