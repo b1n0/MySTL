@@ -33,17 +33,27 @@ int shoot(double a, double b, double* y0, int size, int k, double eps) {
 	return res;
 }
 
-int gradient_decrease(double* x, int size, double eps, func pointer f) {
+/*
+double g(double a, double b, double *y0, int size, int k) {
+	double y[ST_SIZE], v[ST_SIZE], res = 0.;
+	runge_hardcore(a, b, y0, y, size, 1.e-8, 1.e-7);
+	discrepancy(y0, y, v);
+	for(int i = 0; i < size - k; i++) res += v[i]*v[i];
+	return res;
+}
+int gradient_decrease(double a, double b, double* x, int size, int k, double eps) {
 	int i = 0;
 	double gradient[ST_SIZE], val, prev_val = 0.;
-	for(val = f(x, size); fabs(val - prev_val) > eps || i == 0; prev_val = val, val = f(x,size)) {
-		for(i = 0; i < size; i++) {
+	start_value(x);
+	for(val = g(a, b, x, size, k); fabs(val - prev_val) > eps || i == 0; prev_val = val, val = g(a, b, x, size, k)) {
+		for(i = k; i < size; i++) {
 			x[i] += DELTA;
-			gradient[i] = (f(x, size) - val)/DELTA
+			gradient[i-k] = (g(a, b, x, size, k) - val)/DELTA;
 			x[i] -= DELTA;
 		}
-		for(i = 0; i < size; i++) x[i] -= gradient[i];
+		for(i = k; i < size; i++) x[i] -= gradient[i-k];
 		printf("%lf\n", val);
 	}
 	return 0;
 }
+*/
