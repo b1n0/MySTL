@@ -1,12 +1,13 @@
 #include "h.h"
 
-int shoot(double a, double b, double* y0, int size, int k, double eps) {
+int shoot(double a, double b, double* y0, int size, int k, double eps, 
+		void discrepancy(double* y0, double* y, double* res)) {
 	int i, j, n, flag, num_c, res = 0;
 	double **m, y0_buff[ST_SIZE], v[ST_SIZE], y[ST_SIZE], h[ST_SIZE];
 	double err, prev_err, c;
 	m = create_matrix(size - k, size - k);
 	start_value(y0);
-	memcpy(y0_buff, y0, sizeof(double)*size);
+	memcpy(y0_buff, y0, size*sizeof(double));
 	runge_hardcore(a, b, y0, y, size, 1.e-8, 1.e-7);
 	discrepancy(y0, y, v);
 	for(c = 1., num_c = 0, err = norm(v, size - k, 'm'), prev_err = err; err > eps; prev_err = err) {
@@ -15,7 +16,7 @@ int shoot(double a, double b, double* y0, int size, int k, double eps) {
 			y0[i] += DELTA;
 			runge_hardcore(a, b, y0, y, size, 1.e-8, 1.e-7);
 			discrepancy(y0, y, h);
-			for(j = 0; j < size - k; j++) m[j][i-k] = (h[j] - v[j])/DELTA;
+		for(j = 0; j < size - k; j++) m[j][i-k] = (h[j] - v[j])/DELTA;
 			y0[i] -= DELTA;
 		}
 		gauss(m, h, v, size - k);

@@ -22,12 +22,13 @@ double runge_hardcore(double x0, double x, double* y0, double* y, int size, doub
 void runge_numbers(double x0, double x, double* y0, int size);
 double plot(double a, double b, double* y0, int size, int num_points);
 
-int shoot(double a, double b, double* y0, int size, int k, double eps);
+int shoot(double a, double b, double* y0, int size, int k, double eps, 
+		void discrepancy(double* y0, double* y, double* res));
 //int gradient_decrease(double a, double b, double* x, int size, int k, double eps);
 
-void f(double x, double* y, int size, double* res);
+void f(double x, double* y, double* res);
 double eigen_value(double x, double* y);
-void discrepancy(double* y0, double* y, double* v);
+void discrepancy(double* y0, double* y, double* res);
 void start_value(double* y0);
 
 #define PI 3.14159265358979323846

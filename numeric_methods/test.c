@@ -1,6 +1,6 @@
 #include "h.h"
 
-void f(double x, double* y, int size, double* res) { res[0] = y[1]; res[1] = -1*y[0]; }
+void f(double x, double* y, double* res) { res[0] = y[1]; res[1] = -1*y[0]; }
 double eigen_value(double x, double* y) { return 0; }
 void discrepancy(double* y0, double* y, double* res) { res[0] = y[0] - 1.; }
 void start_value(double* y0) { y0[1] = 2.; }

@@ -1,8 +1,7 @@
 #include "h.h"
 #define NUM_POINTS 100
 
-void f(double x, double* y, int size, double* res) {
-	size++; x++;
+void f(double x, double* y, double* res) {
 	res[0] = y[1];
 	res[1] = -1.*y[0];
 }

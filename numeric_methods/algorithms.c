@@ -5,17 +5,17 @@ double runge(double x0, double x, double* y0, double *y, int size, int num_steps
         double h = (x - x0)/num_steps, k[6][ST_SIZE], buff[ST_SIZE], c, E, global_err= 0.;
         memcpy(y, y0, size*sizeof(double));
         for (j = 0; j < num_steps; j++, x0+=h) {
-                f(x0, y, size, k[0]);
+                f(x0, y, k[0]);
                 for(i = 0; i < size; i++) buff[i] = y[i] + h*k[0][i]*0.5;
-                f(x0 + h*0.5, buff, size, k[1]);
+                f(x0 + h*0.5, buff, k[1]);
                 for(i = 0; i < size; i++) buff[i] = y[i] + h*(k[0][i] + k[1][i])*0.25;
-                f(x0 + h*0.5, buff, size, k[2]);
+                f(x0 + h*0.5, buff, k[2]);
                 for(i = 0; i < size; i++) buff[i] = y[i] + h*(2*k[2][i] - k[1][i]);
-                f(x0 + h, buff, size, k[3]);
+                f(x0 + h, buff, k[3]);
                 for(i = 0; i < size; i++) buff[i] = y[i] + h*(7*k[0][i] +10*k[1][i] + k[3][i])/27.;
-                f(x0 + 2*h/3, buff, size, k[4]);
+                f(x0 + 2*h/3, buff, k[4]);
                 for(i = 0; i < size; i++) buff[i] = y[i] + h*(28*k[0][i] - 125*k[1][i] + 546*k[2][i] + 54*k[3][i] - 378*k[4][i])/625.;
-                f(x0 + h*0.2, buff, size, k[5]);
+                f(x0 + h*0.2, buff, k[5]);
                 for(E = 0, i = 0; i < size; i++) {
                         c = ((-42)*k[0][i] - 244*k[2][i] - 21*k[3][i] + 162*k[4][i] + 125*k[5][i])*h/336.;
 			E += c*c;
@@ -34,17 +34,17 @@ double runge_with_autostep(double x0, double x, double* y0, double* y, int size,
 	memcpy(y, y0, size * sizeof(double));
 	for(; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h) {
 		while (1) {
-			f(x0, y, size, k);
+			f(x0, y, k);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*k[i]*0.5;
-			f(x0 + h*0.5, buff, size, k + size);
+			f(x0 + h*0.5, buff, k + size);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*(k[i] + k[size+i])*0.25;
-			f(x0 + h*0.5, buff, size, k + 2*size);
+			f(x0 + h*0.5, buff, k + 2*size);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*(2*k[2*size+i] - k[size+i]);
-			f(x0 + h, buff, size, k + 3*size);	
+			f(x0 + h, buff, k + 3*size);	
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*(7*k[i] +10*k[size + i] + k[3*size + i])/27;
-			f(x0 + 2*h/3, buff, size, k + 4*size);
+			f(x0 + 2*h/3, buff, k + 4*size);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*(28*k[i] - 125*k[size+i] + 546*k[2*size+i] + 54*k[3*size+i] - 378*k[4*size+i])/625;
-			f(x0 + h*0.2, buff, size, k + 5*size);
+			f(x0 + h*0.2, buff, k + 5*size);
 
 			for(E = 0, i = 0; i < size; i++) {
 				c = ((-42)*k[i] - 244*k[2*size+i] - 21*k[3*size+i] + 162*k[4*size+i] + 125*k[5*size+i])*h/336;
@@ -68,7 +68,7 @@ int euler(double x0, double x, double* y0, double* y, int size, int num_steps) {
 	double h = (x - x0)/num_steps, buff[ST_SIZE];
 	memcpy(y, y0, size * sizeof(double));
 	for(i = 0; i < num_steps; i++, x0+=h) {
-		f(x0, y, size, buff);
+		f(x0, y, buff);
 		for(j = 0; j < size; j++)
 			y[j] += h*buff[j];
 	}
@@ -86,8 +86,7 @@ void runge_numbers(double x0, double x, double* y0, int size) {
 }
 
 double plot(double a, double b, double* y0, int size, int num_points) { 
-	FILE * f = fopen("plt.txt", "w");
-        FILE * gnuplot_pipe = popen("gnuplot -persistent", "w");
+	FILE *gnuplot_pipe, *f = fopen("plt.txt", "w");
 	double u0[ST_SIZE], y[ST_SIZE], h = (b - a)/num_points, global_err = 0.;
 	memcpy(u0, y0, size*sizeof(double));
 	for(double x = a; (x < b && h > 0) || (x > b && h < 0); x += h) {
@@ -96,8 +95,9 @@ double plot(double a, double b, double* y0, int size, int num_points) {
 		for(int i = 0; i < size; i++) fprintf(f, "%lf\t", y[i]);
 		fprintf(f, "\n");
 	}
-        fprintf(gnuplot_pipe, "%s\n", "plot 'plt.txt' with line");
 	fclose(f);
+	gnuplot_pipe = popen("gnuplot -persistent", "w");
+        fprintf(gnuplot_pipe, "%s\n", "plot 'plt.txt' with line");
 	return global_err;
 }
 
@@ -107,33 +107,33 @@ double runge_hardcore(double x0, double x, double* y0, double* y, int size, doub
 	memcpy(y, y0, size * sizeof(double));
 	for(; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h) {
 		while (1) {
-			f(x0, y, size, k[0]);
+			f(x0, y, k[0]);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*k[0][i]*0.5;
-			f(x0 + h*0.5, buff, size, k[1]);
+			f(x0 + h*0.5, buff, k[1]);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*(k[0][i] + k[1][i])*0.25;
-			f(x0 + h*0.5, buff, size, k[2]);
+			f(x0 + h*0.5, buff, k[2]);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*(2*k[2][i] - k[1][i]);
-			f(x0 + h, buff, size, k[3]);	
+			f(x0 + h, buff, k[3]);	
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*(7*k[0][i] +10*k[1][i] + k[3][i])/27;
-			f(x0 + 2.*h/3., buff, size, k[4]);
+			f(x0 + 2.*h/3., buff, k[4]);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*(28*k[0][i] - 125*k[1][i] + 546*k[2][i] + 54*k[3][i] - 378*k[4][i])/625;
-			f(x0 + h*0.2, buff, size, k[5]);
+			f(x0 + h*0.2, buff, k[5]);
 			
 			for(i = 0; i < size; i++) y1[i] = y[i] + (14*k[0][i] + 35*k[3][i] + 162*k[4][i] + 125*k[5][i])*h/336;
 
-			f(x0, y, size, k[0]);
+			f(x0, y, k[0]);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*k[0][i]*0.5;
-			f(x0 + h*0.5, y, size, k[1]);
+			f(x0 + h*0.5, y, k[1]);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*k[0][i]*2./9. + h*k[1][i]*4./9.;
-			f(x0 + h*2./3., y, size, k[2]);
+			f(x0 + h*2./3., y, k[2]);
 			for(i = 0; i < size; i++) buff[i] = y[i] + h*k[0][i]*7./36. + h*k[1][i]*2./9. - h*k[2][i]/12.;
-			f(x0 + h*1./3., y, size, k[3]);
+			f(x0 + h*1./3., y, k[3]);
 			for(i = 0; i < size; i++) buff[i] = y[i] - h*k[0][i]*35./144. - h*k[1][i]*55./36. + h*k[2][i]*35./48. + h*k[3][i]*15./8.;
-			f(x0 + h*5./6., y, size, k[4]);
+			f(x0 + h*5./6., y, k[4]);
 			for(i = 0; i < size; i++) buff[i] = y[i] - h*k[0][i]/360. - h*k[1][i]*11./36. - h*k[2][i]*0.125 + h*k[3][i]*0.5 + h*k[4][i]*0.1;
-			f(x0 + h/6., y, size, k[5]);
+			f(x0 + h/6., y, k[5]);
 			for(i=0;i<size;i++) buff[i]=y[i]-h*k[0][i]*41./260.+h*k[1][i]*22./13.+h*k[2][i]*43./156.-h*k[3][i]*118./39.+h*k[4][i]*32./195.+h*k[5][i]*80./39.;
-			f(x0 + h, y, size, k[6]);
+			f(x0 + h, y, k[6]);
 
 			for(i = 0; i < size; i++) y2[i] = y[i]+(k[0][i]*13./200. + k[2][i]*11./40. + k[3][i]*11./40. + k[4][i]*0.16 + k[5][i]*0.16 + k[6][i]*13./200.)*h;
 			
