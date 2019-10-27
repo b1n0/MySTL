@@ -34,6 +34,7 @@ void start_value(double* y0);
 #define PI 3.14159265358979323846
 #define MAX(a,b) (a)>(b)?(a):(b)
 #define MIN(a,b) (a)<(b)?(a):(b)
+#define random(a, b) ((double)rand())*((b) - (a))/(double)RAND_MAX + (a)
 #define is_zero(a) ((a) < 1.e-15 && (a) > -1.e-15)
 #define DELTA 1.e-8
 #define ST_SIZE 8

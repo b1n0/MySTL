@@ -1,7 +1,7 @@
 #include "h.h"
 
 int shoot(double a, double b, double* y0, int size, int k, double eps, 
-		void discrepancy(double* y0, double* y, double* res)) {
+			void discrepancy(double* y0, double* y, double* res)) {
 	int i, j, n, flag, num_c, res = 0;
 	double **m, y0_buff[ST_SIZE], v[ST_SIZE], y[ST_SIZE], h[ST_SIZE];
 	double err, prev_err, c;
@@ -20,7 +20,7 @@ int shoot(double a, double b, double* y0, int size, int k, double eps,
 			y0[i] -= DELTA;
 		}
 		gauss(m, h, v, size - k);
-		for(c = MIN(1, 2*c), flag = 1, num_c -= num_c > 0 ? 1 : 0; flag == 1 && num_c < 30 ; c*=0.5, num_c++) {
+		for(c = MIN(1, 2*c), flag = 1, num_c -= num_c > 0 ? 1 : 0; flag == 1 && num_c < 50 ; c*=0.5, num_c++) {
 			for(j = k; j < size; j++) y0_buff[j] = y0[j] - c*h[j - k];	
 			runge_hardcore(a, b, y0_buff, y, size, 1.e-8, 1.e-7);
 			discrepancy(y0, y, v);
