@@ -24,7 +24,7 @@ double plot(double a, double b, double* y0, int size, int num_points);
 
 int shoot(double a, double b, double* y0, int size, int k, double eps, 
 		void discrepancy(double* y0, double* y, double* res));
-//int gradient_decrease(double a, double b, double* x, int size, int k, double eps);
+int gradient_decrease(double a, double b, double* x, int size, int k, double eps);
 
 void f(double x, double* y, double* res);
 double eigen_value(double x, double* y);

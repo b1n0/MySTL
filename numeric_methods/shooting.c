@@ -34,7 +34,7 @@ int shoot(double a, double b, double* y0, int size, int k, double eps,
 	return res;
 }
 
-/*
+
 double g(double a, double b, double *y0, int size, int k) {
 	double y[ST_SIZE], v[ST_SIZE], res = 0.;
 	runge_hardcore(a, b, y0, y, size, 1.e-8, 1.e-7);
@@ -57,4 +57,4 @@ int gradient_decrease(double a, double b, double* x, int size, int k, double eps
 	}
 	return 0;
 }
-*/
+
