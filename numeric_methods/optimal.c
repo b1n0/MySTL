@@ -3,11 +3,11 @@
 #define BETA 1.
 
 double u(double* y);
-double u(double* y) { return 2;}
+double u(double* y) { return y[3] > 0 ? 2. : -2.; }
 void start_value(double* y0) { 
-	y0[1] = random(-1., 1.); 
-	y0[2] = random(-1., 1.); 
-	y0[3] = random(-2., 2.);
+	y0[1] = 1.;
+	y0[2] = 1.;
+	y0[3] = 0.6;
 }
 
 void f(double x, double* y, double* res) {
