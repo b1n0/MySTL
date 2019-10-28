@@ -92,6 +92,7 @@ double plot(double a, double b, double* y0, int size, int num_points) {
 	for(double x = a; (x < b && h > 0) || (x > b && h < 0); x += h) {
 		global_err += runge_hardcore(x, x + h, u0, y, size, 1.e-8, 1.e-7);
 		memcpy(u0, y, size*sizeof(double));
+		fprintf(f, "%lf\t", x);
 		for(int i = 0; i < size; i++) fprintf(f, "%lf\t", y[i]);
 		fprintf(f, "\n");
 	}
