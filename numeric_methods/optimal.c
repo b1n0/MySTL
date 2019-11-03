@@ -5,7 +5,7 @@
 double u(double* y);
 double u(double* y) { return y[3] > 0 ? 2. : -2.; }
 
-void start_value(double* y0) { y0[1] = 2.1; y0[2] = 1.0; y0[3] = 0.7; }
+void start_value(double* y0) { y0[1] = 1.0; y0[2] = 1.0; y0[3] = 0.7; }
 
 double eigen_value(double x, double* y) { return 0; }
 

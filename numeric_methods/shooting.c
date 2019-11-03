@@ -20,7 +20,8 @@ int shoot(double a, double b, double* y0, int size, int k, double eps,
 			y0[i] -= DELTA;
 		}
 		gauss(m, h, v, size - k);
-		for(c = MIN(1, 2*c), flag = 1, num_c -= num_c > 0 ? 1 : 0; flag == 1 && num_c < 50 ; c*=0.5, num_c++) {
+	//	for(c = MIN(1, 2*c), flag = 1, num_c -= num_c > 0 ? 1 : 0; flag == 1 && num_c < 50 ; c*=0.5, num_c++) {
+		for(c = 1., flag = 1, num_c = 0; flag == 1 && num_c < 50 ; c*=0.5, num_c++) {
 			for(j = k; j < size; j++) y0_buff[j] = y0[j] - c*h[j - k];	
 			integrate_autostep(a, b, y0_buff, y, size, 1.e-13, 1.e-12, 1.e-8, dormand8);
 			discrepancy(y0, y, v);

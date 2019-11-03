@@ -11,7 +11,7 @@ double integrate(double x0, double x, double* y0, double *y, int size, int num_s
         return global_err;
 }
 
-double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h,
+double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h, 
 		double iteration(double x0, double* y, double* y1, int size, double h)) {
         int i; 
         double err, y1[ST_SIZE], h_old, global_err = 0.;
@@ -20,12 +20,14 @@ double integrate_autostep(double x0, double x, double* y0, double *y, int size, 
 		while (1) {
 			err = iteration(x0, y, y1, size, h);
 			h_old = h;
-			h = h*pow(err_max/err, 5); //h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
+			//h = h*pow(err_max/err, 5); 
+			h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
 			if(err < err_max) break;
 		}
 		global_err = exp(h_old*eigen_value(x, y1))*global_err + err; 
 		memcpy(y, y1, size*sizeof(double));
 	}
+	//printf("%d\t", i);
 	return global_err + integrate(x0, x, y, y, size, 100, iteration);
 }
 
