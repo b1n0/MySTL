@@ -5,6 +5,18 @@ double up(int k);
 double down(int k);
 double integrate(int k, int num_steps);
 
+double f(double x);
+double f(double x) { return (exp(2*x) - 1)/(exp(2*x) + 1); } 
+/*	
+int main(void) {
+	double x = 0, h = 1;
+	for (int i = 1; i < 30; i++) {
+		h *= 0.1;
+		printf("%25.20lf\n", ((f(x+h) - f(x))/h) - 1.);
+	}
+	return 0;
+}
+*/
 int main(void) {
 	printf("%lf\n", up(30));
 	printf("%lf\n", down(30));
