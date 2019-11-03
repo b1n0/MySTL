@@ -16,11 +16,15 @@ void triangle(double** m, double* b, int n);
 void gauss(double** m, double* x, double* b, int n);
 
 int euler(double x0, double x, double* y0, double* y, int size, int num_steps);
-double runge(double x0, double x, double *y0, double *y, int size, int num_steps);
-double runge_with_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max);
-double runge_hardcore(double x0, double x, double* y0, double* y, int size, double err_min, double err_max);
+double dormand5(double x0, double* y, double* y1, int size, double h);
+double butcher(double x0, double* y, double* y1, int size, double h);
+double ingland(double x0, double* y, double* y1, int size, double h);
+double dormand8(double x0, double* y, double* y1, int size, double h);
+double integrate(double x0, double x, double* y0, double *y, int size, int num_steps);
+double integrate_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max, double h);
+
 void runge_numbers(double x0, double x, double* y0, int size);
-double plot(double a, double b, double* y0, int size, int num_points);
+double track(double a, double b, double* y0, int size, int num_points);
 
 int shoot(double a, double b, double* y0, int size, int k, double eps, 
 		void discrepancy(double* y0, double* y, double* res));
@@ -31,9 +35,10 @@ double eigen_value(double x, double* y);
 void discrepancy(double* y0, double* y, double* res);
 void start_value(double* y0);
 
-#define PI 3.14159265358979323846
+#define PI 3.141592653589793238462643
 #define MAX(a,b) (a)>(b)?(a):(b)
 #define MIN(a,b) (a)<(b)?(a):(b)
+#define abs(a) a > 0 ? a : -1*a
 #define random(a, b) ((double)rand())*((b) - (a))/(double)RAND_MAX + (a)
 #define is_zero(a) ((a) < 1.e-15 && (a) > -1.e-15)
 #define DELTA 1.e-8
