@@ -1,33 +1,32 @@
 #include "h.h"
 
-double integrate(double x0, double x, double* y0, double *y, int size, int num_steps) {
+double integrate(double x0, double x, double* y0, double *y, int size, int num_steps,
+		double iteration(double x0, double* y, double* y1, int size, double h)) {
         double h = (x - x0)/num_steps, err, global_err = 0.;
 	memcpy(y, y0, size*sizeof(double));
         for (int i = 0; i < num_steps; i++, x0+=h) {
-		err = butcher(x0, y, y, size, h);
+		err = iteration(x0, y, y, size, h);
 		global_err = exp(h*eigen_value(x, y))*global_err + err;
         }
         return global_err;
 }
 
-double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h) {
+double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h,
+		double iteration(double x0, double* y, double* y1, int size, double h)) {
         int i; 
-        double err, y1[ST_SIZE], global_err = 0.;
-	double h_old, fac = 0.8, facmax = 2., facmin = 0.08;
+        double err, y1[ST_SIZE], h_old, global_err = 0.;
 	memcpy(y, y0, size*sizeof(double));
 	for(i = 0; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h_old, i++) {
 		while (1) {
-			err = butcher(x0, y, y1, size, h);
+			err = iteration(x0, y, y1, size, h);
 			h_old = h;
-			//h = h*pow(err_max/err, 6);
-			h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
+			h = h*pow(err_max/err, 5); //h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
 			if(err < err_max) break;
-			//h = h*MIN(facmax, MAX(facmin, fac*pow(err_max/err, 6))); if (err < err_max) { facmax = 0.8; break; } facmax = 1.;
 		}
 		global_err = exp(h_old*eigen_value(x, y1))*global_err + err; 
 		memcpy(y, y1, size*sizeof(double));
 	}
-	return global_err + integrate(x0, x, y, y, size, 100);
+	return global_err + integrate(x0, x, y, y, size, 100, iteration);
 }
 
 double dormand5(double x0, double* y, double* y1, int size, double  h) {
@@ -136,13 +135,14 @@ double dormand8(double x0, double* y, double* y1, int size, double  h) {
 	f(x0 + h*(13./20.), buff, k[9]); 
 	for(i = 0; i < size; i++) buff[i] = y[i]+h*(-k[0][i]*(1028468189./846180014.) + k[3][i]*(8478235783./508512852.) + k[4][i]*(1311729495./1432422823.) - k[5][i]*(10304129995./1701304382.) - k[6][i]*(48777925059./3047939560.) + k[7][i]*(15336726248./1032824649) - k[8][i]*(45442868181./3398467696.) + k[9][i]*(3065993473./597172653.));
 	f(x0 + h*(1201146811./1299019798.), buff, k[10]); 
-	for(i = 0; i < size; i++) buff[i] = y[i]+h*(k[0][i]*(185892177./718116043.) - k[3][i]*(3185094517./667107341.) - k[4][i]*(477755414./1098053517.) - k[5][i]*(703635378./230739211.) + k[6][i]*(5731566787./1027545527.) + k[7][i]*(5232866602./250066563.) - k[8][i]*(4093664535./808688257.) + k[9][i]*(3962137247./1805957418.) + k[10][i]*(65686358./487910083.));
+	for(i = 0; i < size; i++) buff[i] = y[i]+h*(k[0][i]*(185892177./718116043.) - k[3][i]*(3185094517./667107341.) - k[4][i]*(477755414./1098053517.) - k[5][i]*(703635378./230739211.) + k[6][i]*(5731566787./1027545527.) + k[7][i]*(5232866602./850066563.) - k[8][i]*(4093664535./808688257.) + k[9][i]*(3962137247./1805957418.) + k[10][i]*(65686358./487910083.));
 	f(x0 + h, buff, k[11]); 
 	for(i = 0; i < size; i++) buff[i] = y[i]+h*(k[0][i]*(403863854./491063109.) - k[3][i]*(5068492393./434740067.) - k[4][i]*(411421997./543043805.) + k[5][i]*(652783627./914296604.) + k[6][i]*(11173962825./925320556.) - k[7][i]*(13158990841./6184727034.) + k[8][i]*(3936647629./1978049680.) - k[9][i]*(160528059./685178525.) + k[10][i]*(248638103./1413531060.));
 	f(x0 + h, buff, k[12]); 
 
 	for(i = 0; i < size; i++) buff[i] = y[i] + (k[0][i]*(14005451./335480064.) - k[5][i]*(59238493./1068277825.) + k[6][i]*(181606767./758867731.) + k[7][i]*(561292985./797845732.) - k[8][i]*(1041891430./1371343529.) + k[9][i]*(760417239./1151165299.) + k[10][i]*(118820643./751138087.) - k[11][i]*(528747749./2220607170.) + k[12][i]*0.25)*h;
-	for(i = 0; i < size; i++) y1[i] = y[i] + (k[0][i]*(13451932./455176623.) - k[5][i]*(808719846./976000145.) + k[6][i]*(1757004468./5645159321.) + k[7][i]*(656045339./265891186.)- k[8][i]*(3867574721./1518517206.) + k[9][i]*(465885868./322736535.) + k[10][i]*(53011238./667516719.) + k[11][i]*(2./45.))*h;
+	for(i = 0; i < size; i++) y1[i] = y[i] + (k[0][i]*(13451932./455176623.) - k[5][i]*(808719846./976000145.) + k[6][i]*(1757004468./5645159321.) + k[7][i]*(656045339./265891186.)- k[8][i]*(3867574721./1518517206.) + k[9][i]*(465885868./322736535.) +	k[10][i]*(53011238./667516719.) + k[11][i]*(2./45.))*h;
+
 	for(i = 0; i < size; i++) err += fabs(y1[i] - buff[i]);
 	//for(i = 0; i < size; i++) err += fabs(h*(0.012194277465176744*k[0][i] + 0.7731539478765578*k[5][i] - 0.07192809284993823*k[6][i] - 1.763834521196444*k[7][i] + 1.787182038027448*k[8][i] - 0.7829855527544889*k[9][i] + 0.07877188662899604*k[10][i] + 0.19366509430841836*k[11][i] + 0.25*k[12][i]));
        	return err;
@@ -162,9 +162,9 @@ int euler(double x0, double x, double* y0, double* y, int size, int num_steps) {
 
 void runge_numbers(double x0, double x, double* y0, int size) {
         double y8[ST_SIZE], y10[ST_SIZE], y12[ST_SIZE];
-        integrate_autostep(x0, x, y0, y8, size, 1.e-9, 1.e-8, 1.e-4);
-        integrate_autostep(x0, x, y0, y10, size, 1.e-11, 1.e-10, 1.e-4);
-        integrate_autostep(x0, x, y0, y12, size, 1.e-13, 1.e-12, 1.e-4);
+        integrate_autostep(x0, x, y0, y8, size, 1.e-9, 1.e-8, 1.e-4, dormand8);
+        integrate_autostep(x0, x, y0, y10, size, 1.e-11, 1.e-10, 1.e-4, dormand8);
+        integrate_autostep(x0, x, y0, y12, size, 1.e-13, 1.e-12, 1.e-4, dormand8);
 	printf("runge number in %lf \t ", x);
         for(int i = 0; i < size; i++) printf("%lf ", (y8[i] - y10[i])/(y10[i] - y12[i]));
         printf("\n");
@@ -177,7 +177,7 @@ double track(double a, double b, double* y0, int size, int num_points) {
 	memcpy(y, y0, size*sizeof(double));
 	for(x = a, i = 0; i < num_points; i++, x+=h) {
 		for(j = 0, fprintf(f, "%lf\t", x); j < size; j++) fprintf(f, "%lf\t", y[j]);
-		global_err += integrate_autostep(x, x+h, y, y, size, 1.e-9, 1.e-8, 1.e-6);
+		global_err += integrate_autostep(x, x+h, y, y, size, 1.e-9, 1.e-8, 1.e-6, dormand8);
 		fprintf(f, "\n");
 	}
 	for(j = 0, fprintf(f, "%lf\t", x); j < size; j++) fprintf(f, "%lf\t", y[j]);
