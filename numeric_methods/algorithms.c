@@ -14,20 +14,21 @@ double integrate(double x0, double x, double* y0, double *y, int size, int num_s
 double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h, 
 		double iteration(double x0, double* y, double* y1, int size, double h)) {
         int i; 
-        double err, y1[ST_SIZE], h_old, global_err = 0.;
+        double err, y1[ST_SIZE], h_old, global_err = 0., fac = 0.8, facmin = 0.2, facmax = 2.;
 	memcpy(y, y0, size*sizeof(double));
 	for(i = 0; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h_old, i++) {
 		while (1) {
 			err = iteration(x0, y, y1, size, h);
 			h_old = h;
-			//h = h*pow(err_max/err, 5); 
-			h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
+			//h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
+			//h = h*pow(err_max/err, 1./9.); 
+			h *= MIN(facmax, MAX(facmin, fac*pow(err_max/err, 1./8.)));	
 			if(err < err_max) break;
 		}
 		global_err = exp(h_old*eigen_value(x, y1))*global_err + err; 
 		memcpy(y, y1, size*sizeof(double));
 	}
-	//printf("%d\t", i);
+	printf("%d\t", i);
 	return global_err + integrate(x0, x, y, y, size, 100, iteration);
 }
 
@@ -164,9 +165,9 @@ int euler(double x0, double x, double* y0, double* y, int size, int num_steps) {
 
 void runge_numbers(double x0, double x, double* y0, int size) {
         double y8[ST_SIZE], y10[ST_SIZE], y12[ST_SIZE];
-        integrate_autostep(x0, x, y0, y8, size, 1.e-9, 1.e-8, 1.e-4, dormand8);
-        integrate_autostep(x0, x, y0, y10, size, 1.e-11, 1.e-10, 1.e-4, dormand8);
-        integrate_autostep(x0, x, y0, y12, size, 1.e-13, 1.e-12, 1.e-4, dormand8);
+        integrate_autostep(x0, x, y0, y8, size, 0., 1.e-8, 1.e-2, dormand8);
+        integrate_autostep(x0, x, y0, y10, size, 0., 1.e-10, 1.e-2, dormand8);
+        integrate_autostep(x0, x, y0, y12, size, 0., 1.e-12, 1.e-2, dormand8);
 	printf("runge number in %lf \t ", x);
         for(int i = 0; i < size; i++) printf("%lf ", (y8[i] - y10[i])/(y10[i] - y12[i]));
         printf("\n");
@@ -189,9 +190,3 @@ double track(double a, double b, double* y0, int size, int num_points) {
 	return global_err;
 }
 
-
-/*
-14005451./335480064., 0, 0, 0, 0, -59238493./1068277825., 181606767./758867731., 561292985./797845732., -1041891430./1371343529., 760417239./1151165299., 118820643./751138087., 528747749./2220607170., 0.25
-
-13451932./455176623., 0, 0, 0, 0, -808719846./976000145., 1757004468./5645159321., 656045339./265891186., -3867574721./1518517206., 465885868./322736535., 53011238./667516719., 2./45., 0.
-*/
