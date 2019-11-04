@@ -14,6 +14,7 @@ double integrate(double x0, double x, double* y0, double *y, int size, int num_s
 double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h, 
 		double iteration(double x0, double* y, double* y1, int size, double h)) {
         int i; 
+	double x_max = 0., y_max = 0.;
         double err, y1[ST_SIZE], h_old, global_err = 0., fac = 0.8, facmin = 0.2, facmax = 2.;
 	memcpy(y, y0, size*sizeof(double));
 	for(i = 0; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h_old, i++) {
@@ -27,8 +28,10 @@ double integrate_autostep(double x0, double x, double* y0, double *y, int size, 
 		}
 		global_err = exp(h_old*eigen_value(x, y1))*global_err + err; 
 		memcpy(y, y1, size*sizeof(double));
+		x_max = MAX(x_max, fabs(y[0] - sin(x0+h_old)));
+		y_max = MAX(y_max, fabs(y[0] - sin(x0+h_old)));
 	}
-	printf("%d\t", i);
+	printf("%d\t%1.30lf\t%1.30lf\t", i, x_max, y_max);
 	return global_err + integrate(x0, x, y, y, size, 100, iteration);
 }
 
