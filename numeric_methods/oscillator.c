@@ -13,12 +13,12 @@ int main(void) {
 	y0[0] = 0.; y0[1] = 1.;
 //	runge_numbers(0., PI, y0, 2);
 	for(double T = PI; i < 7; i++, T *= 10.) {
-		err = integrate_autostep(0., T, y0, y, 2, 1.e-9, 1.e-8, 1.e-3, dormand8);
-		printf("%5.30lf\t%5.30lf\t%5.30lf\t%lf\t\n", fabs(y[0]), fabs(y[1] - cos(T)), err, T);
-		err = integrate_autostep(0., T, y0, y, 2, 1.e-11, 1.e-10, 1.e-3, dormand8);
-		printf("%5.30lf\t%5.30lf\t%5.30lf\t%lf\t\n", fabs(y[0]), fabs(y[1] - cos(T)), err, T);
-		err = integrate_autostep(0., T, y0, y, 2, 1.e-13, 1.e-12, 1.e-3, dormand8);
-		printf("%5.30lf\t%5.30lf\t%5.30lf\t%lf\t\n", fabs(y[0]), fabs(y[1] - cos(T)), err, T);
+		err = integrate_autostep(0., T, y0, y, 2, 1.e-9, 1.e-8, 1.e-3, dormand8, 1);
+		printf("%5.30lf | %5.30lf | %5.30lf | %lf |\n", fabs(y[0]), fabs(y[1] - cos(T)), err, T);
+		err = integrate_autostep(0., T, y0, y, 2, 1.e-11, 1.e-10, 1.e-3, dormand8, 1);
+		printf("%5.30lf | %5.30lf | %5.30lf | %lf |\n", fabs(y[0]), fabs(y[1] - cos(T)), err, T);
+		err = integrate_autostep(0., T, y0, y, 2, 1.e-13, 1.e-12, 1.e-3, dormand8, 1);
+		printf("%5.30lf | %5.30lf | %5.30lf | %lf |\n", fabs(y[0]), fabs(y[1] - cos(T)), err, T);
 		runge_numbers(0., T, y0, 2);
 		printf("\n");
 	}	

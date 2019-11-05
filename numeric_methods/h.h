@@ -23,7 +23,7 @@ double dormand8(double x0, double* y, double* y1, int size, double h);
 double integrate(double x0, double x, double* y0, double *y, int size, int num_steps, 
 		double iteration(double x0, double* y, double* y1, int size, double h));
 double integrate_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max, double h, 
-		double iteration(double x0, double* y, double* y1, int size, double h));
+		double iteration(double x0, double* y, double* y1, int size, double h), int flag);
 
 
 void runge_numbers(double x0, double x, double* y0, int size);

@@ -12,7 +12,7 @@ double integrate(double x0, double x, double* y0, double *y, int size, int num_s
 }
 
 double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h, 
-		double iteration(double x0, double* y, double* y1, int size, double h)) {
+		double iteration(double x0, double* y, double* y1, int size, double h), int flag) {
         int i; 
 	double x_max = 0., y_max = 0.;
         double err, y1[ST_SIZE], h_old, global_err = 0., fac = 0.8, facmin = 0.2, facmax = 2.;
@@ -31,7 +31,7 @@ double integrate_autostep(double x0, double x, double* y0, double *y, int size, 
 		x_max = MAX(x_max, fabs(y[0] - sin(x0+h_old)));
 		y_max = MAX(y_max, fabs(y[0] - sin(x0+h_old)));
 	}
-	printf("%d\t%1.30lf\t%1.30lf\t", i, x_max, y_max);
+	if(flag) printf("%d | %1.15lf | %1.15lf | ", i, x_max, y_max);
 	return global_err + integrate(x0, x, y, y, size, 100, iteration);
 }
 
@@ -168,9 +168,9 @@ int euler(double x0, double x, double* y0, double* y, int size, int num_steps) {
 
 void runge_numbers(double x0, double x, double* y0, int size) {
         double y8[ST_SIZE], y10[ST_SIZE], y12[ST_SIZE];
-        integrate_autostep(x0, x, y0, y8, size, 0., 1.e-8, 1.e-2, dormand8);
-        integrate_autostep(x0, x, y0, y10, size, 0., 1.e-10, 1.e-2, dormand8);
-        integrate_autostep(x0, x, y0, y12, size, 0., 1.e-12, 1.e-2, dormand8);
+        integrate_autostep(x0, x, y0, y8, size, 0., 1.e-8, 1.e-2, dormand8, 0);
+        integrate_autostep(x0, x, y0, y10, size, 0., 1.e-10, 1.e-2, dormand8, 0);
+        integrate_autostep(x0, x, y0, y12, size, 0., 1.e-12, 1.e-2, dormand8, 0);
 	printf("runge number in %lf \t ", x);
         for(int i = 0; i < size; i++) printf("%lf ", (y8[i] - y10[i])/(y10[i] - y12[i]));
         printf("\n");
@@ -183,7 +183,7 @@ double track(double a, double b, double* y0, int size, int num_points) {
 	memcpy(y, y0, size*sizeof(double));
 	for(x = a, i = 0; i < num_points; i++, x+=h) {
 		for(j = 0, fprintf(f, "%lf\t", x); j < size; j++) fprintf(f, "%lf\t", y[j]);
-		global_err += integrate_autostep(x, x+h, y, y, size, 1.e-9, 1.e-8, 1.e-6, dormand8);
+		global_err += integrate_autostep(x, x+h, y, y, size, 1.e-9, 1.e-8, 1.e-6, dormand8, 0);
 		fprintf(f, "\n");
 	}
 	for(j = 0, fprintf(f, "%lf\t", x); j < size; j++) fprintf(f, "%lf\t", y[j]);
