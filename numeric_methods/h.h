@@ -27,7 +27,7 @@ double integrate_autostep(double x0, double x, double* y0, double* y, int size, 
 
 
 void runge_numbers(double x0, double x, double* y0, int size);
-double track(double a, double b, double* y0, int size, int num_points);
+double track(double a, double b, double* y0, int size, int num_points, int plot);
 
 int shoot(double a, double b, double* y0, int size, int k, double eps, 
 		void discrepancy(double* y0, double* y, double* res));

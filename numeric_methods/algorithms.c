@@ -176,7 +176,7 @@ void runge_numbers(double x0, double x, double* y0, int size) {
         printf("\n");
 }
 
-double track(double a, double b, double* y0, int size, int num_points) { 
+double track(double a, double b, double* y0, int size, int num_points, int plot) { 
 	int i,j;
 	FILE *gnuplot_pipe, *f = fopen("plt.txt", "w");
 	double y[ST_SIZE], x, h = (b - a)/num_points, global_err = 0.;
@@ -188,8 +188,10 @@ double track(double a, double b, double* y0, int size, int num_points) {
 	}
 	for(j = 0, fprintf(f, "%lf\t", x); j < size; j++) fprintf(f, "%lf\t", y[j]);
 	fclose(f);
-	gnuplot_pipe = popen("gnuplot -persistent", "w");
-        fprintf(gnuplot_pipe, "%s%d%s\n", "plot for[col=2:", size+1, ":1]'plt.txt' using 1:col with lines");
+	if(plot) {
+		gnuplot_pipe = popen("gnuplot -persistent", "w");
+        	fprintf(gnuplot_pipe, "%s%d%s\n", "plot for[col=2:", size+1, ":1]'plt.txt' using 1:col with lines");
+	}
 	return global_err;
 }
 
