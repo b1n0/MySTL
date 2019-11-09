@@ -43,6 +43,6 @@ void start_value(double* y0);
 #define MIN(a,b) (a)<(b)?(a):(b)
 #define abs(a) a > 0 ? a : -1*a
 #define random(a, b) ((double)rand())*((b) - (a))/(double)RAND_MAX + (a)
-#define is_zero(a) ((a) < 1.e-15 && (a) > -1.e-15)
+#define is_zero(a) ((a) < 1.e-55 && (a) > -1.e-55)
 #define DELTA 1.e-8
 #define ST_SIZE 8

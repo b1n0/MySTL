@@ -5,11 +5,12 @@
 double u(double* y);
 double u(double* y) { return y[3] > 0 ? 2. : -2.; }
 
-void start_value(double* y0) { y0[1] = 7 - 3/pow(2, 0.5); y0[2] = 1.0; y0[3] = -0.5; }
+void start_value(double* y0) { y0[1] = 1.0; y0[2] = 1.0; y0[3] = 0.68; }
 
-double eigen_value(double x, double* y) { return 0; }
+double eigen_value(double x, double* y) { x++; y++; return 0; }
 
 void f(double x, double* y, double* res) {
+	x++;
 	res[0] = u(y); // y
 	res[1] = y[0]; // x
 	res[2] = -BETA*pow(y[1], BETA - 1)/(1 + exp(ALPHA*y[0]*y[0])); //px

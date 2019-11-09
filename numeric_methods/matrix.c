@@ -1,7 +1,7 @@
 #include "h.h"
 
 void gauss(double** m, double* x, double* b, int n) {
-	double s;
+	double s = 0.;
 	triangle(m, b, n);
         for(int k = 0; k < n; k++) {
                 if is_zero(m[n-1-k][n-1-k])  
