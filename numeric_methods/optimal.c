@@ -5,7 +5,7 @@
 double u(double* y);
 double u(double* y) { return y[3] > 0 ? 2. : -2.; }
 
-void start_value(double* y0) { y0[1] = 1.0; y0[2] = 1.0; y0[3] = 0.7; }
+void start_value(double* y0) { y0[1] = 7 - 3/pow(2, 0.5); y0[2] = 1.0; y0[3] = -0.5; }
 
 double eigen_value(double x, double* y) { return 0; }
 
@@ -27,7 +27,7 @@ int main(void) {
 	y0[0] = 0;
 	if(shoot(a, b, y0, 4, 1, 0.0001, discrepancy) == 0) {
 		printf("%lf %lf %lf %lf \n", y0[0], y0[1], y0[2], y0[3]);	
-		track(a, b, y0, 4, 100);
+		track(a, b, y0, 4, 100, 1);
 	}
 	return 0;
 }
