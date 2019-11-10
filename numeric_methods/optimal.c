@@ -5,7 +5,7 @@
 double u(double* y);
 double u(double* y) { return y[3] > 0 ? 2. : -2.; }
 
-void start_value(double* y0) { y0[1] = 1.0; y0[2] = 1.0; y0[3] = 0.68; }
+void start_value(double* y0) { y0[1] = 0.; y0[2] = 1.0; y0[3] = 3./4.; }
 
 double eigen_value(double x, double* y) { x++; y++; return 0; }
 
@@ -22,11 +22,17 @@ void discrepancy(double* y0, double* y, double* res) {
 	res[2] = y[2] + y0[2];	
 }
 
+double horde_method(double x1, double x2, double* y1, double* y2, double* xroot) { 
+	int res = (fabs(y1[3]) > 1.e-9 && fabs(y2[3]) > 1.e-9)&&((y1[3] < 0 && y2[3] > 0) || ( y1[3] > 0 && y2[3] < 0));
+	if(res) *xroot = x1 - (y1[3]*(x2 - x1)/(y2[3] - y1[3]));
+	return res;
+}
+
 int main(void) {
 	double a, b, y0[4];
 	a = 0.; b = 4.;
 	y0[0] = 0;
-	if(shoot(a, b, y0, 4, 1, 0.0001, discrepancy) == 0) {
+	if(shoot(a, b, y0, 4, 1, 0.001, discrepancy) == 0) {
 		printf("%lf %lf %lf %lf \n", y0[0], y0[1], y0[2], y0[3]);	
 		track(a, b, y0, 4, 100, 1);
 	}

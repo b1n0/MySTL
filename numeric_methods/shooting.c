@@ -8,13 +8,13 @@ int shoot(double a, double b, double* y0, int size, int k, double eps,
 	m = create_matrix(size - k, size - k);
 	start_value(y0);
 	memcpy(y0_buff, y0, size*sizeof(double));
-	integrate_autostep(a, b, y0, y, size, 1.e-10, 1.e-9, 1.e-2, dormand8, 0);
+	integrate_autostep(a, b, y0, y, size, 1.e-13, 1.e-12, 1.e-2, dormand8, 0);
 	discrepancy(y0, y, v);
 	for(c = 1., num_c = 0, err = norm(v, size - k, 'm'), prev_err = err; err > eps; prev_err = err) {
 		printf("%lf \n", err);
 		for(i = k; i < size; i++) {
 			y0[i] += DELTA;
-			integrate_autostep(a, b, y0, y, size, 1.e-10, 1.e-9, 1.e-2, dormand8, 0);
+			integrate_autostep(a, b, y0, y, size, 1.e-13, 1.e-12, 1.e-2, dormand8, 0);
 			discrepancy(y0, y, h);
 		for(j = 0; j < size - k; j++) m[j][i-k] = (h[j] - v[j])/DELTA;
 			y0[i] -= DELTA;
@@ -23,7 +23,7 @@ int shoot(double a, double b, double* y0, int size, int k, double eps,
 		//for(c = MIN(1, 2*c), flag = 1, num_c -= num_c > 0 ? 1 : 0; flag == 1 && num_c < 50 ; c*=0.5, num_c++) {
 		for(c = 1., flag = 1, num_c = 0; flag == 1 && num_c < 50 ; c*=0.5, num_c++) {
 			for(j = k; j < size; j++) y0_buff[j] = y0[j] - c*h[j - k];	
-			integrate_autostep(a, b, y0_buff, y, size, 1.e-10, 1.e-9, 1.e-2, dormand8, 0);
+			integrate_autostep(a, b, y0_buff, y, size, 1.e-13, 1.e-12, 1.e-2, dormand8, 0);
 			discrepancy(y0, y, v);
 			err = norm(v, size - k, 'm');
 			if(err < prev_err) flag = 0;

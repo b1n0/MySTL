@@ -14,7 +14,7 @@ double integrate(double x0, double x, double* y0, double *y, int size, int num_s
 double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h, 
 		double iteration(double x0, double* y, double* y1, int size, double h), int flag) {
         int i; 
-	double err, y1[ST_SIZE], h_old, global_err = 0., x_max = 0., y_max = 0.;
+	double err, y1[ST_SIZE], h_old, xroot, global_err = 0., x_max = 0., y_max = 0.;
         double fac = 0.8, facmin = 0.2, facmax = 2.;
 	memcpy(y, y0, size*sizeof(double));
 	for(i = 0; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); x0 += h_old, i++) {
@@ -23,7 +23,12 @@ double integrate_autostep(double x0, double x, double* y0, double *y, int size, 
 			h_old = h;
 			if(!is_zero(err)) h *= MIN(facmax, MAX(facmin, fac*pow(err_max/err, 1./8.)));	
 			else h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
-			if(err < err_max) break;
+			if(err < err_max)
+				if(horde_method(x0, x0 + h_old, y, y1, &xroot)) {
+					if (fabs(xroot - x0) < fabs(h)) h = xroot - x0;
+				//	printf("%1.30lf %1.30lf %1.30lf %1.30lf\n", y[3], y1[3], h, x0);
+				}
+				else break;
 		}
 		global_err = exp(h_old*eigen_value(x, y1))*global_err + err; 
 		memcpy(y, y1, size*sizeof(double));
