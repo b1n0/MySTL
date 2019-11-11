@@ -37,7 +37,7 @@ void f(double x, double* y, double* res);
 double eigen_value(double x, double* y);
 void discrepancy(double* y0, double* y, double* res);
 void start_value(double* y0);
-double horde_method(double x1, double x2, double* y1, double* y2, double* xroot);
+double horde_method(double x1, double x2, double* y1, double* y2, int size);
 
 #define PI 3.141592653589793238462643
 #define MAX(a,b) (a)>(b)?(a):(b)

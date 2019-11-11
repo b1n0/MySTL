@@ -14,7 +14,7 @@ void f(double x, double* y, double* res) {
 	res[0] = u(y); // y
 	res[1] = y[0]; // x
 	res[2] = -BETA*pow(y[1], BETA - 1)/(1 + exp(ALPHA*y[0]*y[0])); //px
-	res[3] = -1*y[2] + 2*ALPHA*pow(y[1], BETA)*y[0]*exp(ALPHA*y[0]*y[0])/pow(1+exp(ALPHA*y[0]*y[0]), 2); //py
+	res[3] = -y[2] + 2*ALPHA*pow(y[1], BETA)*y[0]*exp(ALPHA*y[0]*y[0])/pow(1+exp(ALPHA*y[0]*y[0]), 2); //py
 }
 void discrepancy(double* y0, double* y, double* res) { 
 	res[0] = y[0];
@@ -22,10 +22,15 @@ void discrepancy(double* y0, double* y, double* res) {
 	res[2] = y[2] + y0[2];	
 }
 
-double horde_method(double x1, double x2, double* y1, double* y2, double* xroot) { 
-	int res = (fabs(y1[3]) > 1.e-9 && fabs(y2[3]) > 1.e-9)&&((y1[3] < 0 && y2[3] > 0) || ( y1[3] > 0 && y2[3] < 0));
-	if(res) *xroot = x1 - (y1[3]*(x2 - x1)/(y2[3] - y1[3]));
-	return res;
+double horde_method(double x1, double x2, double* y1, double* y2, int size) { 
+	double y[ST_SIZE], xroot;
+	while(y1[3]*y2[3] < 0. && (fabs(y1[3]) > 1.e-10 || fabs(y2[3]) > 1.e-10)) {
+		xroot = x1 - y1[3]*(x2 - x1)/(y2[3] - y1[3]);
+		dormand8(x1, y1, y, size, xroot - x1);
+		if(y1[3]*y[3] > 0) { memcpy(y1, y, size*sizeof(double)); x1 = xroot; }
+		else { memcpy(y2, y, size*sizeof(double)); x2 = xroot; }
+	}
+	return x2;
 }
 
 int main(void) {

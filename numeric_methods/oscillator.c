@@ -7,6 +7,7 @@ void f(double x, double* y, double* res) {
 	res[1] = -y[0];
 }
 double eigen_value(double x, double* y) { x++; y++; return 0; }
+double horde_method(double x1, double x2, double* y1, double* y2, int size) { return x2; }
 
 int main(void) {
 	int i = 0;
