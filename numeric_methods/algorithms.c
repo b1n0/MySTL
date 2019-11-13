@@ -1,5 +1,16 @@
 #include "h.h"
 
+double chord_method(double x1, double x2, double* y1, double* y2, int size) {
+	double y[ST_SIZE], xroot;
+	while(g(y1)*g(y2) < 0 && fabs(g(y1) - g(y2)) > 1.e-9) {
+		xroot = x1 - g(y1)*(x2 - x1)/(g(y2) - g(y1));
+		dormand8(x1, y1, y, size, xroot - x1);
+		if(g(y1)*g(y) > 0) { memcpy(y1, y, size*sizeof(double)); x1 = xroot; }
+		else { memcpy(y2, y, size*sizeof(double)); x2 = xroot; }
+	}
+	return x2;
+}
+
 double integrate(double x0, double x, double* y0, double *y, int size, int num_steps,
 		double iteration(double x0, double* y, double* y1, int size, double h)) {
         double h = (x - x0)/num_steps, err, global_err = 0.;
@@ -24,7 +35,7 @@ double integrate_autostep(double x0, double x, double* y0, double *y, int size, 
 			if(!is_zero(err)) h *= MIN(facmax, MAX(facmin, fac*pow(err_max/err, 1./8.)));	
 			else h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
 			if(err < err_max) {
-				x0 = horde_method(x0, x0 + h_old, y, y1, size);
+				x0 = chord_method(x0, x0 + h_old, y, y1, size);
 				break;
 			}
 		}
@@ -170,9 +181,9 @@ int euler(double x0, double x, double* y0, double* y, int size, int num_steps) {
 
 void runge_numbers(double x0, double x, double* y0, int size) {
         double y8[ST_SIZE], y10[ST_SIZE], y12[ST_SIZE];
-        integrate_autostep(x0, x, y0, y8, size, 0., 1.e-8, 1.e-2, dormand8, 0);
-        integrate_autostep(x0, x, y0, y10, size, 0., 1.e-10, 1.e-2, dormand8, 0);
-        integrate_autostep(x0, x, y0, y12, size, 0., 1.e-12, 1.e-2, dormand8, 0);
+        integrate_autostep(x0, x, y0, y8, size, 1.e-9, 1.e-8, 1.e-2, dormand8, 0);
+        integrate_autostep(x0, x, y0, y10, size, 1.e-11, 1.e-10, 1.e-2, dormand8, 0);
+        integrate_autostep(x0, x, y0, y12, size, 1.e-13, 1.e-12, 1.e-2, dormand8, 0);
         printf("runge number in %lf \t ", x);
         for(int i = 0; i < size; i++) printf("%lf ", (y8[i] - y10[i])/(y10[i] - y12[i]));
         printf("\n");
@@ -186,13 +197,14 @@ double track(double a, double b, double* y0, int size, int num_points, int plot)
 	for(x = a, i = 0; i < num_points; i++, x+=h) {
 		for(j = 0, fprintf(f, "%lf\t", x); j < size; j++) fprintf(f, "%lf\t", y[j]);
 		global_err += integrate_autostep(x, x+h, y, y, size, 1.e-9, 1.e-8, 1.e-6, dormand8, 0);
-		fprintf(f, "\n");
+		fprintf(f, "%lf\n", u(y));
 	}
 	for(j = 0, fprintf(f, "%lf\t", x); j < size; j++) fprintf(f, "%lf\t", y[j]);
+	fprintf(f, "%lf", u(y));
 	fclose(f);
 	if(plot) {
 		gnuplot_pipe = popen("gnuplot -persistent", "w");
-        	fprintf(gnuplot_pipe, "%s%d%s\n", "plot for[col=2:", size+1, ":1]'plt.txt' using 1:col with lines");
+        	fprintf(gnuplot_pipe, "%s%d%s\n", "set key off; plot for[col=2:", size + 1, ":1]'plt.txt' using 1:col with lines");
 	}
 	return global_err;
 }

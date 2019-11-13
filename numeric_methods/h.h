@@ -15,6 +15,8 @@ int multiply(double** A, double** B, double** res, int arows, int acols, int bro
 void triangle(double** m, double* b, int n);
 void gauss(double** m, double* x, double* b, int n);
 
+
+double chord_method(double x1, double x2, double* y1, double* y2, int size);
 int euler(double x0, double x, double* y0, double* y, int size, int num_steps);
 double dormand5(double x0, double* y, double* y1, int size, double h);
 double butcher(double x0, double* y, double* y1, int size, double h);
@@ -30,14 +32,14 @@ void runge_numbers(double x0, double x, double* y0, int size);
 double track(double a, double b, double* y0, int size, int num_points, int plot);
 
 int shoot(double a, double b, double* y0, int size, int k, double eps, 
-		void discrepancy(double* y0, double* y, double* res));
-int gradient_decrease(double a, double b, double* x, int size, int k, double eps);
+		void discrepancy(double* y0, double* y, double* res), double err_min, double err_max);
 
 void f(double x, double* y, double* res);
 double eigen_value(double x, double* y);
 void discrepancy(double* y0, double* y, double* res);
 void start_value(double* y0);
-double horde_method(double x1, double x2, double* y1, double* y2, int size);
+double g(double* y);
+double u(double* y);
 
 #define PI 3.141592653589793238462643
 #define MAX(a,b) (a)>(b)?(a):(b)
