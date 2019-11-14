@@ -25,7 +25,7 @@ int main(void) {
 	double a, b, y0[5];
 	a = 0.; b = 4.;
 	y0[0] = y0[1] = 0;
-	if(shoot(a, b, y0, 5, 2, 0.001, discrepancy, 1.e-13, 1.e-12) == 0) {
+	if(shoot(a, b, y0, 5, 2, 0.0001, discrepancy, 1.e-13, 1.e-12) == 0) {
 		printf("%lf %lf %lf %lf %lf\n", y0[0], y0[1], y0[2], y0[3], y0[4]);	
 		track(a, b, y0, 5, 100, 1);
 		runge_numbers(a, b, y0, 5);

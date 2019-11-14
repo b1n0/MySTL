@@ -2,11 +2,14 @@
 
 double chord_method(double x1, double x2, double* y1, double* y2, int size) {
 	double y[ST_SIZE], xroot;
-	while(g(y1)*g(y2) < 0 && fabs(g(y1) - g(y2)) > 1.e-9) {
-		xroot = x1 - g(y1)*(x2 - x1)/(g(y2) - g(y1));
-		dormand8(x1, y1, y, size, xroot - x1);
-		if(g(y1)*g(y) > 0) { memcpy(y1, y, size*sizeof(double)); x1 = xroot; }
-		else { memcpy(y2, y, size*sizeof(double)); x2 = xroot; }
+	if(g(y1)*g(y2) < 0) {
+		while(fabs(g(y1)) > 1.e-15 && fabs(g(y2)) > 1.e-15) {
+			xroot = x1 - g(y1)*(x2 - x1)/(g(y2) - g(y1));
+			dormand8(x1, y1, y, size, xroot - x1);
+			if(g(y1)*g(y) > 0) { memcpy(y1, y, size*sizeof(double)); x1 = xroot; }
+			else { memcpy(y2, y, size*sizeof(double)); x2 = xroot; }
+		}
+		return fabs(g(y1)) > fabs(g(y2)) ? x2 : x1;
 	}
 	return x2;
 }
@@ -25,24 +28,27 @@ double integrate(double x0, double x, double* y0, double *y, int size, int num_s
 double integrate_autostep(double x0, double x, double* y0, double *y, int size, double err_min, double err_max, double h, 
 		double iteration(double x0, double* y, double* y1, int size, double h), int flag) {
         int i; 
-	double err, y1[ST_SIZE], h_old, xroot, global_err = 0., x_max = 0., y_max = 0.;
+	double y1[ST_SIZE], h_old, xroot, global_err = 0., err = err_max + 1., x_max = 0., y_max = 0.;
         double fac = 0.8, facmin = 0.2, facmax = 2.;
 	memcpy(y, y0, size*sizeof(double));
 	for(i = 0; (x0 < x - h && h > 0) || (x0 > x - h && h < 0); i++) {
-		while (1) {
+	//	while(err >= err_max) {
+		while(1) { 
 			err = iteration(x0, y, y1, size, h);
 			h_old = h;
 			if(!is_zero(err)) h *= MIN(facmax, MAX(facmin, fac*pow(err_max/err, 1./8.)));	
-			else h *= err > err_max ? 0.5 : err < err_min ? 2. : 1.;
+			else h *= err < err_min ? 2. : 1.;
+	//	}
 			if(err < err_max) {
 				x0 = chord_method(x0, x0 + h_old, y, y1, size);
 				break;
 			}
 		}
+	//	x0 = chord_method(x0, x0 + h_old, y, y1, size);
 		global_err = exp(h_old*eigen_value(x, y1))*global_err + err; 
 		memcpy(y, y1, size*sizeof(double));
 		x_max = MAX(x_max, fabs(y[0] - sin(x0+h_old)));
-		y_max = MAX(y_max, fabs(y[0] - sin(x0+h_old)));
+		y_max = MAX(y_max, fabs(y[1] - cos(x0+h_old)));
 	}
 	if(flag) printf("%d | %1.15lf | %1.15lf | ", i, x_max, y_max);
 	return global_err + integrate(x0, x, y, y, size, 10, iteration);
