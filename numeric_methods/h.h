@@ -27,12 +27,12 @@ double integrate(double x0, double x, double* y0, double *y, int size, int num_s
 double integrate_autostep(double x0, double x, double* y0, double* y, int size, double err_min, double err_max, double h, 
 		double iteration(double x0, double* y, double* y1, int size, double h), int flag);
 
-
 void runge_numbers(double x0, double x, double* y0, int size);
 double track(double a, double b, double* y0, int size, int num_points, int plot);
 
-int shoot(double a, double b, double* y0, int size, int k, double eps, 
-		void discrepancy(double* y0, double* y, double* res), double err_min, double err_max);
+int shoot(double a, double b, double* y0, int size, int k, double eps, void discrepancy(double* y0, double* y, double* res), double err_min, double err_max);
+double inception(double alpha1, double alpha2, int num_steps, double a, double b, double* y0, int size, int k, double eps,
+	       	void discrepancy(double* y0, double* y, double* res), double err_min, double err_max);
 
 void f(double x, double* y, double* res);
 double eigen_value(double x, double* y);

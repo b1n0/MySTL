@@ -1,10 +1,10 @@
 #include "h.h"
-#define ALPHA 0.
-#define BETA 1.
+double ALPHA = 0.;
+double BETA = 1.;
 
 double u(double* y) { return y[4] > 0 ? 2. : -2.; }
 double g(double* y) { return y[4]; }
-void start_value(double* y0)  { y0[2] = 0.; y0[3] = 1.0; y0[4] = 3./4.; }
+void start_value(double* y0)  { y0[2] = 0.; y0[3] = 1.0; y0[4] = 0.75; }
 double eigen_value(double x, double* y) { x++; y++; return 1.; }
 
 void f(double x, double* y, double* res) {
@@ -22,15 +22,25 @@ void discrepancy(double* y0, double* y, double* res) {
 }
 
 int main(void) {
-	double a, b, y0[5];
+	double a, b, y0[5], y[5];
 	a = 0.; b = 4.;
 	y0[0] = y0[1] = 0;
 	if(shoot(a, b, y0, 5, 2, 0.0001, discrepancy, 1.e-13, 1.e-12) == 0) {
 		printf("%lf %lf %lf %lf %lf\n", y0[0], y0[1], y0[2], y0[3], y0[4]);	
 		track(a, b, y0, 5, 100, 1);
-		runge_numbers(a, b, y0, 5);
-		printf("global error = %1.30lf \n", integrate_autostep(a, b, y0, y0, 5, 1.e-13, 1.e-12, 1.e-2, dormand8, 0));
+		runge_numbers(a, 2., y0, 5);
+		runge_numbers(a, 3., y0, 5);
+		runge_numbers(a, 4., y0, 5);
+		printf("global error = %1.30lf \n", integrate_autostep(a, b, y0, y, 5, 1.e-13, 1.e-12, 1.e-2, dormand8, 0));
 		printf("B0 = %lf \n", y0[0]);
 	}
+	printf("%1.30lf \n", inception(0., 0.5, 100, a, b, y0, 5, 2, 0.0001, discrepancy, 1.e-11, 1.e-10));
 	return 0;
+}
+
+double inception(double alpha1, double alpha2, int num_steps, double a, double b, double* y0, int size, int k, double eps, 
+		void discrepancy(double* y0, double* y, double* res), double err_min, double err_max) {
+	double h = (alpha2 - alpha1)/num_steps;
+	for(int i = 0, ALPHA = alpha1; i < num_steps && shoot(a, b, y0, size, k, eps, discrepancy, err_min, err_max) == 0; i++,  ALPHA += h);
+	return ALPHA;	
 }
