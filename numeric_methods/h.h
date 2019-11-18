@@ -31,7 +31,7 @@ void runge_numbers(double x0, double x, double* y0, int size);
 double track(double a, double b, double* y0, int size, int num_points, int plot);
 
 int shoot(double a, double b, double* y0, int size, int k, double eps, void discrepancy(double* y0, double* y, double* res), double err_min, double err_max);
-double inception(double alpha1, double alpha2, int num_steps, double a, double b, double* y0, int size, int k, double eps,
+double inception(double* p, double alpha1, double alpha2, int num_steps, double a, double b, double* y0, int size, int k, double eps,
 	       	void discrepancy(double* y0, double* y, double* res), double err_min, double err_max);
 
 void f(double x, double* y, double* res);

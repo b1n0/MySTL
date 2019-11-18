@@ -1,17 +1,15 @@
 #include "h.h"
 
 double chord_method(double x1, double x2, double* y1, double* y2, int size) {
-	double y[ST_SIZE], xroot;
-	if(g(y1)*g(y2) < 0) {
-		while(fabs(g(y1)) > 1.e-15 && fabs(g(y2)) > 1.e-15) {
-			xroot = x1 - g(y1)*(x2 - x1)/(g(y2) - g(y1));
-			dormand8(x1, y1, y, size, xroot - x1);
-			if(g(y1)*g(y) > 0) { memcpy(y1, y, size*sizeof(double)); x1 = xroot; }
-			else { memcpy(y2, y, size*sizeof(double)); x2 = xroot; }
-		}
-		return fabs(g(y1)) > fabs(g(y2)) ? x2 : x1;
+	double y[ST_SIZE], xroot = x2;
+	if(g(y1)*g(y2) > 0) return x2;  
+	while(fabs(g(y1)) > 1.e-15 && fabs(g(y2)) > 1.e-15) {
+		xroot = x1 - g(y1)*(x2 - x1)/(g(y2) - g(y1));
+		dormand8(x1, y1, y, size, xroot - x1);
+		if(g(y1)*g(y) > 0) { memcpy(y1, y, size*sizeof(double)); x1 = xroot; dormand8(x1, y1, y2, size, x2 - x1); }
+		else { memcpy(y2, y, size*sizeof(double)); x2 = xroot; }
 	}
-	return x2;
+	return xroot;
 }
 
 double integrate(double x0, double x, double* y0, double *y, int size, int num_steps,

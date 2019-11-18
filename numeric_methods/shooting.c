@@ -11,7 +11,6 @@ int shoot(double a, double b, double* y0, int size, int k, double eps,
 	integrate_autostep(a, b, y0, y, size, err_min, err_max, 1.e-2, dormand8, 0);
 	discrepancy(y0, y, v);
 	for(c = 1., num_c = 0, err = norm(v, size - k, 'm'), prev_err = err; err > eps; prev_err = err) {
-		printf("%lf \n", err);
 		for(i = k; i < size; i++) {
 			y0[i] += DELTA;
 			integrate_autostep(a, b, y0, y, size, err_min, err_max, 1.e-2, dormand8, 0);

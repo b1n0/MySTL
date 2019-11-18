@@ -32,15 +32,19 @@ int main(void) {
 		runge_numbers(a, 3., y0, 5);
 		runge_numbers(a, 4., y0, 5);
 		printf("global error = %1.30lf \n", integrate_autostep(a, b, y0, y, 5, 1.e-13, 1.e-12, 1.e-2, dormand8, 0));
-		printf("B0 = %lf \n", y0[0]);
+		printf("B0 = %lf \n\n", y0[0]);
 	}
-	printf("%1.30lf \n", inception(0., 0.5, 100, a, b, y0, 5, 2, 0.0001, discrepancy, 1.e-11, 1.e-10));
+	printf("%1.30lf \n", inception(&ALPHA, 0., 0.5, 1000, a, b, y0, 5, 2, 0.01, discrepancy, 1.e-11, 1.e-10));
+	printf("%lf %lf %lf %lf %lf\n\n", y0[0], y0[1], y0[2], y0[3], y0[4]);	
+	printf("%1.30lf \n", inception(&BETA, 1., 1.5, 1000, a, b, y0, 5, 2, 0.01, discrepancy, 1.e-11, 1.e-10));
+	printf("%lf %lf %lf %lf %lf\n", y0[0], y0[1], y0[2], y0[3], y0[4]);	
 	return 0;
 }
 
-double inception(double alpha1, double alpha2, int num_steps, double a, double b, double* y0, int size, int k, double eps, 
+double inception(double* p, double alpha1, double alpha2, int num_steps, double a, double b, double* y0, int size, int k, double eps, 
 		void discrepancy(double* y0, double* y, double* res), double err_min, double err_max) {
+	int i;
 	double h = (alpha2 - alpha1)/num_steps;
-	for(int i = 0, ALPHA = alpha1; i < num_steps && shoot(a, b, y0, size, k, eps, discrepancy, err_min, err_max) == 0; i++,  ALPHA += h);
-	return ALPHA;	
+	for(i = 0, *p = alpha1; i < num_steps && shoot(a, b, y0, size, k, eps, discrepancy, err_min, err_max) == 0; i++, *p += h);
+	return *p;	
 }
