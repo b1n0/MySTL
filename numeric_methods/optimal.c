@@ -1,4 +1,7 @@
 #include "h.h"
+double u(double* y);
+double g(double* y);
+
 double ALPHA = 0.;
 double BETA = 1.;
 

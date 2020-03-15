@@ -1,4 +1,5 @@
 #include "h.h"
+void f(double x, double* y, double* res);
 
 double chord_method(double x1, double x2, double* y1, double* y2, int size) {
 	double y[ST_SIZE], xroot = x2;
