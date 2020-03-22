@@ -28,4 +28,12 @@ int newton_method(int n, double* x, void f(double* x, double* y), double eps) {
 	return 1;
 }
 
+void f(double* x, double* y) {
+	y[0] = x[0] - 5.;
+}
 
+int main(void) {
+	double* x = (double*)malloc(sizeof(double));
+	newton_method(1, x, f, 1.e-5);
+	return 0;
+}
