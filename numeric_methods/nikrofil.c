@@ -61,8 +61,7 @@ int main(void) {
 	double **u;
 	int i,j, type, tn = 10, xn = 10;
 	FILE * f = fopen("out.txt", "w");
-	u = (double**)malloc(sizeof(double*)*tn);
-	for(i = 0; i < tn; i++) u[i] = (double*)malloc(sizeof(double)*xn);
+	u = create_matrix(tn, xn);
 	
 	scanf("%d", &type);
 	if(type == 1) explicit_evaluate(u, tn, xn);
@@ -70,10 +69,8 @@ int main(void) {
 	for(i = tn - 1; i >= 0; i--) {
 		for(j = 0; j < xn; j++) fprintf(f, "%lf ", u[i][j]);
 		fprintf(f, "\n");
-		free(u[i]);
 	}
-	free(u); fclose(f);
+	delete_matrix(u, tn); fclose(f);
 	return 0;
 }
-
 
