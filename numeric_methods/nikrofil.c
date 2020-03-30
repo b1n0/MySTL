@@ -8,7 +8,7 @@ void explicit_evaluate(double** u, int tn, int xn) {
 	int i,j;
 	double x, xstep = 1./(xn-1), tstep = 1./(tn-1);
 	for(i = 0, x = 0.; i < xn; i++, x += xstep) 
-		u[0][i] = tstep*D(beta*(1.-x*x)*(1.-x*x), 4.*beta*(3.*x*x-1.)) + beta*(1.-x*x)*(1.-x*x);
+		u[0][i] = beta*(1. - x*x)*(1. - x*x);
 	for(i = 0; i < tn - 1; i++) {
 		u[i+1][0] = tstep*D(u[i][0], (u[i][1] - u[i][0])/(xstep*xstep)) + u[i][0];
 		u[i+1][xn-1] = tstep*D(u[i][xn-1], (-50.*pow(u[i][xn-1], 4) - (u[i][xn-1] - u[i][xn-2])/xstep)/xstep) + u[i][xn-1];   
@@ -18,16 +18,16 @@ void explicit_evaluate(double** u, int tn, int xn) {
 }
 
 void f(int n, double* x, double* y, double* params, double h, double tau) {
-	int i;
-	for(i = 0; i < n; i++) 
-		y[i] = alpha*x[i+1]/(h*h) - (2.*alpha/(h*h) + 1/tau)*x[i] + alpha*x[i-1]/(h*h) + params[i] + pow(x[i], 4);		
+	for(int i = 0; i < n; i++) 
+		y[i] = alpha*x[i+1]/(h*h) - (2.*alpha/(h*h) + 1./tau)*x[i] + alpha*x[i-1]/(h*h) + params[i] + pow(x[i], 4);		
 }
 
 void jacobian(int n, double* x, double** res, double h, double tau) {
 	int i, j;
 	for(i = 0; i < n; i++) {
-		for(j = 0; j < n; j++)
-			res[i][j] = j == i - 1 ? alpha/(h*h) : j == i ? 2*alpha/(h*h) + 1/tau + 4*pow(x[i],3) : j == i + 1? alpha/(h*h) : 0.;  
+		if(i != 0) res [i][i-1] = alpha/(h*h);
+		if(i != n-1) res[i][i+1] = alpha/(h*h);
+		res[i][i] = 2.*alpha/(h*h) + 1./tau + 4.*pow(x[i], 3.);
 	}
 }
 
@@ -35,8 +35,8 @@ int implicit_evaluate(double** u, int tn, int xn, double eps) {
 	int i,j,k, flag, n = xn - 2, num_c;
 	double x, xstep = 1./(xn-1), tstep = 1./(tn-1), err, prev_err, c;
 	double** jac = create_matrix(n, n), **v = create_matrix(3, n);
-	for(i = 0, x = 0.; i < xn; i++, x += xstep)
-		u[0][i] = tstep*D(beta*(1.-x*x)*(1.-x*x), 4.*beta*(3.*x*x-1.)) + beta*(1-x*x)*(1.-x*x);
+	for(i = 0, x = 0.; i < xn; i++, x += xstep) 
+		u[0][i] = beta*(1. - x*x)*(1. - x*x);
 	for(i = 0; i < tn - 1; i++) {
 		u[i+1][0] = tstep*D(u[i][0], (u[i][1] - u[i][0])/(xstep*xstep)) + u[i][0];
 		u[i+1][xn-1] = tstep*D(u[i][xn-1], (-50.*pow(u[i][xn-1], 4) - (u[i][xn-1] - u[i][xn-2])/xstep)/xstep) + u[i][xn-1];
@@ -59,7 +59,7 @@ int implicit_evaluate(double** u, int tn, int xn, double eps) {
 
 int main(void) {
 	double **u;
-	int i,j, type, tn = 8, xn = 3; 
+	int i,j, type, tn = 10, xn = 10;
 	FILE * f = fopen("out.txt", "w");
 	u = (double**)malloc(sizeof(double*)*tn);
 	for(i = 0; i < tn; i++) u[i] = (double*)malloc(sizeof(double)*xn);

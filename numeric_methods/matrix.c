@@ -45,8 +45,10 @@ void triangle(double** m, double* b, int n) {
 double** create_matrix(int rows, int cols) {
 	double** A;
 	A = (double**)malloc(rows*sizeof(double*));
-	for(int i = 0; i < rows; i++)
+	for(int i = 0; i < rows; i++) {
 		A[i] = (double*)malloc(cols*sizeof(double));
+		for(int j = 0; j < cols; j++) A[i][j] = 0.;
+	}
 	return A;
 }
 
