@@ -22,14 +22,14 @@ void implicit_solve(double** u, int tn, int xn, double a) {
 	for(i = 0, x = 0.; i < xn; i++, x += h) u[0][i] = 0.5*(1. - x*x);
 	for(i = 0; i < tn-1; i++) {
 		u[i+1][xn-1] = 0.;
-		u[i+1][0] = tau*(a*u[i][0] + 1.) + u[i][0];
 		for(j = 0, x = h; j < xn - 2; j++, x+=h) {
-			if(j != 0) A[j][j-1] = 1./(h*h) - 1./(2.*h*x); 
-			if(j != xn - 3) A[j][j+1] = 1./(h*h*x) + 1./(2.*x*h);
-			A[j][j] = (a - 2./(h*h) - 1./tau);
-			b[j] = -u[i][j]/tau -1.;
+			if(j != 0) A[j][j-1] = xn - 1.5 - 0.5/x; 
+			if(j != xn - 3) A[j][j+1] = xn - 0.5 + 0.5/x;
+			A[j][j] = a*h - 2.*(xn - 1) - h*(tn - 1);
+			b[j] = -h*tn*u[i][j+1];
 		}
 		gauss(A, u[i+1] + 1, b, xn - 2);
+		u[i+1][0] = u[i+1][1];
 	}
 	delete_matrix(A, xn-2); free(b);
 }
@@ -63,8 +63,8 @@ int main(void) {
 	double a, ans[4], **u;
 	double **v = create_matrix(Tn, Xn);
 
-	printf("enter 1 for explicit and 2 for implicit. xn tn alpha.\n");
-	scanf("%d %d %d %lf", &type, &xn, &tn, &a);
+	printf("enter 1 for explicit and 2 for implicit, tn, xn, alpha.\n");
+	scanf("%d %d %d %lf", &type, &tn, &xn, &a);
 	u = create_matrix(tn, xn);
 	
 	if(type == 1) explicit_solve(u, tn, xn, a);
@@ -72,6 +72,7 @@ int main(void) {
 	implicit_solve(v, Tn, Xn, a);
 	inaccuracy(u, v, tn, xn, a, ans);
 	printf("%lf %lf %lf %lf \n", ans[0], ans[1], ans[2], ans[3]);
+	save(u, tn, xn, "out.txt");
 
 	delete_matrix(u, tn);
 	return 0;
