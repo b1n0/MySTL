@@ -1,5 +1,8 @@
 #include "h.h"
 
+#define Tn 1000
+#define Xn 100
+
 void explicit_solve(double** u, int tn, int xn, double a) {
 	double x, t, h = 1./(xn-1), tau = 1./(tn-1);
 	int i, j;
@@ -31,18 +34,38 @@ void implicit_solve(double** u, int tn, int xn, double a) {
 	delete_matrix(A, xn-2); free(b);
 }
 
+void inaccuracy(double **u, int tn, int xn, double a, double* ans) {
+	int i, j, k, l, tstep = (int)((Tn-1)/(tn-1)), xstep = (int)((Xn-1)/(xn-1));
+	double mnorm = 0., l1norm = 0., vl1norm = 0., vmnorm = 0.; 
+	double **v = create_matrix(Tn, Xn);
+	implicit_solve(v, Tn, Xn, a);
+	for(k =  i = 0; i < tn; i++)
+		for(l = j = 0; j < xn; j++) {
+			l1norm += abs(u[i][j] - v[k][l]);
+			mnorm = MAX(mnorm, abs(u[i][j] - v[k][l])); 
+			vl1norm += abs(v[k][l]);
+			vmnorm = MAX(vmnorm, v[k][l]);
+			k += tstep;
+			l += xstep;
+		}
+	ans[0] = mnorm; ans[1] = l1norm; 
+	ans[2] = mnorm/vmnorm; ans[3] = l1norm/vl1norm;
+}
+
 int main(void) {
 	int xn, tn, type;
-	double a, **u;
+	double a, ans[4], **u;
 	FILE* f = fopen("out.txt", "w");
 
 	printf("enter 1 for explicit and 2 for implicit. xn tn alpha.\n");
 	scanf("%d %d %d %lf", &type, &xn, &tn, &a);
 	u = create_matrix(tn, xn);
-
+	
 	if(type == 1) explicit_solve(u, tn, xn, a);
 	else implicit_solve(u, tn, xn, a);
-
+	inaccuracy(u, tn, xn, a, ans);
+	printf("%lf %lf %lf %lf \n", ans[0], ans[1], ans[2], ans[3]);
+	
 	for(int i = tn - 1; i >= 0; i--) {
 		for(int j = 0; j < xn; j++) fprintf(f, "%lf ", u[i][j]);
 		fprintf(f, "\n");
