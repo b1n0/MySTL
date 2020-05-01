@@ -37,3 +37,5 @@ int main(void) {
 	newton_method(1, x, f, 1.e-5);
 	return 0;
 }
+
+
