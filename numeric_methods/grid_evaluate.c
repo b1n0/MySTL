@@ -1,7 +1,7 @@
 #include "h.h"
 
-#define Tn 1000
-#define Xn 100
+#define Tn 10001
+#define Xn 101
 
 void explicit_solve(double** u, int tn, int xn, double a) {
 	double x, t, h = 1./(xn-1), tau = 1./(tn-1);
@@ -38,25 +38,32 @@ void inaccuracy(double **u, int tn, int xn, double a, double* ans) {
 	int i, j, k, l, tstep = (int)((Tn-1)/(tn-1)), xstep = (int)((Xn-1)/(xn-1));
 	double mnorm = 0., l1norm = 0., vl1norm = 0., vmnorm = 0.; 
 	double **v = create_matrix(Tn, Xn);
+	printf("%d %d \n", tstep, xstep);
 	implicit_solve(v, Tn, Xn, a);
-	for(k = i = 0; i < tn; i++)
-		for(l = j = 0; j < xn; j++) {
-			l1norm += abs(u[i][j] - v[k][l]);
-			mnorm = MAX(mnorm, abs(u[i][j] - v[k][l])); 
-			vl1norm += abs(v[k][l]);
+	for(k = i = 0; i < tn; i++, k += tstep)
+		for(l = j = 0; j < xn; j++, l += xstep) {
+			l1norm += fabs(u[i][j] - v[k][l]);
+			mnorm = MAX(mnorm, fabs(u[i][j] - v[k][l])); 
+			vl1norm += fabs(v[k][l]);
 			vmnorm = MAX(vmnorm, v[k][l]);
-			k += tstep;
-			l += xstep;
 		}
-	ans[0] = mnorm; ans[1] = l1norm; 
+	ans[0] = mnorm; ans[1] = l1norm/(xn-1); 
 	ans[2] = mnorm/vmnorm; ans[3] = l1norm/vl1norm;
 	delete_matrix(v, Tn);
+}
+
+void save(double** u, int tn, int xn, const char* fname) {
+	FILE* f = fopen(fname, "w");
+	for(int i = tn - 1; i >= 0; i--) {
+		for(int j = 0; j < xn; j++) fprintf(f, "%lf ", u[i][j]);
+		fprintf(f, "\n"); 
+	}
+	fclose(f);
 }
 
 int main(void) {
 	int xn, tn, type;
 	double a, ans[4], **u;
-	FILE* f = fopen("out.txt", "w");
 
 	printf("enter 1 for explicit and 2 for implicit. xn tn alpha.\n");
 	scanf("%d %d %d %lf", &type, &xn, &tn, &a);
@@ -66,13 +73,7 @@ int main(void) {
 	else implicit_solve(u, tn, xn, a);
 	inaccuracy(u, tn, xn, a, ans);
 	printf("%lf %lf %lf %lf \n", ans[0], ans[1], ans[2], ans[3]);
-	
-	for(int i = tn - 1; i >= 0; i--) {
-		for(int j = 0; j < xn; j++) fprintf(f, "%lf ", u[i][j]);
-		fprintf(f, "\n");
-	}
 
 	delete_matrix(u, tn);
-	fclose(f);
 	return 0;
 }
