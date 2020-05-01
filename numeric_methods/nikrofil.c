@@ -50,7 +50,7 @@ int implicit_evaluate(double** u, int tn, int xn, double eps) {
 				err = norm(v[0], n, 'm');
 				if(err < prev_err) flag = 0;
 			}
-			if(flag) return -1;
+			if(flag) { printf("ERROR  = %lf \n", err); return -1;}
 			memcpy(u[i+1] + 1, v[2], n*sizeof(double));
 		} 
 	}
