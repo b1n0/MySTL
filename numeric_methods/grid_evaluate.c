@@ -39,7 +39,7 @@ void inaccuracy(double **u, int tn, int xn, double a, double* ans) {
 	double mnorm = 0., l1norm = 0., vl1norm = 0., vmnorm = 0.; 
 	double **v = create_matrix(Tn, Xn);
 	implicit_solve(v, Tn, Xn, a);
-	for(k =  i = 0; i < tn; i++)
+	for(k = i = 0; i < tn; i++)
 		for(l = j = 0; j < xn; j++) {
 			l1norm += abs(u[i][j] - v[k][l]);
 			mnorm = MAX(mnorm, abs(u[i][j] - v[k][l])); 
@@ -50,6 +50,7 @@ void inaccuracy(double **u, int tn, int xn, double a, double* ans) {
 		}
 	ans[0] = mnorm; ans[1] = l1norm; 
 	ans[2] = mnorm/vmnorm; ans[3] = l1norm/vl1norm;
+	delete_matrix(v, Tn);
 }
 
 int main(void) {
