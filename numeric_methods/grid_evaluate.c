@@ -34,12 +34,9 @@ void implicit_solve(double** u, int tn, int xn, double a) {
 	delete_matrix(A, xn-2); free(b);
 }
 
-void inaccuracy(double **u, int tn, int xn, double a, double* ans) {
+void inaccuracy(double **u, double** v, int tn, int xn, double a, double* ans) {
 	int i, j, k, l, tstep = (int)((Tn-1)/(tn-1)), xstep = (int)((Xn-1)/(xn-1));
 	double mnorm = 0., l1norm = 0., vl1norm = 0., vmnorm = 0.; 
-	double **v = create_matrix(Tn, Xn);
-	printf("%d %d \n", tstep, xstep);
-	implicit_solve(v, Tn, Xn, a);
 	for(k = i = 0; i < tn; i++, k += tstep)
 		for(l = j = 0; j < xn; j++, l += xstep) {
 			l1norm += fabs(u[i][j] - v[k][l]);
@@ -64,6 +61,7 @@ void save(double** u, int tn, int xn, const char* fname) {
 int main(void) {
 	int xn, tn, type;
 	double a, ans[4], **u;
+	double **v = create_matrix(Tn, Xn);
 
 	printf("enter 1 for explicit and 2 for implicit. xn tn alpha.\n");
 	scanf("%d %d %d %lf", &type, &xn, &tn, &a);
@@ -71,7 +69,8 @@ int main(void) {
 	
 	if(type == 1) explicit_solve(u, tn, xn, a);
 	else implicit_solve(u, tn, xn, a);
-	inaccuracy(u, tn, xn, a, ans);
+	implicit_solve(v, Tn, Xn, a);
+	inaccuracy(u, v, tn, xn, a, ans);
 	printf("%lf %lf %lf %lf \n", ans[0], ans[1], ans[2], ans[3]);
 
 	delete_matrix(u, tn);
