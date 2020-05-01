@@ -33,10 +33,13 @@ void implicit_solve(double** u, int tn, int xn, double a) {
 
 int main(void) {
 	int xn, tn, type;
-	double a, **u = create_matrix(tn, xn);
+	double a, **u;
 	FILE* f = fopen("out.txt", "w");
+
 	printf("enter 1 for explicit and 2 for implicit. xn tn alpha.\n");
 	scanf("%d %d %d %lf", &type, &xn, &tn, &a);
+	u = create_matrix(tn, xn);
+
 	if(type == 1) explicit_solve(u, tn, xn, a);
 	else implicit_solve(u, tn, xn, a);
 
