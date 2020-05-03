@@ -1,7 +1,7 @@
 #include "h.h"
 
 #define Tn 10001
-#define Xn 101
+#define Xn 10001
 
 void explicit_solve(double** u, int tn, int xn, double a) {
 	double x, t, h = 1./(xn-1), tau = 1./(tn-1);
@@ -15,23 +15,40 @@ void explicit_solve(double** u, int tn, int xn, double a) {
 	}
 }
 
+void running_method(int n, double* x, double** c, double* f) {
+	double *a, *b;
+	a = (double*)malloc(n*sizeof(double));
+	b = (double*)malloc(n*sizeof(double));
+	a[0] = c[1][0]/c[2][0];
+	b[0] = f[0]/c[2][0];
+	for(int i = 0; i < n - 1; i++) {
+		a[i+1] = c[1][i]/(c[2][i] - c[0][i]*a[i]);
+		b[i+1] = (f[i] + c[0][i]*b[i])/(c[2][i] - c[0][i]*a[i]);
+	}
+	x[n-1] = (f[n-1] + c[0][n-1]*b[n-1])/(c[2][n-1] - c[0][n-1]*a[n-1]);
+	for(int i = n - 2; i >= 0; i--) 
+		x[i] = a[i+1]*x[i+1] + b[i+1];
+	free(a); free(b);
+}
+
 void implicit_solve(double** u, int tn, int xn, double a) {
+	int i,j, n = xn - 1;
 	double x, h = 1./(xn-1), tau = 1./(tn-1);
-	double** A = create_matrix(xn - 1, xn - 1), *b = (double*)malloc((xn-1)*sizeof(double));
-	int i,j;
-	A[0][0] = 1.; A[0][1] = -1.; b[0] = 0;
-	for(i = 0, x = 0.; i < xn; i++, x += h) u[0][i] = 0.5*(1. - x*x);
+	double **c = create_matrix(3, n), *f = (double*)malloc(n*sizeof(double));
+
+	c[0][0] = 0.; c[1][0] = 1.; c[2][0] = 1.; f[0] = 0.;
+	for(j = 1, x = h; j < xn - 1; j++, x+=h) {
+		c[0][j] = -xn + 1.5 + 0.5/x; 
+		c[1][j] = -xn + 0.5 - 0.5/x;
+		c[2][j] = a*h - 2.*xn + 2. - h*(tn - 1.);
+	}
+	for(j = 0, x = 0.; j < xn; j++, x += h) u[0][j] = 0.5*(1. - x*x);
 	for(i = 0; i < tn-1; i++) {
 		u[i+1][xn-1] = 0.;
-		for(j = 1, x = h; j < xn - 1; j++, x+=h) {
-			A[j][j-1] = xn - 1.5 - 0.5/x; 
-			if(j != xn - 2) A[j][j+1] = xn - 0.5 + 0.5/x;
-			A[j][j] = a*h - 2.*(xn - 1) - h*(tn - 1);
-			b[j] = -h*tn*u[i][j];
-		}
-		gauss(A, u[i+1], b, xn - 1);
+		for(j = 1, x = h; j < xn - 1; j++, x+=h) f[j] = -h*tn*u[i][j];
+	running_method(n, u[i+1], c, f);
 	}
-	delete_matrix(A, xn-1); free(b);
+	free(f); delete_matrix(c, 3);
 }
 
 void inaccuracy(double **u, double** v, int tn, int xn, double a, double* ans) {
@@ -88,9 +105,11 @@ int main(void) {
 	else implicit_solve(u, tn, xn, a);
 	implicit_solve(v, Tn, Xn, a);
 	inaccuracy(u, v, tn, xn, a, ans);
+	printf("%lf %lf %lf %lf \n", ans[0], ans[1], ans[2], ans[3]);
 	save(u, tn, xn, "out.txt");
 
 	delete_matrix(u, tn);
 	return 0;
 }
 */
+
