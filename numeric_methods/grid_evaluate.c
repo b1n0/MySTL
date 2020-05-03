@@ -17,21 +17,21 @@ void explicit_solve(double** u, int tn, int xn, double a) {
 
 void implicit_solve(double** u, int tn, int xn, double a) {
 	double x, h = 1./(xn-1), tau = 1./(tn-1);
-	double** A = create_matrix(xn - 2, xn - 2), *b = (double*)malloc((xn-2)*sizeof(double));
+	double** A = create_matrix(xn - 1, xn - 1), *b = (double*)malloc((xn-1)*sizeof(double));
 	int i,j;
+	A[0][0] = 1.; A[0][1] = -1.; b[0] = 0;
 	for(i = 0, x = 0.; i < xn; i++, x += h) u[0][i] = 0.5*(1. - x*x);
 	for(i = 0; i < tn-1; i++) {
 		u[i+1][xn-1] = 0.;
-		for(j = 0, x = h; j < xn - 2; j++, x+=h) {
-			if(j != 0) A[j][j-1] = xn - 1.5 - 0.5/x; 
-			if(j != xn - 3) A[j][j+1] = xn - 0.5 + 0.5/x;
+		for(j = 1, x = h; j < xn - 1; j++, x+=h) {
+			A[j][j-1] = xn - 1.5 - 0.5/x; 
+			if(j != xn - 2) A[j][j+1] = xn - 0.5 + 0.5/x;
 			A[j][j] = a*h - 2.*(xn - 1) - h*(tn - 1);
-			b[j] = -h*tn*u[i][j+1];
+			b[j] = -h*tn*u[i][j];
 		}
-		gauss(A, u[i+1] + 1, b, xn - 2);
-		u[i+1][0] = u[i+1][1];
+		gauss(A, u[i+1], b, xn - 1);
 	}
-	delete_matrix(A, xn-2); free(b);
+	delete_matrix(A, xn-1); free(b);
 }
 
 void inaccuracy(double **u, double** v, int tn, int xn, double a, double* ans) {
