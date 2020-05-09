@@ -36,17 +36,17 @@ void implicit_solve(double** u, int tn, int xn, double a) {
 	double x, h = 1./(xn-1), tau = 1./(tn-1);
 	double **c = create_matrix(3, n), *f = (double*)malloc(n*sizeof(double));
 
-	c[0][0] = 0.; c[1][0] = 1.; c[2][0] = 1.; f[0] = 0.;
+	c[0][0] = 0.; c[1][0] = -1.; c[2][0] = -1.; f[0] = 0.;
 	for(j = 1, x = h; j < xn - 1; j++, x+=h) {
-		c[0][j] = -xn + 1.5 + 0.5/x; 
-		c[1][j] = -xn + 0.5 - 0.5/x;
-		c[2][j] = a*h - 2.*xn + 2. - h*(tn - 1.);
+		c[0][j] = -xn + 1.5 + 0.5/x;
+		c[1][j] = j != xn - 2 ? -xn + 0.5 - 0.5/x : 0.;
+		c[2][j] =  a*h - 2.*xn + 2. - h*(tn - 1.);
 	}
 	for(j = 0, x = 0.; j < xn; j++, x += h) u[0][j] = 0.5*(1. - x*x);
 	for(i = 0; i < tn-1; i++) {
 		u[i+1][xn-1] = 0.;
 		for(j = 1, x = h; j < xn - 1; j++, x+=h) f[j] = -h*tn*u[i][j];
-	running_method(n, u[i+1], c, f);
+		running_method(n, u[i+1], c, f);
 	}
 	free(f); delete_matrix(c, 3);
 }
