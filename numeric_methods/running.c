@@ -79,12 +79,13 @@ double plot(double** u, int tn, int xn, const char* fname) {
 	double tau = 1./(tn-1), h = 1./(xn-1), t, x, f1;
 	FILE *gnuplot_pipe, *f = fopen(fname, "w");
 	for(i = 0, t = 0.; i < tn; i++, t += tau) {
-		for(j = 0, x = 0, f1 = 0.; j < xn; j++, x += h) f1 += u[i][j]*x*h;
-		fprintf(f, "%lf %lf %lf\n", t, (u[i][xn-1] - u[i][xn-2])*(xn-1), f1);
+		for(j = 0, x = 0, f1 = 0.; j < xn; j++, f1 += u[i][j]*x*h, x += h);
+		fprintf(f, "%lf %lf %lf\n", t, f1, (u[i][xn-1] - u[i][xn-2])*(xn-1));
 	}
 	fclose(f);
 	gnuplot_pipe = popen("gnuplot -persistent", "w");
         fprintf(gnuplot_pipe, "%s%s%s\n", "set key off; plot for[col=2:3:1]'", fname, "' using 1:col with lines");
+	fclose(gnuplot_pipe);
 }
 
 int main(void) {

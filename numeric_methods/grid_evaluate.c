@@ -1,7 +1,7 @@
 #include "h.h"
 
-#define Tn 10001
-#define Xn 101
+#define Tn 1001
+#define Xn 1001
 
 void explicit_solve(double** u, int tn, int xn, double a) {
 	double x, t, h = 1./(xn-1), tau = 1./(tn-1);
@@ -57,40 +57,37 @@ void save(double** u, int tn, int xn, const char* fname) {
 	fclose(f);
 }
 
-int main(void) {
-	int i, n;
-	double ans[4], **u, **v;
-	v = create_matrix(Tn, Xn);
-	implicit_solve(v, Tn, Xn, 1.);
+double plot(double** u, int tn, int xn, const char* fname) {
+	int i,j;
+	double tau = 1./(tn-1), h = 1./(xn-1), t, x, f1;
+	FILE *gnuplot_pipe, *f = fopen(fname, "w");
+	for(i = 0, t = 0.; i < tn; i++, t += tau) {
+		for(j = 0, x = 0, f1 = 0.; j < xn; j++, x += h) f1 += u[i][j]*x*h;
+		fprintf(f, "%lf %lf %lf\n", t, (u[i][xn-1] - u[i][xn-2])*(xn-1), f1);
+	}
+	fclose(f);
+	gnuplot_pipe = popen("gnuplot -persistent", "w");
+        fprintf(gnuplot_pipe, "%s%s%s\n", "set key off; plot for[col=2:3:1]'", fname, "' using 1:col with lines");
+}
 
-	for(i = 0, n = 11; i < 3; i++, n = (n-1)*10 + 1) {
-		u = create_matrix(n, n);
-		implicit_solve(u, n, n, 1.);
-		inaccuracy(u, v, n, n, 1., ans);
-		printf("%lf %lf %lf %lf \n", ans[0], ans[1], ans[2], ans[3]);
-		delete_matrix(u, n);
+int main(void) {
+	char fname[] = "plt1.txt";
+	int i, j, k, xn, tn;
+	double ans[4], **u, **v, a;
+	v = create_matrix(Tn, Xn);
+	for(k = 0, a = 1.; k < 2; k++, a = 0., printf("\n"), fname[3] = '0') {
+		implicit_solve(v, Tn, Xn, a);
+		plot(v, Tn, Xn, fname);
+		for(i = 0, tn = 11; i < 2; i++, tn = (tn-1)*10 + 1)
+			for(j = 0, xn = 11; j < 2; j++, xn = (xn-1)*10 + 1) { 
+				u = create_matrix(tn, xn);
+				implicit_solve(u, tn, xn, a);
+				inaccuracy(u, v, tn, xn, a, ans);
+				printf("%lf| %lf| %lf %lf %lf %lf \n",1./(tn-1), 1./(xn-1), ans[0], ans[1], ans[2], ans[3]);
+				delete_matrix(u, tn);
+			}	
 	}
 	delete_matrix(v, Tn);
 	return 0;
 }
 
-/*
-int main(void) {
-	int xn, tn, type;
-	double a, ans[4], **u;
-	double **v = create_matrix(Tn, Xn);
-
-	printf("enter 1 for explicit and 2 for implicit, tn, xn, alpha.\n");
-	scanf("%d %d %d %lf", &type, &tn, &xn, &a);
-	u = create_matrix(tn, xn);
-	
-	if(type == 1) explicit_solve(u, tn, xn, a);
-	else implicit_solve(u, tn, xn, a);
-	implicit_solve(v, Tn, Xn, a);
-	inaccuracy(u, v, tn, xn, a, ans);
-	save(u, tn, xn, "out.txt");
-
-	delete_matrix(u, tn);
-	return 0;
-}
-*/
