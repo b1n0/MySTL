@@ -74,7 +74,7 @@ void save(double** u, int tn, int xn, const char* fname) {
 	fclose(f);
 }
 
-double plot(double** u, int tn, int xn, const char* fname) {
+void plot1(double** u, int tn, int xn, const char* fname) {
 	int i,j;
 	double tau = 1./(tn-1), h = 1./(xn-1), t, x, f1;
 	FILE *gnuplot_pipe, *f = fopen(fname, "w");
@@ -88,15 +88,27 @@ double plot(double** u, int tn, int xn, const char* fname) {
 	fclose(gnuplot_pipe);
 }
 
+void plot2(double** u, const char* fname) {
+	int i,j;
+	double tau = 1./(Tn-1), h = 1./(Xn-1), x;
+	FILE *gnuplot_pipe, *f = fopen(fname, "w");
+	for(i = 0, x = 0.; i < Xn; i++, x += tau) 
+		fprintf(f, "%lf %lf %lf %lf %lf\n", x, u[(int)Tn/4][i], u[(int)Tn/2][i], u[(int)3*Tn/4][i], u[Tn-1][i]);
+	fclose(f);
+	gnuplot_pipe = popen("gnuplot -persistent", "w");
+        fprintf(gnuplot_pipe, "%s%s%s\n", "set key off; plot for[col=2:5:1]'", fname, "' using 1:col with lines");
+	fclose(gnuplot_pipe);
+}
 
 int main(void) {
-	char fname[] = "plt1.txt";
+	char fname[] = "f1.txt", fout[] = "u1.txt";
 	int i, j, k, xn, tn;
 	double ans[4], **u, **v, a;
 	v = create_matrix(Tn, Xn);
-	for(k = 0, a = 1.; k < 2; k++, a = 0., printf("\n"), fname[3] = '0') {
+	for(k = 0, a = 1.; k < 2; k++, a = 0., printf("\n"), fname[1] = '0', fout = '0') {
 		implicit_solve(v, Tn, Xn, a);
-		plot(v, Tn, Xn, fname);
+		plot1(v, Tn, Xn, fname);
+		plot2(v, fout); 
 		for(i = 0, tn = 11; i < 3; i++, tn = (tn-1)*10 + 1)
 			for(j = 0, xn = 11; j < 3; j++, xn = (xn-1)*10 + 1) { 
 				u = create_matrix(tn, xn);
@@ -109,5 +121,4 @@ int main(void) {
 	delete_matrix(v, Tn);
 	return 0;
 }
-
 
