@@ -51,18 +51,18 @@ void implicit_solve(double** u, int tn, int xn, double a) {
 	free(f); delete_matrix(c, 3);
 }
 
-void inaccuracy(double **u, double** v, int tn, int xn, double a, double* ans) {
-	int i, j, k, l, tstep = (int)((Tn-1)/(tn-1)), xstep = (int)((Xn-1)/(xn-1));
-	double mnorm = 0., l1norm = 0., vl1norm = 0., vmnorm = 0.; 
-	for(k = i = 0; i < tn; i++, k += tstep)
-		for(l = j = 0; j < xn; j++, l += xstep) {
-			l1norm += fabs(u[i][j] - v[k][l]);
-			mnorm = MAX(mnorm, fabs(u[i][j] - v[k][l])); 
-			vl1norm += fabs(v[k][l]);
-			vmnorm = MAX(vmnorm, v[k][l]);
-		}
-	ans[0] = mnorm; ans[1] = l1norm/(xn-1); 
-	ans[2] = mnorm/vmnorm; ans[3] = l1norm/vl1norm;
+void inaccuracy(double* u, double* v, int xn, double a, double* ans) {
+	int i, k, xstep = (int)((Xn-1)/(xn-1));
+	double max, l1, vl1, vmax;
+	max = l1 = vl1 = vmax = 0.; 
+	for(k = i = 0; i < xn; i++, k += xstep) {
+		l1 += fabs(u[i] - v[k]);
+		max = MAX(max, fabs(u[i] - v[k]));
+		vl1 += fabs(v[k]);
+		vmax = MAX(vmax, v[k]);
+	}
+	ans[0] = max; ans[1] = l1/(xn-1); 
+	ans[2] = max/vmax; ans[3] = l1/vl1;
 }
 
 void save(double** u, int tn, int xn, const char* fname) {
@@ -88,6 +88,7 @@ double plot(double** u, int tn, int xn, const char* fname) {
 	fclose(gnuplot_pipe);
 }
 
+
 int main(void) {
 	char fname[] = "plt1.txt";
 	int i, j, k, xn, tn;
@@ -100,7 +101,7 @@ int main(void) {
 			for(j = 0, xn = 11; j < 3; j++, xn = (xn-1)*10 + 1) { 
 				u = create_matrix(tn, xn);
 				implicit_solve(u, tn, xn, a);
-				inaccuracy(u, v, tn, xn, a, ans);
+				inaccuracy(u[tn-1], v[Tn-1], xn, a, ans);
 				printf("%lf| %lf| %lf %lf %lf %lf \n",1./(tn-1), 1./(xn-1), ans[0], ans[1], ans[2], ans[3]);
 				delete_matrix(u, tn);
 			}	
