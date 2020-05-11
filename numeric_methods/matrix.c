@@ -1,4 +1,4 @@
-#include "h.h"
+#include "grid.h"
 
 void gauss(double** m, double* x, double* b, int n) {
 	double s = 0.;
