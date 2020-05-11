@@ -42,6 +42,22 @@ void triangle(double** m, double* b, int n) {
 	}
 }
 
+void running_method(int n, double* x, double** c, double* f) {
+	double *a, *b;
+	a = (double*)malloc(n*sizeof(double));
+	b = (double*)malloc(n*sizeof(double));
+	a[0] = c[1][0]/c[2][0];
+	b[0] = f[0]/c[2][0];
+	for(int i = 0; i < n - 1; i++) {
+		a[i+1] = c[1][i]/(c[2][i] - c[0][i]*a[i]);
+		b[i+1] = (f[i] + c[0][i]*b[i])/(c[2][i] - c[0][i]*a[i]);
+	}
+	x[n-1] = (f[n-1] + c[0][n-1]*b[n-1])/(c[2][n-1] - c[0][n-1]*a[n-1]);
+	for(int i = n - 2; i >= 0; i--) 
+		x[i] = a[i+1]*x[i+1] + b[i+1];
+	free(a); free(b);
+}
+
 double** create_matrix(int rows, int cols) {
 	double** A;
 	A = (double**)malloc(rows*sizeof(double*));
